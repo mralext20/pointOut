@@ -3,11 +3,11 @@ import { BadRequest } from "../utils/Errors";
 
 class PointService {
   async findAll(query = {}) {
-    let values = await dbContext.Values.find(query).populate(
+    let data = await dbContext.Point.find(query).populate(
       "creator",
       "name picture"
     );
-    return values;
+    return data;
   }
   async findWithinRegion(x1, y1, x2, y2) {
     const region = {
@@ -44,26 +44,30 @@ class PointService {
   }
 
   async findById(id) {
-    let value = await dbContext.Values.findById(id);
-    if (!value) {
+    let data = await dbContext.Point.findById(id);
+    if (!data) {
       throw new BadRequest("Invalid Id");
     }
-    return value;
+    return data;
   }
   async create(object) {
     const document = await dbContext.Point.create(object)
     return document
   }
-  async edit(id, creatorId, update) {
-    const data = await dbContext.Point.update({ _id: id, creatorId }, update, { new: true })
+  async edit(id, creatorEmail, update) {
+    const data = await dbContext.Point.findOneAndUpdate(
+      { _id: id, creatorEmail },
+      update,
+      { new: true }
+    )
 
     if (!data) {
       throw new BadRequest("Invalid ID or you do not own that point")
     }
     return data
   }
-  async delete(id, creatorId) {
-    const oldDoc = await dbContext.Point.deleteOne({ _id: id, creatorId })
+  async delete(id, creatorEmail) {
+    const oldDoc = await dbContext.Point.deleteOne({ _id: id, creatorEmail })
     if (!oldDoc) {
       throw new BadRequest("you DO not OWN that POINT or it does not exist.")
     }

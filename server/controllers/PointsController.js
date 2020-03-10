@@ -11,20 +11,28 @@ export class PointsController extends BaseController {
       // NOTE: Beyond this point all routes require Authorization tokens (the user must be logged in)
       .use(auth0Provider.getAuthorizedUserInfo)
       .post("", this.create)
-    // .edit("/:id", this.edit)
+      .put("/:id", this.edit)
     // .delete("/:id", this.delete)
 
   }
   async getAll(req, res, next) {
     try {
+      let data;
       switch (req.query.type) {
         case "region":
-          return await pointService.findWithinRegion(req.query.x1, req.query.y1, req.query.x2, req.query.y2)
+          data = await pointService.findWithinRegion(req.query.x1, req.query.y1, req.query.x2, req.query.y2)
+          break;
         case "radius":
-          return await pointService.findWithinRadius(req.query.longitude, req.query.latitude, req.query.radius)
+          data = await pointService.findWithinRadius(
+            parseFloat(req.query.longitude),
+            parseFloat(req.query.latitude),
+            parseFloat(req.query.radius));
+          break;
         default:
-          return await pointService.findAll()
+          data = await pointService.findAll()
+          break;
       }
+      res.send(data)
     } catch (error) {
       next(error);
     }
@@ -37,6 +45,14 @@ export class PointsController extends BaseController {
       res.send(created);
     } catch (error) {
       next(error);
+    }
+  }
+  async edit(req, res, next) {
+    try {
+      const data = await pointService.edit(req.params.id, req.userInfo.email, req.body)
+      res.send(data)
+    } catch (error) {
+      next(error)
     }
   }
 }
