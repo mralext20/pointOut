@@ -29,6 +29,19 @@ class PointService {
     })
     return data
   }
+
+  async findWithinRadius(longitude, latitude, distanceInMiles) {
+    const data = await dbContext.Point.find({
+      location: {
+        $geoWithin: {
+          $centerSphere: [
+            [longitude, latitude],
+            distanceInMiles / 3963.2] // mines to radians
+        }
+      })
+    return data
+  }
+
   async findById(id) {
     let value = await dbContext.Values.findById(id);
     if (!value) {
@@ -36,7 +49,24 @@ class PointService {
     }
     return value;
   }
+  async create(object) {
+    const document = await dbContext.Point.create(object)
+    return document
+  }
+  async edit(id, creatorId, update) {
+    const data = await dbContext.Point.update({ _id: id, creatorId }, update, { new: true })
 
+    if (!data) {
+      throw new BadRequest("Invalid ID or you do not own that point")
+    }
+    return data
+  }
+  async delete(id, creatorId) {
+    const oldDoc = await dbContext.Point.deleteOne({ _id: id, creatorId })
+    if (!oldDoc) {
+      throw new BadRequest("you DO not OWN that POINT or it does not exist.")
+    }
+  }
 }
 
 export const pointService = new PointService();
