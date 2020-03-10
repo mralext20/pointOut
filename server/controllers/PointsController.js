@@ -12,7 +12,7 @@ export class PointsController extends BaseController {
       .use(auth0Provider.getAuthorizedUserInfo)
       .post("", this.create)
       .put("/:id", this.edit)
-    // .delete("/:id", this.delete)
+      .delete("/:id", this.delete)
 
   }
   async getAll(req, res, next) {
@@ -51,6 +51,15 @@ export class PointsController extends BaseController {
     try {
       const data = await pointService.edit(req.params.id, req.userInfo.email, req.body)
       res.send(data)
+    } catch (error) {
+      next(error)
+    }
+  }
+
+  async delete(req, res, next) {
+    try {
+      await pointService.delete(req.params.id, req.userInfo.email)
+      res.send("deleted")
     } catch (error) {
       next(error)
     }
