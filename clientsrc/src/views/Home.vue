@@ -2,7 +2,7 @@
   <div class="home container">
     <div class="row">
       <div class="col d-flex flex-column align-items-center">
-        <h4 class="pt-1">Welcome to Point Out!</h4>
+        <h4 class="pt-3">Welcome to Point Out!</h4>
         <p
           class="landing-pTag text-center"
         >This app will change your life! Have you ever lost your secret tree fort? Have you ever lost your house?</p>
