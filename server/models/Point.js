@@ -2,33 +2,39 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId
 
+
+const pointSchema = new mongoose.Schema({
+  type: {
+    type: String,
+    enum: ['Point'],
+    default: "Point",
+    required: true
+  },
+  coordinates: {
+    type: [Number],
+    required: true
+  }
+});
+
 const Point = new Schema(
   {
     title: { type: String, required: true },
-    description: { type: String, required: true },
-    creatorId: { type: String, required: true },
+    description: { type: String, required: true, default: "no description given" },
+    creatorEmail: { type: String, required: true },
     image: { type: String },
     // GroupId: { type: ObjectId, ref: "group" },
     location: {
-      type: {
-        type: String, // Don't do `{ location: { type: String } }`
-        enum: ['Point'], // 'location.type' must be 'Point'
-        default: 'Point',
-        required: true
-      },
-      coordinates: {
-        type: [Number],
-        required: true
-      }
-    }
+      type: pointSchema,
+      required: true
+    },
   },
   { timestamps: true, toJSON: { virtuals: true } }
 );
 
 Point.virtual("creator", {
-  localField: "creatorId",
+  localField: "creatorEmail",
   ref: "Profile",
-  foreignField: "id",
+  foreignField: "email",
   justOne: true
 });
 

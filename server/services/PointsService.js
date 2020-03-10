@@ -38,7 +38,8 @@ class PointService {
             [longitude, latitude],
             distanceInMiles / 3963.2] // mines to radians
         }
-      })
+      }
+    })
     return data
   }
 
