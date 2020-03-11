@@ -44,8 +44,10 @@ export default new Vuex.Store({
           x2: _northEast.lng,
           y2: _northEast.lat
         }
+      }
 
-      })
+      )
+      commit('setPoints', points)
     },
     async getProfile({ commit }) {
       try {
