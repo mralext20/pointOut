@@ -14,8 +14,13 @@
 </template>
 
 <script>
+import MapComponent from "@/components/mapComponent";
+
 export default {
-  name: "home"
+  name: "home",
+  components: {
+    MapComponent
+  }
 };
 </script>
 
