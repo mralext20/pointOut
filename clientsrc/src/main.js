@@ -4,6 +4,7 @@ import router from "./router";
 import store from "./store";
 import { Auth0Plugin, onAuth } from "@bcwdev/auth0-vue";
 import { domain, clientId, audience } from "./authConfig";
+import 'leaflet/dist/leaflet.css';
 
 Vue.use(Auth0Plugin, {
   domain,
@@ -21,7 +22,7 @@ Vue.use(Auth0Plugin, {
 new Vue({
   router,
   store,
-  render: function(h) {
+  render: function (h) {
     return h(App);
   }
 }).$mount("#app");

@@ -8,6 +8,7 @@
 <script>
 import Navbar from "@/components/navbar";
 import { onAuth } from "@bcwdev/auth0-vue";
+
 export default {
   name: "App",
   async beforeCreate() {

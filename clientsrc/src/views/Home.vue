@@ -1,12 +1,20 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <h1>Welcome to Your Vue.js App</h1>
+  <div class="home container">
+    <div class="row">
+      <div class="col">
+        <map-component />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import MapComponent from "@/components/mapComponent";
+
 export default {
-  name: "home"
+  name: "home",
+  components: {
+    MapComponent
+  }
 };
 </script>
