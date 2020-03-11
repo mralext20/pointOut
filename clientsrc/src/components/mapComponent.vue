@@ -1,6 +1,5 @@
 <template>
-  <div style="height: 500px; width: 100%" id="map-id">
-    <div style="height: 200px overflow: auto;"></div>
+  <div class="map-area">
     <l-map
       v-if="showMap"
       ref="map"
@@ -8,44 +7,43 @@
       :center="center"
       :options="mapOptions"
       style="height: 80%"
-      @update:center="centerUpdate"
-      @update:zoom="zoomUpdate"
     >
       <l-tile-layer :url="url" :attribution="attribution" />
-      <l-marker :lat-lng="withPopup">
+      <l-marker
+        v-for="(point) in points"
+        :key="point.id"
+        :lat-lng="[point.location.coordinates[1], point.location.coordinates[0]]"
+      >
         <l-popup>
-          <div @click="innerClick">
-            I am a popup
-            <p v-show="showParagraph">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-              sed pretium nisl, ut sagittis sapien. Sed vel sollicitudin nisi.
-              Donec finibus semper metus id malesuada.
-            </p>
+          <div @click="showParagraph = !showParagraph">
+            <h4>{{point.title}}</h4>
+            <p v-show="showParagraph">{{point.description}}</p>
           </div>
         </l-popup>
-      </l-marker>
-      <l-marker :lat-lng="withTooltip">
-        <l-tooltip :options="{ permanent: true, interactive: true }">
-          <div @click="innerClick">
-            I am a tooltip
-            <p v-show="showParagraph">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-              sed pretium nisl, ut sagittis sapien. Sed vel sollicitudin nisi.
-              Donec finibus semper metus id malesuada.
-            </p>
-          </div>
-        </l-tooltip>
       </l-marker>
     </l-map>
   </div>
 </template>
-
+  
 <script>
-import { latLng } from "leaflet";
-import { LMap, LTileLayer, LMarker, LPopup, LTooltip } from "vue2-leaflet";
+import { latLng, Icon } from "leaflet";
+delete Icon.Default.prototype._getIconUrl;
+Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png")
+});
+import {
+  LMap,
+  LTileLayer,
+  LMarker,
+  LPopup,
+  LTooltip,
+  LIcon
+} from "vue2-leaflet";
 
 export default {
-  name: "map",
+  name: "jMap",
   components: {
     LMap,
     LTileLayer,
@@ -67,7 +65,11 @@ export default {
       showParagraph: false,
       map: LMap,
       mapOptions: {
-        zoomSnap: 0.5
+        zoomSnap: 0,
+        zoomControl: false,
+        dragging: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false
       },
       showMap: true
     };
@@ -80,22 +82,43 @@ export default {
       this.currentCenter = center;
     },
     innerClick() {
-      alert("Click!");
+      alert("HELP HELP!! I've been clicked!");
       console.log(this.map);
     }
   },
   mounted() {
     this.$nextTick(() => {
       let bounds = this.$refs.map.mapObject.getBounds();
-      console.log(bounds);
       this.$store.dispatch("getPointsWithinRegion", bounds);
     });
+  },
+  computed: {
+    points() {
+      console.log("Points: ");
+      console.log(this.$store.state.points);
+      return this.$store.state.points;
+    }
   }
 };
 </script>
 
 
 <style scoped>
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .map-area {
+    height: 25rem;
+    width: 100vw;
+  }
+}
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .map-area {
+    height: 60rem;
+    width: 90vw;
+  }
+}
+
 .map-component {
   height: 100%;
 }

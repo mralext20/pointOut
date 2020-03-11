@@ -17,11 +17,15 @@ let api = Axios.create({
 
 export default new Vuex.Store({
   state: {
-    profile: {}
+    profile: {},
+    points: []
   },
   mutations: {
     setProfile(state, profile) {
       state.profile = profile;
+    },
+    setPoints(state, points) {
+      state.points = points.data
     }
   },
   actions: {
@@ -32,7 +36,6 @@ export default new Vuex.Store({
       api.defaults.headers.authorization = "";
     },
     async getPointsWithinRegion({ commit }, { _southWest, _northEast }) {
-      debugger;
       let points = await api.get("points", {
         params: {
           type: "region",
@@ -41,7 +44,10 @@ export default new Vuex.Store({
           x2: _northEast.lng,
           y2: _northEast.lat
         }
-      })
+      }
+
+      )
+      commit('setPoints', points)
     },
     async getProfile({ commit }) {
       try {
