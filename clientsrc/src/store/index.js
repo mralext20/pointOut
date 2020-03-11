@@ -25,11 +25,23 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    setBearer({}, bearer) {
+    setBearer({ }, bearer) {
       api.defaults.headers.authorization = bearer;
     },
     resetBearer() {
       api.defaults.headers.authorization = "";
+    },
+    async getPointsWithinRegion({ commit }, { _southWest, _northEast }) {
+      debugger;
+      let points = await api.get("points", {
+        params: {
+          type: "region",
+          x1: _southWest.lng,
+          y1: _southWest.lat,
+          x2: _northEast.lng,
+          y2: _northEast.lat
+        }
+      })
     },
     async getProfile({ commit }) {
       try {

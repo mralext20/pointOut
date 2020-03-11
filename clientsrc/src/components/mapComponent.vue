@@ -55,14 +55,14 @@ export default {
   },
   data() {
     return {
-      zoom: 13,
+      zoom: 10,
       center: latLng(43.615, -116.2023),
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       withPopup: latLng(43.615, -116.2023),
       withTooltip: latLng(43.615, -116.2023),
-      currentZoom: 11.5,
+      currentZoom: 10,
       currentCenter: latLng(43.615, -116.2023),
       showParagraph: false,
       map: LMap,
@@ -84,7 +84,13 @@ export default {
       console.log(this.map);
     }
   },
-  mounted() {}
+  mounted() {
+    this.$nextTick(() => {
+      let bounds = this.$refs.map.mapObject.getBounds();
+      console.log(bounds);
+      this.$store.dispatch("getPointsWithinRegion", bounds);
+    });
+  }
 };
 </script>
 
