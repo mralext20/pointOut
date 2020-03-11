@@ -4,32 +4,27 @@ import { BadRequest } from "../utils/Errors";
 class VisitsService {
 
   async getVisitsByPointId(pointId) {
-    const data = await dbContext.visit.find({ pointId })
+    const data = await dbContext.Visit.find({ pointId })
     return data.length
   }
   async findByUserEmail(creatorEmail) {
-    const data = await dbContext.visit.find({ creatorEmail })
+    const data = await dbContext.Visit.find({ creatorEmail })
     return data
   }
 
   async createVisit(rawData) {
 
-    const data = await dbContext.visit.create(rawData)
+    const data = await dbContext.Visit.create(rawData)
     return data
   }
   async removeVisit(creatorEmail, pointId) {
-    const data = await dbContext.visit.findOneAndDelete({ creatorEmail, pointId })
+    const data = await dbContext.Visit.findOneAndDelete({ creatorEmail, pointId })
     if (!data) {
       throw new BadRequest("You haven't visited that point")
     }
   }
 
-  async delete(creatorEmail, pointId) {
-    let data = await dbContext.Visits.findOneAndRemove(creatorEmail, pointId)
-    if (!data) {
-      throw new BadRequest("This locatiosn was never visited")
-    }
-  }
+  
 }
 
 export const visitsService = new VisitsService();

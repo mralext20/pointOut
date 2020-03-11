@@ -1,7 +1,8 @@
 import express from "express";
 import BaseController from "../utils/BaseController";
 import { pointService } from "../services/PointsService";
-import { visitsService } from "../services/VisitsService"
+import { visitsService } from "../services/VisitsService";
+import { votesService } from "../services/VotesService"
 import auth0Provider from "@bcwdev/auth0provider";
 
 export class PointsController extends BaseController {
@@ -10,6 +11,7 @@ export class PointsController extends BaseController {
     this.router
       .get("", this.getAll)
       .get("/:id/visits", this.getVisitsByPointId)
+      .get("/:id/votes", this.getVoteAverageByPointId)
       .get("/:id", this.getById)
 
       // NOTE: Beyond this point all routes require Authorization tokens (the user must be logged in)
@@ -48,6 +50,15 @@ export class PointsController extends BaseController {
       return res.send({ visits: data })
     }
     catch (error) {
+      next(error);
+    }
+  }
+
+  async getVoteAverageByPointId(req, res, next) {
+    try {
+      let data = await votesService.getVoteAverageByPointId(req.params.id)
+      return res.send(data);
+    } catch (error) {
       next(error);
     }
   }
