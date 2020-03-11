@@ -25,7 +25,7 @@ export default new Vuex.Store({
       state.profile = profile;
     },
     setPoints(state, points) {
-      state.points = points
+      state.points = points.data
     }
   },
   actions: {

@@ -18,6 +18,13 @@ import MapComponent from "@/components/mapComponent";
 
 export default {
   name: "home",
+  computed: {
+    points() {
+      console.log("Points: ");
+      console.log(this.$store.state.points);
+      return this.$store.state.points;
+    }
+  },
   components: {
     MapComponent
   }
@@ -25,6 +32,4 @@ export default {
 </script>
 
 <style scoped>
-.home img {
-}
 </style>

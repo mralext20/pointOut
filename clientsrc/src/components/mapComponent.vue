@@ -12,7 +12,11 @@
       @update:zoom="zoomUpdate"
     >
       <l-tile-layer :url="url" :attribution="attribution" />
-      <l-marker :lat-lng="withPopup">
+      <l-marker
+        v-for="(point) in points"
+        :key="point.id"
+        :lat-lng="[point.location.coordinates[1], point.location.coordinates[0]]"
+      >
         <l-popup>
           <div @click="innerClick">
             I am a popup
@@ -41,8 +45,21 @@
 </template>
 
 <script>
-import { latLng } from "leaflet";
-import { LMap, LTileLayer, LMarker, LPopup, LTooltip } from "vue2-leaflet";
+import { latLng, Icon } from "leaflet";
+delete Icon.Default.prototype._getIconUrl;
+Icon.Default.mergeOptions({
+  iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
+  iconUrl: require("leaflet/dist/images/marker-icon.png"),
+  shadowUrl: require("leaflet/dist/images/marker-shadow.png")
+});
+import {
+  LMap,
+  LTileLayer,
+  LMarker,
+  LPopup,
+  LTooltip,
+  LIcon
+} from "vue2-leaflet";
 
 export default {
   name: "map",
@@ -87,9 +104,15 @@ export default {
   mounted() {
     this.$nextTick(() => {
       let bounds = this.$refs.map.mapObject.getBounds();
-      console.log(bounds);
       this.$store.dispatch("getPointsWithinRegion", bounds);
     });
+  },
+  computed: {
+    points() {
+      console.log("Points: ");
+      console.log(this.$store.state.points);
+      return this.$store.state.points;
+    }
   }
 };
 </script>
