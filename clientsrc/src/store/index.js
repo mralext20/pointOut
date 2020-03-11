@@ -17,11 +17,15 @@ let api = Axios.create({
 
 export default new Vuex.Store({
   state: {
-    profile: {}
+    profile: {},
+    points: []
   },
   mutations: {
     setProfile(state, profile) {
       state.profile = profile;
+    },
+    setPoints(state, points) {
+      state.points = points
     }
   },
   actions: {
@@ -40,6 +44,7 @@ export default new Vuex.Store({
           x2: _northEast.lng,
           y2: _northEast.lat
         }
+
       })
     },
     async getProfile({ commit }) {
