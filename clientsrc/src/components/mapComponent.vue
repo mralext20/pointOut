@@ -1,6 +1,5 @@
 <template>
   <div class="map-area">
-    <div style="height: 200px overflow: auto;"></div>
     <l-map
       v-if="showMap"
       ref="map"
@@ -68,7 +67,9 @@ export default {
       mapOptions: {
         zoomSnap: 0,
         zoomControl: false,
-        dragging: false
+        dragging: false,
+        scrollWheelZoom: false,
+        doubleClickZoom: false
       },
       showMap: true
     };
@@ -103,10 +104,19 @@ export default {
 
 
 <style scoped>
-.map-area {
-  height: 23.5rem;
-  width: 100vw;
-  margin-bottom: 0;
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+  .map-area {
+    height: 25rem;
+    width: 100vw;
+  }
+}
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .map-area {
+    height: 60rem;
+    width: 90vw;
+  }
 }
 
 .map-component {
