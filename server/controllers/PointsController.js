@@ -1,6 +1,7 @@
 import express from "express";
 import BaseController from "../utils/BaseController";
 import { pointService } from "../services/PointsService";
+import { visitsService } from "../services/VisitsService"
 import auth0Provider from "@bcwdev/auth0provider";
 
 export class PointsController extends BaseController {
@@ -8,7 +9,9 @@ export class PointsController extends BaseController {
     super("api/points");
     this.router
       .get("", this.getAll)
+      .get("/:id/visits", this.getVisitsByPointId)
       .get("/:id", this.getById)
+
       // NOTE: Beyond this point all routes require Authorization tokens (the user must be logged in)
       .use(auth0Provider.getAuthorizedUserInfo)
       .post("", this.create)
@@ -35,6 +38,16 @@ export class PointsController extends BaseController {
       }
       res.send(data)
     } catch (error) {
+      next(error);
+    }
+  }
+  async getVisitsByPointId(req, res, next) {
+    try {
+
+      let data = await visitsService.getVisitsByPointId(req.params.id)
+      return res.send({ visits: data })
+    }
+    catch (error) {
       next(error);
     }
   }
@@ -68,7 +81,7 @@ export class PointsController extends BaseController {
   async delete(req, res, next) {
     try {
       await pointService.delete(req.params.id, req.userInfo.email)
-      res.send("deleted")
+      res.send("Visit sucessfully deleted.")
     } catch (error) {
       next(error)
     }
