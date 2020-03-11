@@ -1,20 +1,24 @@
 import express from "express";
 import BaseController from "../utils/BaseController";
-import { visitService } from "../services/VisitService";
+import { visitsService } from "../services/VisitsService";
 import auth0Provider from "@bcwdev/auth0provider";
 
-export class VisitController extends BaseController {
+export class VisitsController extends BaseController {
     constructor() {
         super("api/visits");
         this.router
             
             // NOTE: Beyond this point all routes require Authorization tokens (the user must be logged in)
             .use(auth0Provider.getAuthorizedUserInfo)
-            .post("", this.create);
+            .get("", this.getAllVisits)
+            .post("", this.create)
+            .delete("/:id",this.delete)
+
     }
-    async getAll(req, res, next) {
+    async getAllVisits(req, res, next) {
         try {
-            return res.send(["value1", "value2"]);
+            let data = await visitsService.findByUserEmail(req.userInfo.email)
+            return res.send(data);
         } catch (error) {
             next(error);
         }
@@ -27,5 +31,18 @@ export class VisitController extends BaseController {
         } catch (error) {
             next(error);
         }
+    }
+
+    async delete(req,res,next){
+
+        try{
+
+            await visitsService.removeVisit(req.userInfo.email,req.params.id)
+
+        }
+        catch{
+
+        }
+
     }
 }

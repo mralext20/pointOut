@@ -75,7 +75,7 @@ export class PointsController extends BaseController {
   async delete(req, res, next) {
     try {
       await pointService.delete(req.params.id, req.userInfo.email)
-      res.send("deleted")
+      res.send("Visit sucessfully deleted.")
     } catch (error) {
       next(error)
     }

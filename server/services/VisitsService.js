@@ -1,7 +1,8 @@
 import { dbContext } from "../db/DbContext";
 import { BadRequest } from "../utils/Errors";
 
-class VisitService {
+class VisitsService {
+
   async getVisitsByPointId(pointId) {
     const data = await dbContext.visit.find({ pointId })
     return data.length
@@ -21,6 +22,14 @@ class VisitService {
       throw new BadRequest("You haven't visited that point")
     }
   }
+
+  async delete(creatorEmail,pointId){
+    let data = await dbContext.Visits.findOneAndRemove(creatorEmail,pointId)
+    if(!data)
+    {
+      throw new BadRequest("This locatiosn was never visited")
+    }
+  }
 }
 
-export const visitService = new VisitService();
+export const visitsService = new VisitsService();
