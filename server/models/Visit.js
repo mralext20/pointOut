@@ -12,4 +12,6 @@ const Visit = new Schema(
 
 Visit.index({ creatorEmail: 1, pointId: 1 }, { unique: true })
 
+// https://stackoverflow.com/a/49420511/3236881 unique many columms
+
 export default Visit;
