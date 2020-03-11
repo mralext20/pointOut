@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto+Slab&display=swap);
+$font-family: 'Roboto Slab', serif;
 $body-bg: #f9f7f7;
 $primary: #3f72af;
 $secondary: #dbe2ef;
@@ -35,4 +37,9 @@ $colors: (
 "white": $white,
 "gray": $gray,
 "gray-dark": $gray-dark
-) !default;
+)
+!default;
+.app {
+  font-family: Roboto Slab, serif;
+  min-height: 100vh;
+}
