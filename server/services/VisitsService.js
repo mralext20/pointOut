@@ -2,7 +2,7 @@ import { dbContext } from "../db/DbContext";
 import { BadRequest } from "../utils/Errors";
 
 class VisitService {
-  async findByPointId(pointId) {
+  async getVisitsByPointId(pointId) {
     const data = await dbContext.visit.find({ pointId })
     return data.length
   }

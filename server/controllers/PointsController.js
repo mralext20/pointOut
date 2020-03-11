@@ -8,6 +8,7 @@ export class PointsController extends BaseController {
     super("api/points");
     this.router
       .get("", this.getAll)
+      .get("/:id/visits",this.getVisitsByPointId)
       // NOTE: Beyond this point all routes require Authorization tokens (the user must be logged in)
       .use(auth0Provider.getAuthorizedUserInfo)
       .post("", this.create)
@@ -36,6 +37,21 @@ export class PointsController extends BaseController {
     } catch (error) {
       next(error);
     }
+  }
+
+  async getVisitsByPointId(req,res,next){
+    try{
+
+      let data = await visitService.getVisitsByPointId(req.params.id)
+      return res.send(data)
+    }
+    catch (error)
+    {
+        next(error);
+    }
+
+
+
   }
   async create(req, res, next) {
     try {
