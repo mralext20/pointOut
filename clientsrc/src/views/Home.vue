@@ -7,7 +7,7 @@
           class="landing-pTag text-center"
         >This app will change your life! Have you ever lost your secret tree fort? Have you ever lost your house?</p>
         <div class="btn btn-primary mb-4">Sign Up Now</div>
-        <img class="img-fluid" src="../assets/landing-page-dummy-map.png" />
+        <map-component />
       </div>
     </div>
   </div>
