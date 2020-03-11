@@ -79,6 +79,18 @@ uses query params to request points within a region.
 |:--------------------------:|:------------------:|:--------------------:|:--------------------:|
 | longitude of corner number 1 | latitude of corner number 1 | longitude of corner number 2 | latitude of corner number 2  |
 
+### [GET] /:id/visits
+
+returns a object containing the count of times that point has been visited.
+
+example responce:
+
+```json
+{
+    "visits": 1
+}
+```
+
 ### [POST] /
 
 creates a new point. requires bearrer token auth.
@@ -106,11 +118,10 @@ creates a new point. requires bearrer token auth.
   "description": "Description of new point",
   "location": {
     "coordinates": [
-      Longitude of new point,
-      Latitude of new point
+      "Longitude",
+      "Latitude"
     ]
     }
-
 }
 ```
 
@@ -125,3 +136,66 @@ Like [post], but you specific changed feilds. returns the entire new object.
 ### [DELETE] /:id
 
 deleted a point. requires that you own the point.
+
+## /visits
+
+### [GET] /
+
+requires Auth.
+returns where you have visited.
+
+example responce:
+
+```json
+[
+    {
+        "_id": "5e691a789150f03b12931160",
+        "pointId": "5e6815ecf769aa7f4895ea6b",
+        "creatorEmail": "...",
+        "createdAt": "2020-03-11T17:06:00.280Z",
+        "updatedAt": "2020-03-11T17:06:00.280Z",
+        "__v": 0,
+        "id": "5e691a789150f03b12931160"
+    },
+    {
+        "_id": "5e691a9e9150f03b12931162",
+        "pointId": "5e685f33449526bac1eb0dc4",
+        "creatorEmail": "...",
+        "createdAt": "2020-03-11T17:06:38.848Z",
+        "updatedAt": "2020-03-11T17:06:38.848Z",
+        "__v": 0,
+        "id": "5e691a9e9150f03b12931162"
+    }
+]
+```
+
+### [POST] /
+
+create a visit. 
+
+#### Example Request Body: 
+
+```json
+{
+    "pointId":"5e685f33449526bac1eb0dc4"
+}
+```
+
+#### Example Responce:
+
+```json
+{
+    "_id": "5e691c889150f03b12931163",
+    "pointId": "5e685f01449526bac1eb0dc2",
+    "creatorEmail": "...",
+    "createdAt": "2020-03-11T17:14:48.977Z",
+    "updatedAt": "2020-03-11T17:14:48.977Z",
+    "__v": 0,
+    "id": "5e691c889150f03b12931163"
+}
+```
+
+### [DELETE] /:id
+
+the id of the point that you want to unvisit.
+requires auth.
