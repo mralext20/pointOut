@@ -7,7 +7,7 @@
           class="landing-pTag text-center"
         >This app will change your life! Have you ever lost your secret tree fort? Have you ever lost your house?</p>
         <div v-if="!$auth.isAuthenticated" @click="login" class="btn btn-primary mb-4">Sign Up Now</div>
-        <map-component />
+        <map-component :interactable="false" />
       </div>
     </div>
   </div>

@@ -44,6 +44,7 @@ import {
 
 export default {
   name: "jMap",
+  props: ["interactable"],
   components: {
     LMap,
     LTileLayer,
@@ -53,8 +54,8 @@ export default {
   },
   data() {
     return {
-      zoom: 10,
-      center: latLng(43.615, -116.2023),
+      zoom: 14,
+      center: latLng(43.591, -116.27948),
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -65,11 +66,11 @@ export default {
       showParagraph: false,
       map: LMap,
       mapOptions: {
-        zoomSnap: 0,
-        zoomControl: false,
-        dragging: false,
-        scrollWheelZoom: false,
-        doubleClickZoom: false
+        zoomSnap: 1.5,
+        zoomControl: this.interactable,
+        dragging: this.interactable,
+        scrollWheelZoom: this.interactable,
+        doubleClickZoom: this.interactable
       },
       showMap: true
     };
@@ -80,10 +81,6 @@ export default {
     },
     centerUpdate(center) {
       this.currentCenter = center;
-    },
-    innerClick() {
-      alert("HELP HELP!! I've been clicked!");
-      console.log(this.map);
     }
   },
   mounted() {
@@ -94,8 +91,6 @@ export default {
   },
   computed: {
     points() {
-      console.log("Points: ");
-      console.log(this.$store.state.points);
       return this.$store.state.points;
     }
   }
