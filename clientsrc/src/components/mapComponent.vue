@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 500px; width: 100%" id="map-id">
+  <div class="map-area">
     <div style="height: 200px overflow: auto;"></div>
     <l-map
       v-if="showMap"
@@ -8,8 +8,6 @@
       :center="center"
       :options="mapOptions"
       style="height: 80%"
-      @update:center="centerUpdate"
-      @update:zoom="zoomUpdate"
     >
       <l-tile-layer :url="url" :attribution="attribution" />
       <l-marker
@@ -18,32 +16,16 @@
         :lat-lng="[point.location.coordinates[1], point.location.coordinates[0]]"
       >
         <l-popup>
-          <div @click="innerClick">
-            I am a popup
-            <p v-show="showParagraph">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-              sed pretium nisl, ut sagittis sapien. Sed vel sollicitudin nisi.
-              Donec finibus semper metus id malesuada.
-            </p>
+          <div @click="showParagraph = !showParagraph">
+            <h4>{{point.title}}</h4>
+            <p v-show="showParagraph">{{point.description}}</p>
           </div>
         </l-popup>
-      </l-marker>
-      <l-marker :lat-lng="withTooltip">
-        <l-tooltip :options="{ permanent: true, interactive: true }">
-          <div @click="innerClick">
-            I am a tooltip
-            <p v-show="showParagraph">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
-              sed pretium nisl, ut sagittis sapien. Sed vel sollicitudin nisi.
-              Donec finibus semper metus id malesuada.
-            </p>
-          </div>
-        </l-tooltip>
       </l-marker>
     </l-map>
   </div>
 </template>
-
+  
 <script>
 import { latLng, Icon } from "leaflet";
 delete Icon.Default.prototype._getIconUrl;
@@ -62,7 +44,7 @@ import {
 } from "vue2-leaflet";
 
 export default {
-  name: "map",
+  name: "jMap",
   components: {
     LMap,
     LTileLayer,
@@ -84,7 +66,9 @@ export default {
       showParagraph: false,
       map: LMap,
       mapOptions: {
-        zoomSnap: 0.5
+        zoomSnap: 0,
+        zoomControl: false,
+        dragging: false
       },
       showMap: true
     };
@@ -97,7 +81,7 @@ export default {
       this.currentCenter = center;
     },
     innerClick() {
-      alert("Click!");
+      alert("HELP HELP!! I've been clicked!");
       console.log(this.map);
     }
   },
@@ -119,6 +103,12 @@ export default {
 
 
 <style scoped>
+.map-area {
+  height: 23.5rem;
+  width: 100vw;
+  margin-bottom: 0;
+}
+
 .map-component {
   height: 100%;
 }
