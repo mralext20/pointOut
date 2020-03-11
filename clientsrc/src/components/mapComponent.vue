@@ -1,8 +1,9 @@
 <template>
-  <div style="height: 500px; width: 100%">
+  <div style="height: 500px; width: 100%" id="map-id">
     <div style="height: 200px overflow: auto;"></div>
     <l-map
       v-if="showMap"
+      ref="map"
       :zoom="zoom"
       :center="center"
       :options="mapOptions"
@@ -64,6 +65,7 @@ export default {
       currentZoom: 11.5,
       currentCenter: latLng(43.615, -116.2023),
       showParagraph: false,
+      map: LMap,
       mapOptions: {
         zoomSnap: 0.5
       },
@@ -79,11 +81,10 @@ export default {
     },
     innerClick() {
       alert("Click!");
+      console.log(this.map);
     }
   },
-  mounted() {
-    console.log("helo");
-  }
+  mounted() {}
 };
 </script>
 
