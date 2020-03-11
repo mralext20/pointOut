@@ -6,7 +6,7 @@
 
 returns all points.
 
-#### example get all responce
+#### Example Responce
 
 ```json
 [
@@ -59,7 +59,7 @@ returns all points.
 
 uses query params to request points within a radius of a point.
 
-#### example radius request
+#### Example Request
 
 `points?type=radius&longitude=-116.2742493&latitude=43.5920892&radius=1`
 |           radius           |      latitude      |      longitude       |
@@ -72,7 +72,7 @@ example return matches above get all.
 
 uses query params to request points within a region.
 
-#### example region request
+#### Example Request
 
 `points?type=region&x1=-116.3798011&y1=43.6364671&x2=-116&y2=43`
 |      x1                       |              y1       | x2 | y2|
@@ -95,7 +95,7 @@ example responce:
 
 creates a new point. requires bearrer token auth.
 
-#### example post request
+#### Example Request
 
 ```json
 {
@@ -110,7 +110,7 @@ creates a new point. requires bearrer token auth.
 }
 ```
 
-#### described post request
+#### Described Request
 
 ```json
 {
@@ -125,7 +125,7 @@ creates a new point. requires bearrer token auth.
 }
 ```
 
-#### responce
+#### Responce
 
 a single object from the get all representing the newly created object.
 
@@ -171,9 +171,9 @@ example responce:
 
 ### [POST] /
 
-create a visit. 
+create a visit.
 
-#### Example Request Body: 
+#### Example Request Body
 
 ```json
 {
@@ -181,7 +181,7 @@ create a visit.
 }
 ```
 
-#### Example Responce:
+#### Example Responce
 
 ```json
 {
