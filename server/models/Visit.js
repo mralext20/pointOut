@@ -4,8 +4,8 @@ const ObjectId = Schema.Types.ObjectId
 
 const Visit = new Schema(
   {
-    creatorEmail: { type: String, required: true, unique: true },
-    pointId: { type: ObjectId, ref: "Point", required: true, unique: true }
+    creatorEmail: { type: String, required: true },
+    pointId: { type: ObjectId, ref: "Point", required: true }
   },
   { timestamps: true, toJSON: { virtuals: true } }
 );

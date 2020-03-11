@@ -13,6 +13,7 @@ class VisitsService {
   }
 
   async createVisit(rawData) {
+
     const data = await dbContext.visit.create(rawData)
     return data
   }

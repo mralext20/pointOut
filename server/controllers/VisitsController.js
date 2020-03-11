@@ -27,8 +27,8 @@ export class VisitsController extends BaseController {
     try {
       // NOTE NEVER TRUST THE CLIENT TO ADD THE CREATOR ID
       req.body.creatorEmail = req.userInfo.email;
-      visitsService.createVisit(req.body)
-      res.send(req.body);
+      const data = await visitsService.createVisit(req.body)
+      res.send(data);
     } catch (error) {
       next(error);
     }
