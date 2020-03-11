@@ -32,7 +32,6 @@ export default new Vuex.Store({
       api.defaults.headers.authorization = "";
     },
     async getPointsWithinRegion({ commit }, { _southWest, _northEast }) {
-      debugger;
       let points = await api.get("points", {
         params: {
           type: "region",
