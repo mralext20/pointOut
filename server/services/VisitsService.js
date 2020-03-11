@@ -12,8 +12,8 @@ class VisitsService {
     return data
   }
 
-  async createVisit(creatorEmail, pointId) {
-    const data = await dbContext.visit.create({ creatorEmail, pointId })
+  async createVisit(rawData) {
+    const data = await dbContext.visit.create(rawData)
     return data
   }
   async removeVisit(creatorEmail, pointId) {
@@ -23,10 +23,9 @@ class VisitsService {
     }
   }
 
-  async delete(creatorEmail,pointId){
-    let data = await dbContext.Visits.findOneAndRemove(creatorEmail,pointId)
-    if(!data)
-    {
+  async delete(creatorEmail, pointId) {
+    let data = await dbContext.Visits.findOneAndRemove(creatorEmail, pointId)
+    if (!data) {
       throw new BadRequest("This locatiosn was never visited")
     }
   }
