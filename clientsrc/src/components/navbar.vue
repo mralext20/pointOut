@@ -44,19 +44,20 @@
 <script>
 import axios from "axios";
 import { getUserData } from "@bcwdev/auth0-vue";
+import NotificationService from "../NotificationService.js";
 export default {
   name: "Navbar",
   methods: {
     async login() {
       await this.$auth.loginWithPopup();
       this.$store.dispatch("setBearer", this.$auth.bearer);
-      console.log("this.$auth.user: ");
-      console.log(this.$auth.user);
       this.$store.dispatch("getProfile");
+      NotificationService.toast("Logged In");
     },
     async logout() {
       this.$store.dispatch("resetBearer");
       await this.$auth.logout({ returnTo: window.location.origin });
+      NotificationService.toast("Logged Out");
     }
   }
 };

@@ -1,8 +1,9 @@
 <template>
-  <div style="height: 500px; width: 100%">
+  <div style="height: 500px; width: 100%" id="map-id">
     <div style="height: 200px overflow: auto;"></div>
     <l-map
       v-if="showMap"
+      ref="map"
       :zoom="zoom"
       :center="center"
       :options="mapOptions"
@@ -54,16 +55,17 @@ export default {
   },
   data() {
     return {
-      zoom: 13,
+      zoom: 10,
       center: latLng(43.615, -116.2023),
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       withPopup: latLng(43.615, -116.2023),
       withTooltip: latLng(43.615, -116.2023),
-      currentZoom: 11.5,
+      currentZoom: 10,
       currentCenter: latLng(43.615, -116.2023),
       showParagraph: false,
+      map: LMap,
       mapOptions: {
         zoomSnap: 0.5
       },
@@ -79,10 +81,15 @@ export default {
     },
     innerClick() {
       alert("Click!");
+      console.log(this.map);
     }
   },
   mounted() {
-    console.log("helo");
+    this.$nextTick(() => {
+      let bounds = this.$refs.map.mapObject.getBounds();
+      console.log(bounds);
+      this.$store.dispatch("getPointsWithinRegion", bounds);
+    });
   }
 };
 </script>
