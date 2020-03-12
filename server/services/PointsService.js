@@ -2,8 +2,7 @@ import { dbContext } from "../db/DbContext";
 import { BadRequest } from "../utils/Errors";
 
 class PointService {
-  async findAll(query = {}) {
-    query.public = true
+  async findAll(query = { public: true }) {
     let data = await dbContext.Point.find(query).populate(
       "creator",
       "name picture"

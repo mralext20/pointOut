@@ -4,6 +4,7 @@ import { groupService } from "../services/GroupService";
 import { visitsService } from "../services/VisitsService";
 import { votesService } from "../services/VotesService"
 import auth0Provider from "@bcwdev/auth0provider";
+import { pointService } from "../services/PointsService";
 
 export class GroupsController extends BaseController {
   constructor() {
@@ -16,6 +17,7 @@ export class GroupsController extends BaseController {
       .get("/:id/members", this.getMembersByGroupId)
       .post("/:id/members", this.addMember)
       .get("/:id", this.getById)
+      .get("/:id/points", this.getGroupPoints)
       .post("", this.create)
       .put("/:id", this.edit)
 
@@ -40,6 +42,14 @@ export class GroupsController extends BaseController {
     try {
       let data = await groupService.findById(req.params.id, req.userInfo.email)
       return res.send(data)
+    } catch (error) {
+      next(error)
+    }
+  }
+  async getGroupPoints(req, res, next) {
+    try {
+      let data = await pointService.findAll({ groupId: req.params.id })
+      res.send(data)
     } catch (error) {
       next(error)
     }
