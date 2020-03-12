@@ -28,7 +28,6 @@ export default new Vuex.Store({
       state.points = points.data
     },
     addPoint(state, point) {
-      debugger
       state.points.push(point)
     }
   },

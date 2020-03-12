@@ -142,13 +142,12 @@ export default {
     },
     addPoint(event) {
       this.showMarker = true;
-      this.newPoint.location.coordinates[0] = event.latlng.lat;
-      this.newPoint.location.coordinates[1] = event.latlng.lng;
+      this.newPoint.location.coordinates[1] = event.latlng.lat;
+      this.newPoint.location.coordinates[0] = event.latlng.lng;
       this.newPoint.lat = event.latlng.lat;
       this.newPoint.lng = event.latlng.lng;
     },
     createNewPoint() {
-      debugger;
       this.$store.dispatch("createNewPoint", this.newPoint);
       this.newPoint = {
         title: "",

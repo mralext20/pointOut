@@ -17,7 +17,7 @@
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item" :class="{ active: $route.name == 'Home' }">
-          <router-link :to="{ name: 'Home' }" class="nav-link">Home</router-link>
+          <router-link :to="{ name: 'Home' }" class="nav-link navbar-brand">PointOut</router-link>
         </li>
         <li class="nav-item" :class="{ active: $route.name == 'Groups' }">
           <router-link :to="{ name: 'Groups' }" class="nav-link">Groups</router-link>
