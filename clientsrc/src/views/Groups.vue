@@ -1,5 +1,5 @@
 <template>
-  <h1>BigMap</h1>
+  <h1>Groups Page</h1>
 </template>
 
 <script>
