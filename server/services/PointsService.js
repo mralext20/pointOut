@@ -3,12 +3,18 @@ import { BadRequest } from "../utils/Errors";
 
 class PointService {
   async findAll(query = {}) {
+    query.public = true
     let data = await dbContext.Point.find(query).populate(
       "creator",
       "name picture"
     );
     return data;
   }
+
+  async findByOwnerEmail(creatorEmail) {
+    return await dbContext.Point.find({ creatorEmail })
+  }
+
   async findWithinRegion(x1, y1, x2, y2) {
     const region = {
       type: "Polygon",
