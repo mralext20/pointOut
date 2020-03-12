@@ -23,7 +23,7 @@ class GroupService {
     return group
   }
   async edit(id, creator, group) {
-    let newGroup = await dbContext.Group.updateOne({ _id: id, creatorEmail: creator },
+    let newGroup = await dbContext.Group.findOneAndUpdate({ _id: id, creatorEmail: creator },
       group,
       { new: true })
 
@@ -65,6 +65,17 @@ class GroupService {
     }
     let members = await dbContext.GroupMembers.find({ groupId: groupId })
     return members;
+  }
+  async removeMember(groupId, TargetEmail, UserEmail) {
+    if (TargetEmail == UserEmail) {
+      return await dbContext.GroupMembers.findOneAndDelete({ groupId, memberEmail: TargetEmail })
+    } else {
+      let group = await dbContext.Group.findById(groupId)
+      if (group.creatorEmail == UserEmail) {
+        return await dbContext.GroupMembers.findOneAndDelete({ groupId, memberEmail: TargetEmail })
+      }
+      throw new BadRequest("you do not own that group or you are not that user")
+    }
   }
 }
 

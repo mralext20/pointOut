@@ -20,6 +20,7 @@ export class GroupsController extends BaseController {
       .get("/:id/points", this.getGroupPoints)
       .post("", this.create)
       .put("/:id", this.edit)
+      .delete("/:id/members/:email", this.removeMember)
 
   }
   async getAllPublicGroups(req, res, next) {
@@ -72,6 +73,15 @@ export class GroupsController extends BaseController {
       res.send(data);
     } catch (error) {
       next(error);
+    }
+  }
+
+  async removeMember(req, res, next) {
+    try {
+      await groupService.removeMember(req.params.id, req.params.email, req.userInfo.email)
+      res.send("removed!")
+    } catch (error) {
+      next(error)
     }
   }
   async edit(req, res, next) {
