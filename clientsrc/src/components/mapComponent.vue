@@ -102,7 +102,7 @@ export default {
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .map-area {
-    height: 25rem;
+    height: 100vh;
     width: 100vw;
   }
 }
@@ -110,7 +110,7 @@ export default {
 @media only screen and (min-width: 992px) {
   .map-area {
     height: 60rem;
-    width: 90vw;
+    width: 100%;
   }
 }
 
