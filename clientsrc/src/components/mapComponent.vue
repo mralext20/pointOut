@@ -1,6 +1,8 @@
 <template>
   <div class="map-area">
+    <div v-if="showMarker">create</div>
     <l-map
+      @click="addPoint"
       v-if="showMap"
       ref="map"
       :zoom="zoom"
@@ -21,11 +23,23 @@
           </div>
         </l-popup>
       </l-marker>
+      <l-marker
+        :icon="newPointIcon"
+        v-if="showMarker && $auth.isAuthenticated"
+        :lat-lng="[newPoint.lat, newPoint.lng]"
+      >
+        <l-tooltip :options="{ permanent: true, interactive: true }">
+          <div
+            @click.stop="createNewPoint"
+          >Hello Bradley! This div will be easier to target when there is more data inside it</div>
+        </l-tooltip>
+      </l-marker>
     </l-map>
   </div>
 </template>
   
 <script>
+import { getUserData } from "@bcwdev/auth0-vue";
 import { latLng, Icon } from "leaflet";
 delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({
@@ -33,6 +47,7 @@ Icon.Default.mergeOptions({
   iconUrl: require("leaflet/dist/images/marker-icon.png"),
   shadowUrl: require("leaflet/dist/images/marker-shadow.png")
 });
+
 import {
   LMap,
   LTileLayer,
@@ -54,6 +69,11 @@ export default {
   },
   data() {
     return {
+      newPoint: {
+        lat: 0,
+        lng: 0
+      },
+      showMarker: false,
       zoom: 14,
       center: latLng(43.591, -116.27948),
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
@@ -72,7 +92,10 @@ export default {
         scrollWheelZoom: this.interactable,
         doubleClickZoom: this.interactable
       },
-      showMap: true
+      showMap: true,
+      newPopup: {
+        latlng: [43.615, -116.1523]
+      }
     };
   },
   methods: {
@@ -81,6 +104,14 @@ export default {
     },
     centerUpdate(center) {
       this.currentCenter = center;
+    },
+    addPoint(event) {
+      this.showMarker = true;
+      this.newPoint = event.latlng;
+    },
+    createNewPoint() {
+      console.log("point");
+      console.log(this.newPoint);
     }
   },
   mounted() {
@@ -90,6 +121,16 @@ export default {
     });
   },
   computed: {
+    newPointIcon() {
+      return L.icon({
+        iconUrl: require("../assets/red-pin.png"),
+        shadowUrl: require("leaflet/dist/images/marker-shadow.png"),
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        tooltipAnchor: [16, -28],
+        shadowSize: [41, 41]
+      });
+    },
     points() {
       return this.$store.state.points;
     }
