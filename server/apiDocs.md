@@ -79,6 +79,33 @@ uses query params to request points within a region.
 |:--------------------------:|:------------------:|:--------------------:|:--------------------:|
 | longitude of corner number 1 | latitude of corner number 1 | longitude of corner number 2 | latitude of corner number 2  |
 
+### [GET] /:id
+
+returns a point by ID.
+
+example responce:
+
+```json
+{
+    "description": "a chain supermarket",
+    "_id": "5e6815ecf769aa7f4895ea6b",
+    "title": "walmart near codeworks",
+    "location": {
+        "type": "Point",
+        "coordinates": [
+            -116.2848661,
+            43.5929343
+        ],
+        "_id": "5e6815ecf769aa7f4895ea6c"
+    },
+    "creatorEmail": "...",
+    "createdAt": "2020-03-10T22:34:20.122Z",
+    "updatedAt": "2020-03-10T22:34:20.122Z",
+    "__v": 0,
+    "id": "5e6815ecf769aa7f4895ea6b"
+}
+```
+
 ### [GET] /:id/visits
 
 returns a object containing the count of times that point has been visited.
@@ -88,6 +115,19 @@ example responce:
 ```json
 {
     "visits": 1
+}
+```
+
+### [GET] /:id/votes
+
+returns a object containing the average Votes and count of votes.
+
+example responce:
+
+```json
+{
+    "vote": 4.5,
+    "voteCount": 3
 }
 ```
 
@@ -199,3 +239,71 @@ create a visit.
 
 the id of the point that you want to unvisit.
 requires auth.
+
+## /votes
+
+### [GET] /
+
+requires Auth.
+returns where you have voted.
+
+example responce:
+
+```json
+[
+    {
+        "_id": "5e69acd1242b20438facc539",
+        "vote": 5,
+        "pointId": "5e6815ecf769aa7f4895ea6b",
+        "creatorEmail": "...",
+        "createdAt": "2020-03-12T03:30:25.788Z",
+        "updatedAt": "2020-03-12T03:30:25.788Z",
+        "__v": 0,
+        "id": "5e69acd1242b20438facc539"
+    },
+    {
+        "_id": "5e69ac8b242b20438facc532",
+        "vote": 5,
+        "pointId": "5e685f33449526bac1eb0dc4",
+        "creatorEmail": "...",
+        "createdAt": "2020-03-12T03:29:15.626Z",
+        "updatedAt": "2020-03-12T03:29:15.626Z",
+        "__v": 0,
+        "id": "5e69ac8b242b20438facc532"
+    }
+]
+```
+
+### [POST] /
+
+create a new Vote.
+
+requires your vote be between 1-5, inclusive.
+
+example request:
+
+```json
+{
+  "vote": 5,
+  "pointId": "5e6815ecf769aa7f4895ea6b"
+}
+```
+
+example responce:
+
+```json
+{
+    "_id": "5e69adc5242b20438facc53b",
+    "vote": 5,
+    "pointId": "5e691ff4185407a734bc42dc",
+    "creatorEmail": "...",
+    "createdAt": "2020-03-12T03:34:29.705Z",
+    "updatedAt": "2020-03-12T03:34:29.705Z",
+    "__v": 0,
+    "id": "5e69adc5242b20438facc53b"
+}
+```
+
+### [DELETE] /:id
+
+delete your vote by place Id.
