@@ -13,6 +13,7 @@ returns all points.
     {
         "description": "a chain supermarket",
         "_id": "5e6815ecf769aa7f4895ea6b",
+        "public": true,
         "title": "walmart near codeworks",
         "location": {
             "type": "Point",
@@ -35,6 +36,7 @@ returns all points.
         "description": "a chain home improvement store",
         "_id": "5e681697f769aa7f4895ea6d",
         "title": "Lowes",
+        "public": true,
         "location": {
             "type": "Point",
             "coordinates": [
@@ -89,6 +91,7 @@ example responce:
 {
     "description": "a chain supermarket",
     "_id": "5e6815ecf769aa7f4895ea6b",
+    "public": true,
     "title": "walmart near codeworks",
     "location": {
         "type": "Point",
@@ -146,7 +149,8 @@ creates a new point. requires bearrer token auth.
       -116.2820787,
       43.59224606
     ]
-    }
+    },
+    "public" : true
 }
 ```
 
@@ -161,7 +165,8 @@ creates a new point. requires bearrer token auth.
       "Longitude",
       "Latitude"
     ]
-    }
+    },
+    "public": "public_or_private_Point"
 }
 ```
 
@@ -307,3 +312,9 @@ example responce:
 ### [DELETE] /:id
 
 delete your vote by place Id.
+
+## /profile
+
+### [GET] /points
+
+return all your points, even private ones. matches return of [GET] /points/
