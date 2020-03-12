@@ -23,6 +23,7 @@ const Point = new Schema(
     creatorEmail: { type: String, required: true },
     image: { type: String },
     // GroupId: { type: ObjectId, ref: "group" },
+    public: { type: Boolean, default: true, required: true },
     location: {
       type: pointSchema,
       required: true
