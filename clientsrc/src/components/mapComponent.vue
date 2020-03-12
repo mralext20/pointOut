@@ -29,9 +29,26 @@
         :lat-lng="[newPoint.lat, newPoint.lng]"
       >
         <l-tooltip :options="{ permanent: true, interactive: true }">
-          <div
-            @click.stop="createNewPoint"
-          >Hello Bradley! This div will be easier to target when there is more data inside it</div>
+          <div @click.stop="createNewPoint">
+            <form>
+              <div class="form-group my-1">
+                <input class="form-control form-control-sm" type="text" placeholder="Title..." />
+              </div>
+              <div class="form-group m-0">
+                <input
+                  class="form-control form-control-sm"
+                  type="text"
+                  placeholder="Description..."
+                />
+              </div>
+              <div class="form-group my-1">
+                <input class="form-control form-control-sm" type="text" placeholder="Image" />
+              </div>
+              <div class="form-group">
+                <input type="file" class="form-control-file" id="exampleFormControlFile1" />
+              </div>
+            </form>
+          </div>
         </l-tooltip>
       </l-marker>
     </l-map>
@@ -153,6 +170,10 @@ export default {
     height: 60rem;
     width: 100%;
   }
+}
+
+.form-group {
+  width: 7rem;
 }
 
 .map-component {
