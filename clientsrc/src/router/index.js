@@ -4,7 +4,9 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 // @ts-ignore
 import Profile from "../views/Profile.vue";
+// @ts-ignore
 import Groups from "../views/Groups.vue";
+// @ts-ignore
 import BigMap from "../views/BigMap.vue";
 import { authGuard } from "@bcwdev/auth0-vue";
 
