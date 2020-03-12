@@ -25,7 +25,7 @@
       </l-marker>
       <l-marker
         :icon="newPointIcon"
-        v-if="showMarker && $auth.isAuthenticated"
+        v-if="showMarker && $auth.isAuthenticated && interactable"
         :lat-lng="[newPoint.lat, newPoint.lng]"
       >
         <l-tooltip :options="{ permanent: true, interactive: true }">
