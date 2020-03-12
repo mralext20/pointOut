@@ -153,6 +153,10 @@ export default {
         title: "",
         description: "",
         public: true,
+        location: {
+          type: "Point",
+          coordinates: [0, 0]
+        },
         lat: 0,
         lng: 0
       };
