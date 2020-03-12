@@ -339,6 +339,30 @@ example response:
 ]
 ```
 
+### [GET] /:id
+
+returns a group, must be public or you are in the group
+
+example response:
+
+```json
+{
+
+}
+```
+
+### [GET] /:id/points
+
+returns a groups points, group must be public or you are in the group
+
+example response:
+
+```json
+[
+    {}
+]
+```
+
 ### [POST] /
 
 example request:
