@@ -14,6 +14,7 @@ export class GroupsController extends BaseController {
       // NOTE: Beyond this point all routes require Authorization tokens (the user must be logged in)
       .use(auth0Provider.getAuthorizedUserInfo)
       .get("/:id/members", this.getMembersByGroupId)
+      .post("/:id/members", this.addMember)
       .get("/:id", this.getById)
       .post("", this.create)
       .put("/:id", this.edit)
@@ -49,6 +50,16 @@ export class GroupsController extends BaseController {
       req.body.creatorEmail = req.userInfo.email;
       const created = await groupService.create(req.body, req.userInfo.email)
       res.send(created);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async addMember(req, res, next) {
+    try {
+      // NOTE NEVER TRUST THE CLIENT TO ADD THE CREATOR ID
+      let data = await groupService.addMember(req.params.id, req.body.memberEmail, req.userInfo.email);
+      res.send(data);
     } catch (error) {
       next(error);
     }

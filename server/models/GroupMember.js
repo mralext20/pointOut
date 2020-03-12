@@ -10,6 +10,13 @@ const GroupMember = new Schema(
   { timestamps: true, toJSON: { virtuals: true } }
 );
 
+GroupMember.virtual("group", {
+  localField: "groupId",
+  ref: "Group",
+  foreignField: "_id",
+  justOne: true
+})
+
 GroupMember.index({ creatorEmail: 1, groupId: 1 }, { unique: true })
 
 // https://stackoverflow.com/a/49420511/3236881 unique many columms

@@ -335,7 +335,24 @@ example response:
 
 ```json
 [
-    {}
+    {
+        "public": true,
+        "_id": "5e6a7840620f1945767918ce",
+        "title": "secret group",
+        "description": "a secret!",
+        "creatorEmail": "...",
+        "createdAt": "2020-03-12T17:58:24.998Z",
+        "updatedAt": "2020-03-12T17:58:24.998Z",
+        "__v": 0,
+        "creator": {
+            "_id": "5e67f76e62207236c3ec2c26",
+            "name": "Alexander Terry",
+            "picture": "https://avatars0.githubusercontent.com/u/4016295?v=4",
+            "email": "...",
+            "id": "5e67f76e62207236c3ec2c26"
+        },
+        "id": "5e6a7840620f1945767918ce"
+    }
 ]
 ```
 
@@ -347,7 +364,22 @@ example response:
 
 ```json
 {
-
+    "public": true,
+    "_id": "5e6a7840620f1945767918ce",
+    "title": "secret group",
+    "description": "a secret!",
+    "creatorEmail": "...",
+    "createdAt": "2020-03-12T17:58:24.998Z",
+    "updatedAt": "2020-03-12T17:58:24.998Z",
+    "__v": 0,
+    "creator": {
+        "_id": "5e67f76e62207236c3ec2c26",
+        "name": "Alexander Terry",
+        "picture": "https://avatars0.githubusercontent.com/u/4016295?v=4",
+        "email": "...",
+        "id": "5e67f76e62207236c3ec2c26"
+    },
+    "id": "5e6a7840620f1945767918ce"
 }
 ```
 

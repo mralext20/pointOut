@@ -1,6 +1,5 @@
 import { dbContext } from "../db/DbContext";
 import { BadRequest } from "../utils/Errors";
-import { Query } from "mongoose";
 
 class GroupService {
   async findAllPublicGroups(query = {}) {
@@ -11,12 +10,17 @@ class GroupService {
     );
     return values;
   }
+  async findMyGroups(memberEmail) {
+    let groups = await dbContext.GroupMembers.find({ memberEmail }).populate("group")
+    return groups
+  }
+
   async findById(id, email) {
-    let group = await dbContext.Group.findById(id);
+    let group = await await dbContext.Group.findById(id).populate("creator", "name picture");
     if (!group.public) {
       await this.getMembers(id, email); // will throw if email is not in group
-      return group
     }
+    return group
   }
   async edit(id, creator, group) {
     let newGroup = await dbContext.Group.updateOne({ _id: id, creatorEmail: creator },
@@ -34,22 +38,22 @@ class GroupService {
     return newGroup;
   }
 
-  async addMember(groupId, NewMember, email) {
+  async addMember(groupId, NewMemberEmail, email) {
     let user = await dbContext.Profile.findOne({
-      email: NewMember
+      email: NewMemberEmail
     })
     if (!user) {
       throw new BadRequest("This user doesn't exist!")
     }
-    let newMember = { memberEmail: NewMember, groupId: groupId }
+    let newMember = { memberEmail: NewMemberEmail, groupId: groupId }
     let group = await dbContext.Group.findById(groupId);
     if (!group.public) {
       if (email != group.creatorEmail) {
         throw new BadRequest("Invalid ID or you don't own that group")
       }
     }
-    dbContext.GroupMembers.create(newMember)
-    return newMember;
+    let data = await dbContext.GroupMembers.create(newMember)
+    return data;
   }
   async getMembers(groupId, email) {
     let group = await dbContext.Group.findById(groupId)
