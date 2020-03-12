@@ -150,7 +150,8 @@ creates a new point. requires bearrer token auth.
       43.59224606
     ]
     },
-    "public" : true
+    "public" : true,
+    "groupId": "abc123"
 }
 ```
 
@@ -166,7 +167,8 @@ creates a new point. requires bearrer token auth.
       "Latitude"
     ]
     },
-    "public": "public_or_private_Point"
+    "public": "public_or_private_Point",
+    "groupId": "abc123"
 }
 ```
 
@@ -318,3 +320,67 @@ delete your vote by place Id.
 ### [GET] /points
 
 return all your points, even private ones. matches return of [GET] /points/
+
+### [GET] /groups
+
+return all your groups, even private ones. matches return of [GET] /groups/
+
+## /groups
+
+### [GET] /
+
+returns public groups
+
+example response:
+
+```json
+[
+    {}
+]
+```
+
+### [POST] /
+
+example request:
+
+```json
+{
+    "title": "rock climbing",
+    "description": "a group for rock climbing",
+    "public": true
+}
+```
+
+example response
+
+```json
+{}
+```
+
+### [PUT] /:id
+
+edit a group. you must be the creator of a group to edit it.
+
+### [GET] /:id/members
+
+returns list of members. only works if the group is public or you are in the group.
+
+```json
+[]
+```
+
+### [POST] /:id/members
+
+add a member to a group. works if you are the owner, or the group is public and you are adding yourself.
+
+request body
+
+```json
+{
+    "memberEmail": "..."
+}
+```
+
+### [DELETE] /:id/members/:email
+
+removes a member from a group by their email. requires the user be you, or you own the group
