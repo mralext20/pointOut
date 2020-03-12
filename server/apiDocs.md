@@ -150,7 +150,8 @@ creates a new point. requires bearrer token auth.
       43.59224606
     ]
     },
-    "public" : true
+    "public" : true,
+    "groupId": "abc123"
 }
 ```
 
@@ -166,7 +167,8 @@ creates a new point. requires bearrer token auth.
       "Latitude"
     ]
     },
-    "public": "public_or_private_Point"
+    "public": "public_or_private_Point",
+    "groupId": "abc123"
 }
 ```
 
@@ -318,3 +320,231 @@ delete your vote by place Id.
 ### [GET] /points
 
 return all your points, even private ones. matches return of [GET] /points/
+
+### [GET] /groups
+
+return all your groups, even private ones.
+
+example response:
+
+```json
+[
+    {
+        "_id": "5e6a9d3fc111837bf43cb50d",
+        "memberEmail": "...",
+        "groupId": "5e6a7840620f1945767918ce",
+        "createdAt": "2020-03-12T20:36:18.703Z",
+        "updatedAt": "2020-03-12T20:36:18.703Z",
+        "__v": 0,
+        "group": {
+            "public": true,
+            "_id": "5e6a7840620f1945767918ce",
+            "title": "secret group",
+            "description": "a secret!",
+            "creatorEmail": "...",
+            "createdAt": "2020-03-12T17:58:24.998Z",
+            "updatedAt": "2020-03-12T17:58:24.998Z",
+            "__v": 0,
+            "id": "5e6a7840620f1945767918ce"
+        },
+        "id": "5e6a9d3fc111837bf43cb50d"
+    },
+    {
+        "_id": "5e6aa3c94f6fbe85cfc11d38",
+        "groupId": "5e6aa3c94f6fbe85cfc11d37",
+        "memberEmail": "...",
+        "createdAt": "2020-03-12T21:04:09.841Z",
+        "updatedAt": "2020-03-12T21:04:09.841Z",
+        "__v": 0,
+        "group": {
+            "public": false,
+            "_id": "5e6aa3c94f6fbe85cfc11d37",
+            "title": "rock climbing",
+            "description": "a group for rock climbing",
+            "creatorEmail": "...",
+            "createdAt": "2020-03-12T21:04:09.775Z",
+            "updatedAt": "2020-03-12T21:22:43.087Z",
+            "__v": 0,
+            "id": "5e6aa3c94f6fbe85cfc11d37"
+        },
+        "id": "5e6aa3c94f6fbe85cfc11d38"
+    }
+]
+```
+
+## /groups
+
+### [GET] /
+
+returns public groups
+
+example response:
+
+```json
+[
+    {
+        "public": true,
+        "_id": "5e6a7840620f1945767918ce",
+        "title": "secret group",
+        "description": "a secret!",
+        "creatorEmail": "...",
+        "createdAt": "2020-03-12T17:58:24.998Z",
+        "updatedAt": "2020-03-12T17:58:24.998Z",
+        "__v": 0,
+        "creator": {
+            "_id": "5e67f76e62207236c3ec2c26",
+            "name": "Alexander Terry",
+            "picture": "https://avatars0.githubusercontent.com/u/4016295?v=4",
+            "email": "...",
+            "id": "5e67f76e62207236c3ec2c26"
+        },
+        "id": "5e6a7840620f1945767918ce"
+    }
+]
+```
+
+### [GET] /:id
+
+returns a group, must be public or you are in the group
+
+example response:
+
+```json
+{
+    "public": true,
+    "_id": "5e6a7840620f1945767918ce",
+    "title": "secret group",
+    "description": "a secret!",
+    "creatorEmail": "...",
+    "createdAt": "2020-03-12T17:58:24.998Z",
+    "updatedAt": "2020-03-12T17:58:24.998Z",
+    "__v": 0,
+    "creator": {
+        "_id": "5e67f76e62207236c3ec2c26",
+        "name": "Alexander Terry",
+        "picture": "https://avatars0.githubusercontent.com/u/4016295?v=4",
+        "email": "...",
+        "id": "5e67f76e62207236c3ec2c26"
+    },
+    "id": "5e6a7840620f1945767918ce"
+}
+```
+
+### [GET] /:id/points
+
+returns a groups points, group must be public or you are in the group
+
+example response:
+
+```json
+[
+    {
+        "description": "a secret!",
+        "public": false,
+        "_id": "5e6a5566fbb255174298400a",
+        "title": "secret place",
+        "location": {
+            "type": "Point",
+            "coordinates": [
+                -1.177857,
+                -8.180695
+            ],
+            "_id": "5e6a5566fbb255174298400b"
+        },
+        "creatorEmail": "...",
+        "createdAt": "2020-03-12T15:29:42.936Z",
+        "updatedAt": "2020-03-12T21:02:17.194Z",
+        "__v": 0,
+        "groupId": "5e6a7840620f1945767918ce",
+        "creator": {
+            "_id": "5e67f76e62207236c3ec2c26",
+            "name": "Alexander Terry",
+            "picture": "https://avatars0.githubusercontent.com/u/4016295?v=4",
+            "email": "...",
+            "id": "5e67f76e62207236c3ec2c26"
+        },
+        "id": "5e6a5566fbb255174298400a"
+    }
+]
+```
+
+### [POST] /
+
+example request:
+
+```json
+{
+    "title": "rock climbing",
+    "description": "a group for rock climbing",
+    "public": true
+}
+```
+
+example response
+
+```json
+{
+    "public": true,
+    "_id": "5e6aa3c94f6fbe85cfc11d37",
+    "title": "rock climbing",
+    "description": "a group for rock climbing",
+    "creatorEmail": "...",
+    "createdAt": "2020-03-12T21:04:09.775Z",
+    "updatedAt": "2020-03-12T21:04:09.775Z",
+    "__v": 0,
+    "id": "5e6aa3c94f6fbe85cfc11d37"
+}
+```
+
+### [PUT] /:id
+
+edit a group. you must be the creator of a group to edit it.
+
+### [GET] /:id/members
+
+returns list of members. only works if the group is public or you are in the group.
+
+```json
+[
+    {
+        "_id": "5e6aa3c94f6fbe85cfc11d38",
+        "groupId": "5e6aa3c94f6fbe85cfc11d37",
+        "memberEmail": "...",
+        "createdAt": "2020-03-12T21:04:09.841Z",
+        "updatedAt": "2020-03-12T21:04:09.841Z",
+        "__v": 0,
+        "id": "5e6aa3c94f6fbe85cfc11d38"
+    }
+]
+```
+
+### [POST] /:id/members
+
+add a member to a group. works if you are the owner, or the group is public and you are adding yourself.
+
+request body
+
+```json
+{
+    "memberEmail": "..."
+}
+```
+
+example return
+
+```json
+
+{
+    "_id": "5e6aa5573c8fdf892142edcf",
+    "memberEmail": "...",
+    "groupId": "5e6aa3c94f6fbe85cfc11d37",
+    "createdAt": "2020-03-12T21:10:47.241Z",
+    "updatedAt": "2020-03-12T21:10:47.241Z",
+    "__v": 0,
+    "id": "5e6aa5573c8fdf892142edcf"
+}
+```
+
+### [DELETE] /:id/members/:email
+
+removes a member from a group by their email. requires the user be you, or you own the group
