@@ -29,24 +29,35 @@
         :lat-lng="[newPoint.lat, newPoint.lng]"
       >
         <l-tooltip :options="{ permanent: true, interactive: true }">
-          <div @click.stop="createNewPoint">
-            <form>
+          <div @click.stop>
+            <form @submit.prevent="createNewPoint">
               <div class="form-group my-1">
-                <input class="form-control form-control-sm" type="text" placeholder="Title..." />
+                <input
+                  class="form-control form-control-sm"
+                  type="text"
+                  placeholder="Title..."
+                  v-model="newPoint.title"
+                />
               </div>
               <div class="form-group m-0">
                 <input
                   class="form-control form-control-sm"
                   type="text"
                   placeholder="Description..."
+                  v-model="newPoint.description"
                 />
               </div>
               <div class="form-group my-1">
-                <input class="form-control form-control-sm" type="text" placeholder="Image" />
+                <div class="form-check">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    @click="newPoint.public = !newPoint.public"
+                  />
+                  <label class="form-check-label" for="gridCheck">Private Point</label>
+                </div>
               </div>
-              <div class="form-group">
-                <input type="file" class="form-control-file" id="exampleFormControlFile1" />
-              </div>
+              <button class="btn btn-sm btn-primary" type="submit">+</button>
             </form>
           </div>
         </l-tooltip>
@@ -87,6 +98,13 @@ export default {
   data() {
     return {
       newPoint: {
+        title: "",
+        description: "",
+        public: true,
+        location: {
+          type: "Point",
+          coordinates: [0, 0]
+        },
         lat: 0,
         lng: 0
       },
@@ -107,7 +125,7 @@ export default {
         zoomControl: this.interactable,
         dragging: this.interactable,
         scrollWheelZoom: this.interactable,
-        doubleClickZoom: this.interactable
+        doubleClickZoom: false
       },
       showMap: true,
       newPopup: {
@@ -124,11 +142,21 @@ export default {
     },
     addPoint(event) {
       this.showMarker = true;
-      this.newPoint = event.latlng;
+      this.newPoint.location.coordinates[0] = event.latlng.lat;
+      this.newPoint.location.coordinates[1] = event.latlng.lng;
+      this.newPoint.lat = event.latlng.lat;
+      this.newPoint.lng = event.latlng.lng;
     },
     createNewPoint() {
-      console.log("point");
-      console.log(this.newPoint);
+      debugger;
+      this.$store.dispatch("createNewPoint", this.newPoint);
+      this.newPoint = {
+        title: "",
+        description: "",
+        public: true,
+        lat: 0,
+        lng: 0
+      };
     }
   },
   mounted() {

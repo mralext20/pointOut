@@ -26,6 +26,10 @@ export default new Vuex.Store({
     },
     setPoints(state, points) {
       state.points = points.data
+    },
+    addPoint(state, point) {
+      debugger
+      state.points.push(point)
     }
   },
   actions: {
@@ -55,6 +59,15 @@ export default new Vuex.Store({
         commit("setProfile", res.data);
       } catch (error) {
         console.error(error);
+      }
+    },
+    async createNewPoint({ commit }, pointData) {
+      try {
+        let res = await api.post("points", pointData)
+        commit("addPoint", res.data)
+
+      } catch (error) {
+        console.error(error)
       }
     }
   }
