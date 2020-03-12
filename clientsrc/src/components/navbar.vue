@@ -22,8 +22,8 @@
         <li class="nav-item" :class="{ active: $route.name == 'Groups' }">
           <router-link :to="{ name: 'Groups' }" class="nav-link">Groups</router-link>
         </li>
-        <li class="nav-item" :class="{ active: $route.name == 'Map' }">
-          <router-link :to="{ name: 'Map' }" class="nav-link">Map</router-link>
+        <li class="nav-item" :class="{ active: $route.name == 'BigMap' }">
+          <router-link :to="{ name: 'BigMap' }" class="nav-link">Map</router-link>
         </li>
         <li
           class="nav-item"

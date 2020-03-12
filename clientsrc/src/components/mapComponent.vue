@@ -43,7 +43,7 @@ import {
 } from "vue2-leaflet";
 
 export default {
-  name: "jMap",
+  name: "map-component",
   props: ["interactable"],
   components: {
     LMap,
