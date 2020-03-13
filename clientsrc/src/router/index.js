@@ -26,8 +26,20 @@ const routes = [
     beforeEnter: authGuard
   },
   {
-    path: "/profile/group",
-    name: "Profile group",
+    path: "/profile/groups",
+    name: "Profile groups",
+    component: Profile,
+    beforeEnter: authGuard
+  },
+  {
+    path: "/profile/points",
+    name: "Profile points",
+    component: Profile,
+    beforeEnter: authGuard
+  },
+  {
+    path: "/profile/visits",
+    name: "Profile visits",
     component: Profile,
     beforeEnter: authGuard
   },

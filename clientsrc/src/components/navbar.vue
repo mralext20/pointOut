@@ -28,7 +28,7 @@
         <li
           class="nav-item"
           v-if="$auth.isAuthenticated"
-          :class="{ active: $route.name == 'Profile' }"
+          :class="{ active: $route.name.startsWith('Profile') }"
         >
           <router-link class="nav-link" :to="{ name: 'Profile' }">Profile</router-link>
         </li>

@@ -38,6 +38,12 @@ export default new Vuex.Store({
     },
     addGroup(state, group) {
       state.publicGroups.push(group)
+    },
+    setYourGroups(state, groups) {
+      state.yourGroups = groups
+    },
+    addYourGroup(state, group) {
+      state.yourGroups.push(group)
     }
   },
   actions: {
@@ -92,7 +98,7 @@ export default new Vuex.Store({
         if (newGroup.public) {
           commit("addGroup", res.data)
         } else {
-          commit("addPrivateGroup", res.data)
+          commit("addYourGroup", res.data)
           if (await NotificationService.confirm("Check out your new group here", 50000)) {
             router.push({ name: "Profile groups" })
           }
