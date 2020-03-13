@@ -42,6 +42,9 @@
                 <small class="text-muted">Created by {{group.creator.name}}</small>
               </p>
             </div>
+            <button v-if="group.creator.email == $auth.userInfo.email" class="btn btn-warning">edit</button>
+            <button v-if="group" class="btn">leave</button>
+            <button v-else class="btn">join</button>
           </div>
         </div>
       </div>
