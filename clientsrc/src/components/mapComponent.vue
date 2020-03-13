@@ -20,6 +20,7 @@
           <div @click="showParagraph = !showParagraph">
             <h4>{{point.title}}</h4>
             <p v-show="showParagraph">{{point.description}}</p>
+            <button class="btn btn-info btn-sm" @click="deletePoint(point.id)">DELETE</button>
           </div>
         </l-popup>
       </l-marker>
@@ -69,6 +70,7 @@
 <script>
 import { getUserData } from "@bcwdev/auth0-vue";
 import { latLng, Icon } from "leaflet";
+import NotificationService from "../NotificationService";
 delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({
   iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
@@ -160,6 +162,17 @@ export default {
         lat: 0,
         lng: 0
       };
+    },
+
+    async deletePoint(pointId) {
+      if (
+        await NotificationService.confirmAction(
+          "Are you sure you want to delete this point?"
+        )
+      ) {
+        this.$store.dispatch("deletePoint", pointId);
+        NotificationService.toast("The point was successfully deleted.");
+      }
     }
   },
   mounted() {

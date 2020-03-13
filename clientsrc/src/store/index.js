@@ -29,6 +29,9 @@ export default new Vuex.Store({
     },
     addPoint(state, point) {
       state.points.push(point)
+    },
+    deletePoint(state, pointId) {
+      state.points = state.points.filter(p => p.id != pointId)
     }
   },
   actions: {
@@ -68,6 +71,18 @@ export default new Vuex.Store({
       } catch (error) {
         console.error(error)
       }
+    },
+
+    async deletePoint({ commit }, pointId) {
+      try {
+
+        let res = await api.delete(`points/${pointId}`)
+        commit("deletePoint", pointId)
+
+      } catch (error) {
+        console.error(error)
+      }
+
     }
   }
 });
