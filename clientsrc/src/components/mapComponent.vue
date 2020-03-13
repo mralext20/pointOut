@@ -1,8 +1,9 @@
 <template>
   <div class="map-area">
     <div v-if="showMarker">create</div>
+    <button class="btn btn-primary" @click="centerUpdate">Center</button>
     <l-map
-      @click="addPoint"
+      @click="addPoint; recenter"
       v-if="showMap"
       ref="map"
       :zoom="zoom"
@@ -20,6 +21,11 @@
           <div @click="showParagraph = !showParagraph">
             <h4>{{point.title}}</h4>
             <p v-show="showParagraph">{{point.description}}</p>
+            <button
+              v-if="point.creatorEmail == userEmail"
+              class="btn btn-info btn-sm"
+              @click="deletePoint(point.id)"
+            >DELETE</button>
           </div>
         </l-popup>
       </l-marker>
@@ -69,6 +75,7 @@
 <script>
 import { getUserData } from "@bcwdev/auth0-vue";
 import { latLng, Icon } from "leaflet";
+import NotificationService from "../NotificationService";
 delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({
   iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
@@ -127,6 +134,7 @@ export default {
         scrollWheelZoom: this.interactable,
         doubleClickZoom: false
       },
+      specialBounds: {},
       showMap: true,
       newPopup: {
         latlng: [43.615, -116.1523]
@@ -137,15 +145,26 @@ export default {
     zoomUpdate(zoom) {
       this.currentZoom = zoom;
     },
-    centerUpdate(center) {
-      this.currentCenter = center;
-    },
     addPoint(event) {
       this.showMarker = true;
       this.newPoint.location.coordinates[1] = event.latlng.lat;
       this.newPoint.location.coordinates[0] = event.latlng.lng;
       this.newPoint.lat = event.latlng.lat;
       this.newPoint.lng = event.latlng.lng;
+    },
+    centerUpdate() {
+      navigator.geolocation.getCurrentPosition(
+        this.actuallyCenter,
+        error => console.error(error)
+        // FIXME SWAL
+      );
+    },
+    actuallyCenter(location) {
+      console.log(location);
+      this.$refs.map.mapObject.panTo([
+        location.coords.latitude,
+        location.coords.longitude
+      ]);
     },
     createNewPoint() {
       this.$store.dispatch("createNewPoint", this.newPoint);
@@ -160,6 +179,17 @@ export default {
         lat: 0,
         lng: 0
       };
+    },
+
+    async deletePoint(pointId) {
+      if (
+        await NotificationService.confirmAction(
+          "Are you sure you want to delete this point?"
+        )
+      ) {
+        this.$store.dispatch("deletePoint", pointId);
+        NotificationService.toast("The point was successfully deleted.");
+      }
     }
   },
   mounted() {
@@ -167,6 +197,8 @@ export default {
       let bounds = this.$refs.map.mapObject.getBounds();
       this.$store.dispatch("getPointsWithinRegion", bounds);
     });
+    console.log(this.map);
+    this.specialBounds = this.$refs.map.mapObject.getBounds();
   },
   computed: {
     newPointIcon() {
@@ -181,6 +213,12 @@ export default {
     },
     points() {
       return this.$store.state.points;
+    },
+    userEmail() {
+      return this.$auth.userInfo.email;
+    },
+    myCenter() {
+      navigator.geolocation.getCurrentPosition;
     }
   }
 };
