@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import Axios from "axios";
 import router from "../router";
+import NotificationService from "../NotificationService"
 
 Vue.use(Vuex);
 
@@ -19,7 +20,8 @@ export default new Vuex.Store({
   state: {
     profile: {},
     points: [],
-    groups: []
+    publicGroups: [],
+    yourGroups: []
   },
   mutations: {
     setProfile(state, profile) {
@@ -32,10 +34,10 @@ export default new Vuex.Store({
       state.points.push(point)
     },
     setGroups(state, groups) {
-      state.groups = groups
+      state.publicGroups = groups
     },
     addGroup(state, group) {
-      state.groups.push(group)
+      state.publicGroups.push(group)
     }
   },
   actions: {
@@ -87,7 +89,14 @@ export default new Vuex.Store({
     async createGroup({ commit }, newGroup) {
       try {
         let res = await api.post("groups", newGroup);
-        commit("addGroup", res.data)
+        if (newGroup.public) {
+          commit("addGroup", res.data)
+        } else {
+          commit("addPrivateGroup", res.data)
+          if (await NotificationService.confirm("Check out your new group here", 50000)) {
+            router.push({ name: "Profile groups" })
+          }
+        }
       } catch (error) {
         console.error(error)
       }

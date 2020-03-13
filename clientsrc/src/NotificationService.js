@@ -33,6 +33,21 @@ export default class NotificationService {
       toast: true
     });
   }
+  static confirm(title = "Group Created!", timer = 3500, icon = 'success') {
+    // @ts-ignore
+    let ret = swal.fire({
+      title,
+      icon,
+      timer,
+      showConfirmButton: true,
+      showCancelButton: true,
+      cancelButtonText: "Nah",
+      confirmButtonText: "Check it out",
+      position: "top",
+      toast: true
+    });
+    return ret.value || false
+  }
 
   static async inputData(title = "Create Form") {
     try {
