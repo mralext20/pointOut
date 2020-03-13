@@ -2,7 +2,6 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12">
-        <h1>Public Groups</h1>
         <button v-if="newGroups" class="btn btn-primary" @click="showForm =! showForm">Create Group</button>
       </div>
       <div v-if="showForm" class="col-12">

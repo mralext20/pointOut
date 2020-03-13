@@ -11,7 +11,9 @@ class GroupService {
     return values;
   }
   async findMyGroups(memberEmail) {
-    let groups = await dbContext.GroupMembers.find({ memberEmail }).populate("group")
+    let groups = await dbContext.GroupMembers.find({ memberEmail })
+      .populate("group")
+      .populate({ path: "group", populate: { path: "creator", select: "name picture" } })
     return groups
   }
 

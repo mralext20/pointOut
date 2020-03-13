@@ -1,5 +1,8 @@
 <template>
-  <group newGroups="true" :groupsData="groups" />
+  <div>
+    <h1>Public Groups</h1>
+    <group :newGroups="true" :groupsData="groups" />
+  </div>
 </template>
 
 <script>

@@ -106,6 +106,15 @@ export default new Vuex.Store({
       } catch (error) {
         console.error(error)
       }
-    }
+    },
+    async getYourGroups({ commit }) {
+      try {
+        let res = await api.get("profile/groups")
+        let data = res.data.map(membership => membership.group)
+        commit("setYourGroups", data)
+      } catch (error) {
+        console.error(error)
+      }
+    },
   }
 });
