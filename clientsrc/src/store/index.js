@@ -18,7 +18,8 @@ let api = Axios.create({
 export default new Vuex.Store({
   state: {
     profile: {},
-    points: []
+    points: [],
+    groups: []
   },
   mutations: {
     setProfile(state, profile) {
@@ -29,6 +30,12 @@ export default new Vuex.Store({
     },
     addPoint(state, point) {
       state.points.push(point)
+    },
+    setGroups(state, groups) {
+      state.groups = groups
+    },
+    addGroup(state, group) {
+      state.groups.push(group)
     }
   },
   actions: {
@@ -65,6 +72,14 @@ export default new Vuex.Store({
         let res = await api.post("points", pointData)
         commit("addPoint", res.data)
 
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    async getPublicGroups({ commit }) {
+      try {
+        let res = await api.get("groups")
+        commit("setGroups", res.data)
       } catch (error) {
         console.error(error)
       }
