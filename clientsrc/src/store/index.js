@@ -83,6 +83,14 @@ export default new Vuex.Store({
       } catch (error) {
         console.error(error)
       }
+    },
+    async createGroup({ commit }, newGroup) {
+      try {
+        let res = await api.post("groups", newGroup);
+        commit("addGroup", res.data)
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 });

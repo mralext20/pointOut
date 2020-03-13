@@ -34,7 +34,8 @@ class GroupService {
   }
   async create(group, email) {
     let newGroup = await dbContext.Group.create(group);
-    dbContext.GroupMembers.create({ groupId: newGroup.id, memberEmail: email })
+    await dbContext.GroupMembers.create({ groupId: newGroup.id, memberEmail: email });
+    await newGroup.populate("creator", "name picture").execPopulate()
     return newGroup;
   }
 

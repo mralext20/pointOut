@@ -67,7 +67,16 @@ export default {
       }
     };
   },
-
+  methods: {
+    createGroup() {
+      this.$store.dispatch("createGroup", { ...this.newGroup });
+      this.newGroup = {
+        title: "",
+        description: "",
+        public: true
+      };
+    }
+  },
   computed: {
     groups() {
       return this.$store.state.groups;
