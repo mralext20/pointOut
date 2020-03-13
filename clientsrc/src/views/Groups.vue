@@ -5,9 +5,24 @@
         <h1>Public Groups</h1>
         <button class="btn btn-primary" @click="showForm =! showForm">Create Group</button>
       </div>
-      <div class="col-12">
+      <div v-if="showForm" class="col-12">
         <form @submit.prevent="createGroup" class="form-group">
-          <input type="text" v-model="newGroup.title" id />
+          <input class="form-inline" type="text" v-model="newGroup.title" placeholder="title" />
+          <input
+            class="form-inline"
+            type="text"
+            v-model="newGroup.description"
+            placeholder="description"
+          />
+          <label class="form-check-label" for="public-private-checkbox">public Group</label>
+          <input
+            class="form-inline"
+            type="checkbox"
+            id="public-private-checkbox"
+            name="Public"
+            v-model="newGroup.public"
+          />
+          <button class="btn btn-primary">submit</button>
         </form>
       </div>
 
@@ -52,6 +67,7 @@ export default {
       }
     };
   },
+
   computed: {
     groups() {
       return this.$store.state.groups;
