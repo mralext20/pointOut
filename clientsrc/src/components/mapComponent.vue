@@ -20,7 +20,11 @@
           <div @click="showParagraph = !showParagraph">
             <h4>{{point.title}}</h4>
             <p v-show="showParagraph">{{point.description}}</p>
-            <button class="btn btn-info btn-sm" @click="deletePoint(point.id)">DELETE</button>
+            <button
+              v-if="point.creatorEmail == userEmail"
+              class="btn btn-info btn-sm"
+              @click="deletePoint(point.id)"
+            >DELETE</button>
           </div>
         </l-popup>
       </l-marker>
@@ -194,6 +198,9 @@ export default {
     },
     points() {
       return this.$store.state.points;
+    },
+    userEmail() {
+      return this.$auth.userInfo.email;
     }
   }
 };
