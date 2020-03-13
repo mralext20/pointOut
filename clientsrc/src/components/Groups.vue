@@ -57,6 +57,11 @@
 export default {
   name: "Groups",
   props: ["newGroups", "groupsData"],
+  mounted() {
+    if (this.$store.state.yourGroups.length == 0) {
+      this.$store.dispatch("getYourGroups");
+    }
+  },
   data() {
     return {
       showForm: false,
