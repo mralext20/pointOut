@@ -3,7 +3,14 @@
     <div class="row">
       <div class="col-12">
         <h1>Public Groups</h1>
+        <button class="btn btn-primary" @click="showForm =! showForm">Create Group</button>
       </div>
+      <div class="col-12">
+        <form @submit.prevent="createGroup" class="form-group">
+          <input type="text" v-model="newGroup.title" id />
+        </form>
+      </div>
+
       <div class="col-12 col-md-4 card mb-3" v-for="group in groups" :key="group.id">
         <div class="row">
           <div class="col-md-4 d-md-flex align-items-center">
@@ -34,6 +41,16 @@ export default {
   name: "Groups",
   mounted() {
     this.$store.dispatch("getPublicGroups");
+  },
+  data() {
+    return {
+      showForm: false,
+      newGroup: {
+        title: "",
+        description: "",
+        public: true
+      }
+    };
   },
   computed: {
     groups() {
