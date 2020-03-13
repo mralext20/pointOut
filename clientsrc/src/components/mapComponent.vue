@@ -1,8 +1,9 @@
 <template>
   <div class="map-area">
     <div v-if="showMarker">create</div>
+    <button class="btn btn-primary" @click="centerUpdate">Center</button>
     <l-map
-      @click="addPoint"
+      @click="addPoint; recenter"
       v-if="showMap"
       ref="map"
       :zoom="zoom"
@@ -133,6 +134,7 @@ export default {
         scrollWheelZoom: this.interactable,
         doubleClickZoom: false
       },
+      specialBounds: {},
       showMap: true,
       newPopup: {
         latlng: [43.615, -116.1523]
@@ -143,15 +145,26 @@ export default {
     zoomUpdate(zoom) {
       this.currentZoom = zoom;
     },
-    centerUpdate(center) {
-      this.currentCenter = center;
-    },
     addPoint(event) {
       this.showMarker = true;
       this.newPoint.location.coordinates[1] = event.latlng.lat;
       this.newPoint.location.coordinates[0] = event.latlng.lng;
       this.newPoint.lat = event.latlng.lat;
       this.newPoint.lng = event.latlng.lng;
+    },
+    centerUpdate() {
+      navigator.geolocation.getCurrentPosition(
+        this.actuallyCenter,
+        error => console.error(error)
+        // FIXME SWAL
+      );
+    },
+    actuallyCenter(location) {
+      console.log(location);
+      this.$refs.map.mapObject.panTo([
+        location.coords.latitude,
+        location.coords.longitude
+      ]);
     },
     createNewPoint() {
       this.$store.dispatch("createNewPoint", this.newPoint);
@@ -184,6 +197,8 @@ export default {
       let bounds = this.$refs.map.mapObject.getBounds();
       this.$store.dispatch("getPointsWithinRegion", bounds);
     });
+    console.log(this.map);
+    this.specialBounds = this.$refs.map.mapObject.getBounds();
   },
   computed: {
     newPointIcon() {
@@ -201,6 +216,9 @@ export default {
     },
     userEmail() {
       return this.$auth.userInfo.email;
+    },
+    myCenter() {
+      navigator.geolocation.getCurrentPosition;
     }
   }
 };
