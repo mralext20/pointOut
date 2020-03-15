@@ -21,7 +21,7 @@ export default new Vuex.Store({
     profile: {},
     points: [],
     publicGroups: [],
-    yourGroups: []
+    yourGroups: {},
   },
   mutations: {
     setProfile(state, profile) {
@@ -36,14 +36,20 @@ export default new Vuex.Store({
     setGroups(state, groups) {
       state.publicGroups = groups
     },
-    addGroup(state, group) {
+    createGroup(state, group) {
       state.publicGroups.push(group)
     },
     setYourGroups(state, groups) {
-      state.yourGroups = groups
+      groups.forEach(group => {
+        Vue.set(state.yourGroups, group.id, group)
+      });
+
     },
-    addYourGroup(state, group) {
-      state.yourGroups.push(group)
+    joinGroup(state, group) {
+      Vue.set(state.yourGroups, group.id, group)
+    },
+    LeaveGroup(state, group) {
+      Vue.delete(state.yourGroups, group.id)
     }
   },
   actions: {
@@ -84,10 +90,11 @@ export default new Vuex.Store({
         console.error(error)
       }
     },
-    async getPublicGroups({ commit }) {
+    async getPublicGroups({ commit, dispatch }) {
       try {
         let res = await api.get("groups")
-        commit("setGroups", res.data)
+        commit("setGroups", res.data);
+        dispatch("getYourGroups")
       } catch (error) {
         console.error(error)
       }
@@ -96,9 +103,10 @@ export default new Vuex.Store({
       try {
         let res = await api.post("groups", newGroup);
         if (newGroup.public) {
-          commit("addGroup", res.data)
+          commit("createGroup", res.data);
+          commit("joinGroup", res.data);
         } else {
-          commit("addYourGroup", res.data)
+          commit("joinGroup", res.data)
           if (await NotificationService.confirm("Check out your new group here", 50000)) {
             router.push({ name: "Profile groups" })
           }
@@ -116,5 +124,25 @@ export default new Vuex.Store({
         console.error(error)
       }
     },
+    async joinGroup({ commit }, { group, memberEmail, myEmail }) {
+      try {
+        let res = await api.post(`groups/${group.id}/members`, { memberEmail })
+        if (myEmail == memberEmail) {
+          commit("joinGroup", group)
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    async leaveGroup({ commit }, { group, memberEmail, myEmail }) {
+      try {
+        let res = await api.delete(`groups/${group.id}/members/${memberEmail}`)
+        if (myEmail == memberEmail) {
+          commit("LeaveGroup", group)
+        }
+      } catch (error) {
+        console.error(error)
+      }
+    }
   }
 });

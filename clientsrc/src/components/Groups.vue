@@ -43,8 +43,10 @@
               </p>
             </div>
             <button v-if="group.creator.email == $auth.userInfo.email" class="btn btn-warning">edit</button>
-            <button v-if="group" class="btn">leave</button>
-            <button v-else class="btn">join</button>
+            <div v-else>
+              <button v-if="yourGroups[group.id]" @click="leave(group)" class="btn btn-danger">leave</button>
+              <button v-else class="btn btn-success" @click="join(group)">join</button>
+            </div>
           </div>
         </div>
       </div>
@@ -57,11 +59,6 @@
 export default {
   name: "Groups",
   props: ["newGroups", "groupsData"],
-  mounted() {
-    if (this.$store.state.yourGroups.length == 0) {
-      this.$store.dispatch("getYourGroups");
-    }
-  },
   data() {
     return {
       showForm: false,
@@ -80,6 +77,25 @@ export default {
         description: "",
         public: true
       };
+    },
+    join(group) {
+      this.$store.dispatch("joinGroup", {
+        group,
+        memberEmail: this.$auth.userInfo.email,
+        myEmail: this.$auth.userInfo.email
+      });
+    },
+    leave(group) {
+      this.$store.dispatch("leaveGroup", {
+        group,
+        memberEmail: this.$auth.userInfo.email,
+        myEmail: this.$auth.userInfo.email
+      });
+    }
+  },
+  computed: {
+    yourGroups() {
+      return this.$store.state.yourGroups;
     }
   }
 };
