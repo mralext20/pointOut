@@ -18,7 +18,9 @@
         <l-popup>
           <div @click="showParagraph = !showParagraph">
             <h4>{{point.title}}</h4>
-            <p v-show="showParagraph">{{point.description}}</p>
+            <transition name="fade">
+              <p v-show="showParagraph">{{point.description}}</p>
+            </transition>
             <button
               v-if="point.creatorEmail == userEmail"
               class="btn btn-info btn-sm"
@@ -224,6 +226,15 @@ export default {
 
 
 <style scoped>
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .map-area {
