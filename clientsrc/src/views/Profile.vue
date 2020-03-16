@@ -40,16 +40,20 @@
     </div>
 
     <div v-else-if="$route.name == 'Profile visits'">visits</div>
-    <div v-else-if="$route.name == 'Profile points'">points</div>
+    <div class="row" v-else-if="$route.name == 'Profile points'">
+      <point v-for="point in points" :pointData="point" :key="point.id" />
+    </div>
   </div>
 </template>
 
 <script>
 import Groups from "../components/Groups";
+import Point from "../components/Point";
 export default {
   name: "Profile",
   mounted() {
     this.$store.dispatch("getYourGroups");
+    this.$store.dispatch("getYourPoints");
   },
   computed: {
     profile() {
@@ -57,10 +61,14 @@ export default {
     },
     groups() {
       return this.$store.state.yourGroups;
+    },
+    points() {
+      return this.$store.state.yourPoints;
     }
   },
   components: {
-    Groups
+    Groups,
+    Point
   }
 };
 </script>

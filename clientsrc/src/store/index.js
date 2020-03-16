@@ -22,6 +22,7 @@ export default new Vuex.Store({
     points: [],
     publicGroups: [],
     yourGroups: {},
+    yourPoints: []
   },
   mutations: {
     setProfile(state, profile) {
@@ -54,6 +55,9 @@ export default new Vuex.Store({
     deleteGroup(state, groupid) {
       Vue.delete(state.yourGroups, groupid);
       state.publicGroups = state.publicGroups.filter(g => g.id != groupid)
+    },
+    setYourPoints(state, points) {
+      state.yourPoints = points;
     }
   },
   actions: {
@@ -152,6 +156,14 @@ export default new Vuex.Store({
       try {
         await api.delete(`/groups/${group.id}`)
         commit("deleteGroup", group.id)
+      } catch (error) {
+
+      }
+    },
+    async getYourPoints({ commit }) {
+      try {
+        let res = await api.get("profile/points");
+        commit("setYourPoints", res.data)
       } catch (error) {
 
       }
