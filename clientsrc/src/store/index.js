@@ -43,7 +43,6 @@ export default new Vuex.Store({
       groups.forEach(group => {
         Vue.set(state.yourGroups, group.id, group)
       });
-
     },
     editGroup(state, group) {
       let index = state.publicGroups.findIndex(g => g.id == group.id);
@@ -55,6 +54,9 @@ export default new Vuex.Store({
     },
     LeaveGroup(state, group) {
       Vue.delete(state.yourGroups, group.id)
+    },
+    deletePoint(state, pointId) {
+      state.points = state.points.filter(p => p.id != pointId)
     }
   },
   actions: {
@@ -156,6 +158,17 @@ export default new Vuex.Store({
       } catch (error) {
         console.error(error)
       }
+    },
+    async deletePoint({ commit }, pointId) {
+      try {
+
+        let res = await api.delete(`points/${pointId}`)
+        commit("deletePoint", pointId)
+
+      } catch (error) {
+        console.error(error)
+      }
+
     }
   }
 });

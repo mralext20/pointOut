@@ -3,7 +3,7 @@
     <navbar />
     <router-view />
     <footer class="bg-dark bottom fixed-bottom d-flex flew-row text-light justify-content-center">
-      <h6>&copy</h6>
+      <h6>&copy;</h6>
       <h6>Point Out Inc.</h6>
     </footer>
   </div>
