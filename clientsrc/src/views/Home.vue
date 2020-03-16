@@ -7,7 +7,7 @@
           class="landing-pTag text-center"
         >This app will change your life! Have you ever lost your secret tree fort? Have you ever lost your house?</p>
         <div v-if="!$auth.isAuthenticated" @click="login" class="btn btn-primary mb-4">Sign Up Now</div>
-        <map-component :interactable="false" />
+        <map-component ref="mainMap" :interactable="false" :points="points" />
       </div>
     </div>
   </div>
@@ -23,10 +23,17 @@ export default {
   name: "home",
   computed: {
     points() {
-      console.log("Points: ");
-      console.log(this.$store.state.points);
       return this.$store.state.points;
     }
+  },
+  mounted() {
+    this.$nextTick(() => {
+      debugger;
+      this.$store.dispatch(
+        "getPointsWithinRegion",
+        this.$refs.mainMap.$refs.map.mapObject.getBounds()
+      );
+    });
   },
   components: {
     MapComponent

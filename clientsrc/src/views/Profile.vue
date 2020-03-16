@@ -41,6 +41,7 @@
 
     <div v-else-if="$route.name == 'Profile visits'">visits</div>
     <div class="row" v-else-if="$route.name == 'Profile points'">
+      <map-component pointData="points" />
       <point v-for="point in points" :pointData="point" :key="point.id" />
     </div>
   </div>
@@ -49,6 +50,7 @@
 <script>
 import Groups from "../components/Groups";
 import Point from "../components/Point";
+import MapComponent from "../components/mapComponent";
 export default {
   name: "Profile",
   mounted() {
@@ -68,7 +70,8 @@ export default {
   },
   components: {
     Groups,
-    Point
+    Point,
+    MapComponent
   }
 };
 </script>

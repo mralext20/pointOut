@@ -1,9 +1,11 @@
 <template>
   <div class="map-area">
     <l-map
+      @update:bounds="$emit('update:bounds', $refs.map.mapObject.getBounds())"
       @click="addPoint"
       v-if="showMap"
       ref="map"
+      :bounds.sync="bounds"
       :zoom="zoom"
       :center="center"
       :options="mapOptions"
@@ -95,7 +97,7 @@ import {
 
 export default {
   name: "map-component",
-  props: ["interactable"],
+  props: ["interactable", "points"],
   components: {
     LMap,
     LTileLayer,
@@ -116,16 +118,14 @@ export default {
         lat: 0,
         lng: 0
       },
+      bounds: [],
       showMarker: false,
       zoom: 14,
       center: latLng(43.591, -116.27948),
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      withPopup: latLng(43.615, -116.2023),
-      withTooltip: latLng(43.615, -116.2023),
       currentZoom: 10,
-      currentCenter: latLng(43.615, -116.2023),
       showParagraph: false,
       map: LMap,
       mapOptions: {
@@ -193,14 +193,7 @@ export default {
       }
     }
   },
-  mounted() {
-    this.$nextTick(() => {
-      let bounds = this.$refs.map.mapObject.getBounds();
-      this.$store.dispatch("getPointsWithinRegion", bounds);
-    });
-    console.log(this.map);
-    this.specialBounds = this.$refs.map.mapObject.getBounds();
-  },
+  mounted() {},
   computed: {
     newPointIcon() {
       return L.icon({
@@ -211,9 +204,6 @@ export default {
         tooltipAnchor: [16, -28],
         shadowSize: [41, 41]
       });
-    },
-    points() {
-      return this.$store.state.points;
     },
     userEmail() {
       return this.$auth.userInfo.email;

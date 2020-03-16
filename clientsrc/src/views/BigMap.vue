@@ -18,11 +18,21 @@
               <a class="dropdown-item" href="#">Dropdown link</a>
             </div>
           </div>
-          <button type="button" class="btn btn-primary">else</button>
+          <button
+            v-if="wantToUpdatePoints"
+            @click="updatePoints"
+            type="button"
+            class="btn btn-danger"
+          >update Points</button>
         </div>
       </div>
       <div class="col-12 map-col d-flex justify-content-center">
-        <map-component ref="mainMap" :interactable="true" />
+        <map-component
+          ref="mainMap"
+          @update:bounds="wantToUpdatePoints= true"
+          :interactable="true"
+          :points="points"
+        />
       </div>
     </div>
   </div>
@@ -36,9 +46,31 @@ export default {
   components: {
     MapComponent
   },
+  data() {
+    return {
+      wantToUpdatePoints: false
+    };
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.updatePoints();
+    });
+  },
   methods: {
     centerOnUser() {
       this.$refs.mainMap.centerUpdate();
+    },
+    updatePoints() {
+      this.$store.dispatch(
+        "getPointsWithinRegion",
+        this.$refs.mainMap.$refs.map.mapObject.getBounds()
+      );
+      this.wantToUpdatePoints = false;
+    }
+  },
+  computed: {
+    points() {
+      return this.$store.state.points;
     }
   }
 };
