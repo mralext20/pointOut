@@ -58,6 +58,7 @@ export default new Vuex.Store({
     },
     deletePoint(state, pointId) {
       state.points = state.points.filter(p => p.id != pointId)
+      state.yourPoints = state.yourPoints.filter(p => p.id != pointId)
     },
     setYourPoints(state, points) {
       state.yourPoints = points;
