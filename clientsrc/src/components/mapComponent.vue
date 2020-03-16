@@ -43,6 +43,7 @@
                   type="text"
                   placeholder="Title..."
                   v-model="newPoint.title"
+                  required
                 />
               </div>
               <div class="form-group m-0">
