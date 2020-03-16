@@ -47,10 +47,8 @@ export default new Vuex.Store({
     },
     editGroup(state, group) {
       let index = state.publicGroups.findIndex(g => g.id == group.id);
-      console.log(index)
       state.publicGroups[index] = group;
       state.yourGroups[group.id] = group
-      console.log(state.publicGroups)
     },
     joinGroup(state, group) {
       Vue.set(state.yourGroups, group.id, group)
