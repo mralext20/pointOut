@@ -12,6 +12,7 @@
             type="text"
             v-model="newGroup.description"
             placeholder="description"
+            required
           />
           <label class="form-check-label" for="public-private-checkbox">public Group</label>
           <input
@@ -20,6 +21,7 @@
             id="public-private-checkbox"
             name="Public"
             v-model="newGroup.public"
+            required
           />
           <button class="btn btn-primary">submit</button>
         </form>
