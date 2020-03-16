@@ -82,6 +82,7 @@ class GroupService {
   }
   async deleteGroup(groupId, email) {
     let group = await dbContext.Group.findOneAndDelete({ _id: groupId, creatorEmail: email });
+    await dbContext.GroupMembers.deleteMany({ groupId })
     if (!group) {
       throw new BadRequest("youp do not own that group or it does not exist")
     }
