@@ -13,6 +13,7 @@
           :interactable="false"
           :points="points"
         />
+
       </div>
     </div>
   </div>
@@ -54,4 +55,7 @@ export default {
 </script>
 
 <style scoped>
+.home-map {
+  max-height: 62rem;
+}
 </style>
