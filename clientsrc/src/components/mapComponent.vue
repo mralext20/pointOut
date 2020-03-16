@@ -1,7 +1,7 @@
 <template>
   <div class="map-area">
     <l-map
-      @click="addPoint; recenter"
+      @click="addPoint"
       v-if="showMap"
       ref="map"
       :zoom="zoom"
