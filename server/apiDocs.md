@@ -500,6 +500,10 @@ example response
 
 edit a group. you must be the creator of a group to edit it.
 
+### [DELETE] /:id
+
+Delete a group. requires that you own the group.
+
 ### [GET] /:id/members
 
 returns list of members. only works if the group is public or you are in the group.

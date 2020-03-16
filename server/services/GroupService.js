@@ -80,6 +80,12 @@ class GroupService {
       throw new BadRequest("you do not own that group or you are not that user")
     }
   }
+  async deleteGroup(groupId, email) {
+    let group = await dbContext.Group.findOneAndDelete({ id: groupId, creatorEmail: email });
+    if (!group) {
+      throw new BadRequest("youp do not own that group or it does not exist")
+    }
+  }
 }
 
 export const groupService = new GroupService();
