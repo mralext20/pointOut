@@ -31,4 +31,9 @@ export default {
 <style lang="scss">
 @import "./assets/_variables.scss";
 @import "bootstrap";
+
+#app {
+  max-height: 100vh;
+  overflow: hidden;
+}
 </style>
