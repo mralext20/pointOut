@@ -50,6 +50,10 @@ export default new Vuex.Store({
     },
     LeaveGroup(state, group) {
       Vue.delete(state.yourGroups, group.id)
+    },
+    deleteGroup(state, groupid) {
+      Vue.delete(state.yourGroups, groupid);
+      state.publicGroups = state.publicGroups.filter(g => g.id != groupid)
     }
   },
   actions: {
@@ -124,24 +128,32 @@ export default new Vuex.Store({
         console.error(error)
       }
     },
-    async joinGroup({ commit }, { group, memberEmail, myEmail }) {
+    async joinGroup({ commit, state }, { group, memberEmail }) {
       try {
-        let res = await api.post(`groups/${group.id}/members`, { memberEmail })
-        if (myEmail == memberEmail) {
+        await api.post(`groups/${group.id}/members`, { memberEmail })
+        if (state.profile.email == memberEmail) {
           commit("joinGroup", group)
         }
       } catch (error) {
         console.error(error)
       }
     },
-    async leaveGroup({ commit }, { group, memberEmail, myEmail }) {
+    async leaveGroup({ commit, state }, { group, memberEmail }) {
       try {
-        let res = await api.delete(`groups/${group.id}/members/${memberEmail}`)
-        if (myEmail == memberEmail) {
+        await api.delete(`groups/${group.id}/members/${memberEmail}`)
+        if (state.profile.email == memberEmail) {
           commit("LeaveGroup", group)
         }
       } catch (error) {
         console.error(error)
+      }
+    },
+    async deleteGroup({ commit, state }, { group }) {
+      try {
+        await api.delete(`/groups/${group.id}`)
+        commit("deleteGroup", group.id)
+      } catch (error) {
+
       }
     }
   }
