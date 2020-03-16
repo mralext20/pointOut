@@ -1,7 +1,6 @@
 <template>
   <div class="map-area">
     <div v-if="showMarker">create</div>
-    <button class="btn btn-primary" @click="centerUpdate">Center</button>
     <l-map
       @click="addPoint; recenter"
       v-if="showMap"
