@@ -12,25 +12,27 @@
       style="height: 80%"
     >
       <l-tile-layer :url="url" :attribution="attribution" />
-      <l-marker
-        v-for="(point) in points"
-        :key="point.id"
-        :lat-lng="[point.location.coordinates[1], point.location.coordinates[0]]"
-      >
-        <l-popup>
-          <div @click="showParagraph = !showParagraph">
-            <h4>{{point.title}}</h4>
-            <transition name="fade">
-              <p v-show="showParagraph">{{point.description}}</p>
-            </transition>
-            <button
-              v-if="point.creatorEmail == userEmail"
-              class="btn btn-info btn-sm"
-              @click="deletePoint(point.id)"
-            >DELETE</button>
-          </div>
-        </l-popup>
-      </l-marker>
+      <l-feature-group ref="points">
+        <l-marker
+          v-for="(point) in points"
+          :key="point.id"
+          :lat-lng="[point.location.coordinates[1], point.location.coordinates[0]]"
+        >
+          <l-popup>
+            <div @click="showParagraph = !showParagraph">
+              <h4>{{point.title}}</h4>
+              <transition name="fade">
+                <p v-show="showParagraph">{{point.description}}</p>
+              </transition>
+              <button
+                v-if="point.creatorEmail == userEmail"
+                class="btn btn-info btn-sm"
+                @click="deletePoint(point.id)"
+              >DELETE</button>
+            </div>
+          </l-popup>
+        </l-marker>
+      </l-feature-group>
       <l-marker
         :icon="newPointIcon"
         v-if="showMarker && $auth.isAuthenticated && interactable"
@@ -92,7 +94,8 @@ import {
   LMarker,
   LPopup,
   LTooltip,
-  LIcon
+  LIcon,
+  LFeatureGroup
 } from "vue2-leaflet";
 
 export default {
@@ -103,7 +106,8 @@ export default {
     LTileLayer,
     LMarker,
     LPopup,
-    LTooltip
+    LTooltip,
+    LFeatureGroup
   },
   data() {
     return {
@@ -180,7 +184,6 @@ export default {
         lng: 0
       };
     },
-
     async deletePoint(pointId) {
       if (
         await NotificationService.confirmAction(

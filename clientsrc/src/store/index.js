@@ -12,7 +12,7 @@ let baseUrl = location.host.includes("localhost")
 
 let api = Axios.create({
   baseURL: baseUrl + "api",
-  timeout: 3000,
+  timeout: 30000,
   withCredentials: true
 });
 
@@ -22,6 +22,7 @@ export default new Vuex.Store({
     points: [],
     publicGroups: [],
     yourGroups: {},
+    yourPoints: [],
   },
   mutations: {
     setProfile(state, profile) {
@@ -57,6 +58,9 @@ export default new Vuex.Store({
     },
     deletePoint(state, pointId) {
       state.points = state.points.filter(p => p.id != pointId)
+    },
+    setYourPoints(state, points) {
+      state.yourPoints = points;
     }
   },
   actions: {
@@ -168,7 +172,14 @@ export default new Vuex.Store({
       } catch (error) {
         console.error(error)
       }
-
-    }
+    },
+    async getYourPoints({ commit }) {
+      try {
+        let res = await api.get("/profile/points")
+        commit("setYourPoints", res.data)
+      } catch (error) {
+        console.error(error)
+      }
+    },
   }
 });

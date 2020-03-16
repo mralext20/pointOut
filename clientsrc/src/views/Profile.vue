@@ -41,7 +41,8 @@
 
     <div v-else-if="$route.name == 'Profile visits'">visits</div>
     <div class="row" v-else-if="$route.name == 'Profile points'">
-      <map-component pointData="points" />
+      <map-component ref="pointsMap" :points="points" :interactable="true" />
+      <button @click="debug">debug</button>
       <point v-for="point in points" :pointData="point" :key="point.id" />
     </div>
   </div>
@@ -53,9 +54,17 @@ import Point from "../components/Point";
 import MapComponent from "../components/mapComponent";
 export default {
   name: "Profile",
-  mounted() {
+  async mounted() {
     this.$store.dispatch("getYourGroups");
-    this.$store.dispatch("getYourPoints");
+    await this.$store.dispatch("getYourPoints");
+    this.$refs.pointsMap.$refs.map.mapObject.fitBounds(
+      this.$refs.pointsMap.$refs.points.mapObject.getBounds()
+    );
+  },
+  methods: {
+    debug() {
+      debugger;
+    }
   },
   computed: {
     profile() {
