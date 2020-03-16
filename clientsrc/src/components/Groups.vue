@@ -42,7 +42,10 @@
                 <small class="text-muted">Created by {{group.creator.name}}</small>
               </p>
             </div>
-            <button v-if="group.creator.email == $auth.userInfo.email" class="btn btn-warning">edit</button>
+            <div v-if="group.creator.email == $auth.userInfo.email">
+              <button class="btn btn-warning" @click="editGroup(group)">edit</button>
+              <button class="btn btn-danger" @click="deleteGroup(group)">Delete</button>
+            </div>
             <div v-else>
               <button v-if="yourGroups[group.id]" @click="leave(group)" class="btn btn-danger">leave</button>
               <button v-else class="btn btn-success" @click="join(group)">join</button>
