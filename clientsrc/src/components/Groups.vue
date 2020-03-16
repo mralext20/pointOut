@@ -27,7 +27,7 @@
         </form>
       </div>
 
-      <div class="col-12 col-md-4 card mb-3" v-for="group in groupsData" :key="group.id">
+      <div class="col-12 col-md-4 card mb-3" v-for="group in publicGroups" :key="group.id">
         <div class="row">
           <div class="col-md-4 d-md-flex align-items-center">
             <img :src="group.imageUrl || require('../assets/default-group.png')" class="card-img" />
@@ -42,7 +42,7 @@
                 <small class="text-muted">Created by {{group.creator.name}}</small>
               </p>
             </div>
-            <div v-if="group.creator.email == $auth.userInfo.email">
+            <div v-if="group.creatorEmail == $auth.userInfo.email">
               <button class="btn btn-warning" @click="editGroup(group)">edit</button>
               <button class="btn btn-danger" @click="deleteGroup(group)">Delete</button>
             </div>
@@ -54,8 +54,6 @@
           <!-- end first -->
           <div v-show="edit[group.id]" class="col-md-8">
             <div v-if="editedGroup[group.id]" class="card-body">
-              <!-- <input class="card-title" v-model="editedGroup[group.id].title" />
-              <input class="card-text" v-model="editedGroup[group.id].description" />-->
               <form @submit.prevent="putGroup(group.id)" class="form-group">
                 <input
                   class="form-inline"
@@ -83,7 +81,7 @@
                 <small class="text-muted">Created by {{group.creator.name}}</small>
               </p>
             </div>
-            <div v-if="group.creator.email == $auth.userInfo.email">
+            <div v-if="group.creatorEmail == $auth.userInfo.email">
               <button class="btn btn-warning" @click="editGroup(group)">cancel</button>
               <button class="btn btn-danger" @click="deleteGroup(group)">Delete</button>
             </div>
@@ -133,7 +131,6 @@ export default {
       };
       await Vue.set(this.edit, group.id, !this.edit[group.id]);
       await Vue.set(this.editedGroup, group.id, data);
-      let title = "";
     },
     putGroup(id) {
       this.$store.dispatch("editGroup", this.editedGroup[id]);
@@ -168,6 +165,9 @@ export default {
   computed: {
     yourGroups() {
       return this.$store.state.yourGroups;
+    },
+    publicGroups() {
+      return this.$store.state.publicGroups;
     }
   }
 };
