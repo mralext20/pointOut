@@ -1,7 +1,7 @@
 <template>
   <div class="map-area">
     <l-map
-      @click="addPoint; recenter"
+      @click="addPoint"
       v-if="showMap"
       ref="map"
       :zoom="zoom"
@@ -43,6 +43,7 @@
                   type="text"
                   placeholder="Title..."
                   v-model="newPoint.title"
+                  required
                 />
               </div>
               <div class="form-group m-0">
