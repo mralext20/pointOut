@@ -33,9 +33,9 @@ export default class NotificationService {
       toast: true
     });
   }
-  static confirm(title = "Group Created!", timer = 3500, icon = 'success') {
+  static async confirm(title = "Group Created!", timer = 3500, icon = 'success') {
     // @ts-ignore
-    let ret = swal.fire({
+    let ret = await swal.fire({
       title,
       icon,
       timer,
