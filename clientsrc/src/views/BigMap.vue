@@ -3,12 +3,7 @@
     <div class="row">
       <div class="col-12 text-center bg-primary">
         <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-          <button
-            type="button"
-            class="btn btn-primary"
-            @click="centerOnUser"
-            id="center-button"
-          >Center on me</button>
+          <button type="button" class="btn btn-primary" @click="centerOnUser">Center on me</button>
           <div class="btn-group btn-group-sm" role="group">
             <button
               id="btnGroupDrop1"
