@@ -1,9 +1,26 @@
 <template>
-  <h1>Groups Page</h1>
+  <div>
+    <h1>Public Groups</h1>
+    <group :newGroups="true" :groupsData="groups" />
+  </div>
 </template>
 
 <script>
-export default {};
+import Group from "../components/Groups";
+export default {
+  name: "groupsView",
+  components: {
+    Group
+  },
+  mounted() {
+    this.$store.dispatch("getPublicGroups");
+  },
+  computed: {
+    groups() {
+      return this.$store.state.publicGroups;
+    }
+  }
+};
 </script>
 
 <style>

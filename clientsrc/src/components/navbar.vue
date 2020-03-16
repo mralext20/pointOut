@@ -28,14 +28,14 @@
         <li
           class="nav-item"
           v-if="$auth.isAuthenticated"
-          :class="{ active: $route.name == 'Profile' }"
+          :class="{ active: this.$route.path.startsWith('/profile') }"
         >
           <router-link class="nav-link" :to="{ name: 'Profile' }">Profile</router-link>
         </li>
       </ul>
       <span class="navbar-text">
         <button class="btn btn-success" @click="login" v-if="!$auth.isAuthenticated">Login</button>
-        <button class="btn btn-danger" @click="logout" v-else>Logout</button>
+        <button class="btn btn-light text-dark" @click="logout" v-else>Logout</button>
       </span>
     </div>
   </nav>

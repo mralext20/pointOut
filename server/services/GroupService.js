@@ -11,7 +11,9 @@ class GroupService {
     return values;
   }
   async findMyGroups(memberEmail) {
-    let groups = await dbContext.GroupMembers.find({ memberEmail }).populate("group")
+    let groups = await dbContext.GroupMembers.find({ memberEmail })
+      .populate("group")
+      .populate({ path: "group", populate: { path: "creator", select: "name picture" } })
     return groups
   }
 
@@ -30,11 +32,13 @@ class GroupService {
     if (!newGroup) {
       throw new BadRequest("Invalid ID or you do not own that group")
     }
+    newGroup.populate("creator", "name picture").execPopulate()
     return newGroup;
   }
   async create(group, email) {
     let newGroup = await dbContext.Group.create(group);
-    dbContext.GroupMembers.create({ groupId: newGroup.id, memberEmail: email })
+    await dbContext.GroupMembers.create({ groupId: newGroup.id, memberEmail: email });
+    await newGroup.populate("creator", "name picture").execPopulate()
     return newGroup;
   }
 
@@ -75,6 +79,13 @@ class GroupService {
         return await dbContext.GroupMembers.findOneAndDelete({ groupId, memberEmail: TargetEmail })
       }
       throw new BadRequest("you do not own that group or you are not that user")
+    }
+  }
+  async deleteGroup(groupId, email) {
+    let group = await dbContext.Group.findOneAndDelete({ _id: groupId, creatorEmail: email });
+    await dbContext.GroupMembers.deleteMany({ groupId })
+    if (!group) {
+      throw new BadRequest("youp do not own that group or it does not exist")
     }
   }
 }
