@@ -1,5 +1,27 @@
 <template>
   <div class="map-area">
+    <div v-if="interactable" class="row">
+      <div class="col-12 text-center bg-primary">
+        <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-primary" @click="centerUpdate">Center on me</button>
+          <div class="btn-group btn-group-sm" role="group">
+            <button
+              id="btnGroupDrop1"
+              type="button"
+              class="btn btn-primary dropdown-toggle"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >Filter</button>
+            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+              <a class="dropdown-item" href="#">Dropdown link</a>
+              <a class="dropdown-item" href="#">Dropdown link</a>
+            </div>
+          </div>
+          <button type="button" class="btn btn-primary">else</button>
+        </div>
+      </div>
+    </div>
     <l-map
       @click="addPoint"
       v-if="showMap"
@@ -243,10 +265,18 @@ export default {
     width: 100vw;
   }
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (min-width: 600px) {
+  .map-area {
+    height: 69rem;
+    width: 100vw;
+  }
+}
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
   .map-area {
-    height: 60rem;
+    height: 69rem;
     width: 100%;
   }
 }

@@ -7,7 +7,7 @@
           class="landing-pTag text-center"
         >This app will change your life! Have you ever lost your secret tree fort? Have you ever lost your house?</p>
         <div v-if="!$auth.isAuthenticated" @click="login" class="btn btn-primary mb-4">Sign Up Now</div>
-        <map-component :interactable="false" />
+        <map-component class="home-map" :interactable="false" />
       </div>
     </div>
   </div>
@@ -43,4 +43,7 @@ export default {
 </script>
 
 <style scoped>
+.home-map {
+  max-height: 62rem;
+}
 </style>

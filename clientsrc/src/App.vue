@@ -1,7 +1,9 @@
 <template>
   <div id="app" class="app bg-light">
     <navbar />
-    <router-view />
+    <transition name="fade">
+      <router-view />
+    </transition>
     <footer class="bg-dark bottom fixed-bottom d-flex flew-row text-light justify-content-center">
       <h6>&copy;</h6>
       <h6>Point Out Inc.</h6>
@@ -31,4 +33,18 @@ export default {
 <style lang="scss">
 @import "./assets/_variables.scss";
 @import "bootstrap";
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s;
+}
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+#app {
+  max-height: 100vh;
+  overflow: hidden;
+}
 </style>
