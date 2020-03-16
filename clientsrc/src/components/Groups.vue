@@ -28,11 +28,7 @@
       <div class="col-12 col-md-4 card mb-3" v-for="group in groupsData" :key="group.id">
         <div class="row">
           <div class="col-md-4 d-md-flex align-items-center">
-            <img
-              :src="group.imageUrl || require('../assets/default-group.png')"
-              class="card-img"
-              alt="..."
-            />
+            <img :src="group.imageUrl || require('../assets/default-group.png')" class="card-img" />
           </div>
           <div class="col-md-8">
             <div class="card-body">
@@ -84,15 +80,18 @@ export default {
     join(group) {
       this.$store.dispatch("joinGroup", {
         group,
-        memberEmail: this.$auth.userInfo.email,
-        myEmail: this.$auth.userInfo.email
+        memberEmail: this.$auth.userInfo.email
       });
     },
     leave(group) {
       this.$store.dispatch("leaveGroup", {
         group,
-        memberEmail: this.$auth.userInfo.email,
-        myEmail: this.$auth.userInfo.email
+        memberEmail: this.$auth.userInfo.email
+      });
+    },
+    deleteGroup(group) {
+      this.$store.dispatch("deleteGroup", {
+        group
       });
     }
   },
