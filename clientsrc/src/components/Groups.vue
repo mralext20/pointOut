@@ -54,8 +54,31 @@
           <!-- end first -->
           <div v-show="edit[group.id]" class="col-md-8">
             <div v-if="editedGroup[group.id]" class="card-body">
-              <input class="card-title" v-model="editedGroup[group.id].title" />
-              <input class="card-text" v-model="editedGroup[group.id].description" />
+              <!-- <input class="card-title" v-model="editedGroup[group.id].title" />
+              <input class="card-text" v-model="editedGroup[group.id].description" />-->
+              <form @submit.prevent="putGroup(group.id)" class="form-group">
+                <input
+                  class="form-inline"
+                  type="text"
+                  v-model="editedGroup[group.id].title"
+                  placeholder="title"
+                />
+                <input
+                  class="form-inline"
+                  type="text"
+                  v-model="editedGroup[group.id].description"
+                  placeholder="description"
+                />
+                <label class="form-check-label" for="public-private-checkbox">public Group</label>
+                <input
+                  class="form-inline"
+                  type="checkbox"
+                  id="public-private-checkbox"
+                  name="Public"
+                  v-model="editedGroup[group.id].public"
+                />
+                <button class="btn btn-primary">submit</button>
+              </form>
               <p class="card-text">
                 <small class="text-muted">Created by {{group.creator.name}}</small>
               </p>
@@ -102,15 +125,19 @@ export default {
   },
   methods: {
     async editGroup(group) {
-      let data = { title: group.title, description: group.description };
+      let data = {
+        title: group.title,
+        description: group.description,
+        public: group.public,
+        id: group.id
+      };
       await Vue.set(this.edit, group.id, !this.edit[group.id]);
       await Vue.set(this.editedGroup, group.id, data);
-      editedGroup[group.id] = {
-        title: group.title,
-        description: group.description
-      };
-      console.log(this.edit[group.id]);
       let title = "";
+    },
+    putGroup(id) {
+      this.$store.dispatch("editGroup", this.editedGroup[id]);
+      Vue.set(this.edit, id, false);
     },
     createGroup() {
       this.$store.dispatch("createGroup", { ...this.newGroup });

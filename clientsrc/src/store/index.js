@@ -22,7 +22,6 @@ export default new Vuex.Store({
     points: [],
     publicGroups: [],
     yourGroups: {},
-    yourPoints: []
   },
   mutations: {
     setProfile(state, profile) {
@@ -46,18 +45,18 @@ export default new Vuex.Store({
       });
 
     },
+    editGroup(state, group) {
+      let index = state.publicGroups.findIndex(g => g.id == group.id);
+      console.log(index)
+      state.publicGroups[index] = group;
+      state.yourGroups[group.id] = group
+      console.log(state.publicGroups)
+    },
     joinGroup(state, group) {
       Vue.set(state.yourGroups, group.id, group)
     },
     LeaveGroup(state, group) {
       Vue.delete(state.yourGroups, group.id)
-    },
-    deleteGroup(state, groupid) {
-      Vue.delete(state.yourGroups, groupid);
-      state.publicGroups = state.publicGroups.filter(g => g.id != groupid)
-    },
-    setYourPoints(state, points) {
-      state.yourPoints = points;
     }
   },
   actions: {
@@ -132,40 +131,32 @@ export default new Vuex.Store({
         console.error(error)
       }
     },
-    async joinGroup({ commit, state }, { group, memberEmail }) {
+    async joinGroup({ commit }, { group, memberEmail, myEmail }) {
       try {
-        await api.post(`groups/${group.id}/members`, { memberEmail })
-        if (state.profile.email == memberEmail) {
+        let res = await api.post(`groups/${group.id}/members`, { memberEmail })
+        if (myEmail == memberEmail) {
           commit("joinGroup", group)
         }
       } catch (error) {
         console.error(error)
       }
     },
-    async leaveGroup({ commit, state }, { group, memberEmail }) {
+    async leaveGroup({ commit }, { group, memberEmail, myEmail }) {
       try {
-        await api.delete(`groups/${group.id}/members/${memberEmail}`)
-        if (state.profile.email == memberEmail) {
+        let res = await api.delete(`groups/${group.id}/members/${memberEmail}`)
+        if (myEmail == memberEmail) {
           commit("LeaveGroup", group)
         }
       } catch (error) {
         console.error(error)
       }
     },
-    async deleteGroup({ commit, state }, { group }) {
+    async editGroup({ commit }, newGroup) {
       try {
-        await api.delete(`/groups/${group.id}`)
-        commit("deleteGroup", group.id)
+        let res = await api.put(`groups/${newGroup.id}`, newGroup)
+        commit("editGroup", res.data)
       } catch (error) {
-
-      }
-    },
-    async getYourPoints({ commit }) {
-      try {
-        let res = await api.get("profile/points");
-        commit("setYourPoints", res.data)
-      } catch (error) {
-
+        console.error(error)
       }
     }
   }
