@@ -97,7 +97,7 @@ import {
 
 export default {
   name: "map-component",
-  props: ["interactable", "points"],
+  props: ["interactable", "points", "center"],
   components: {
     LMap,
     LTileLayer,
@@ -121,7 +121,6 @@ export default {
       bounds: [],
       showMarker: false,
       zoom: 14,
-      center: latLng(43.591, -116.27948),
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',

@@ -7,7 +7,12 @@
           class="landing-pTag text-center"
         >This app will change your life! Have you ever lost your secret tree fort? Have you ever lost your house?</p>
         <div v-if="!$auth.isAuthenticated" @click="login" class="btn btn-primary mb-4">Sign Up Now</div>
-        <map-component ref="mainMap" :interactable="false" :points="points" />
+        <map-component
+          ref="mainMap"
+          :center="{lat: 43.591, lng:-116.27948}"
+          :interactable="false"
+          :points="points"
+        />
       </div>
     </div>
   </div>
@@ -28,7 +33,6 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      debugger;
       this.$store.dispatch(
         "getPointsWithinRegion",
         this.$refs.mainMap.$refs.map.mapObject.getBounds()

@@ -28,6 +28,7 @@
       </div>
       <div class="col-12 map-col d-flex justify-content-center">
         <map-component
+          :center="{lat: 43.591, lng:-116.27948}"
           ref="mainMap"
           @update:bounds="wantToUpdatePoints= true"
           :interactable="true"
