@@ -236,10 +236,6 @@ export default {
   opacity: 0;
 }
 
-div {
-  transition: height 0.3s ease !important;
-}
-
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .map-area {
