@@ -1,6 +1,5 @@
 <template>
   <div class="map-area">
-    <div v-if="showMarker">create</div>
     <l-map
       @click="addPoint; recenter"
       v-if="showMap"
