@@ -144,7 +144,6 @@ export default {
       this.currentZoom = zoom;
     },
     addPoint(event) {
-      debugger;
       this.showMarker = true;
       this.newPoint.location.coordinates[1] = event.latlng.lat;
       this.newPoint.location.coordinates[0] = event.latlng.lng;
