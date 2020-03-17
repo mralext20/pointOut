@@ -3,7 +3,7 @@
     <div v-if="interactable" class="row">
       <div class="col-12 text-center bg-primary">
         <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-primary" @click="centerUpdate">Center on me</button>
+          <button type="button" class="btn btn-primary" @click="centerUpdate">Center On Me</button>
           <div class="btn-group btn-group-sm" role="group">
             <button
               id="btnGroupDrop1"
@@ -28,6 +28,7 @@
       </div>
     </div>
     <l-map
+      @ready="$emit('ready')"
       @update:bounds="wantToUpdatePoints = true"
       @click="addPoint"
       v-if="showMap"
@@ -46,6 +47,7 @@
           :key="point.id"
           :lat-lng="[point.location.coordinates[1], point.location.coordinates[0]]"
         >
+          <l-tooltip>{{ point.title }}</l-tooltip>
           <l-popup>
             <div @click="showParagraph = !showParagraph">
               <h4>{{point.title}}</h4>
@@ -197,7 +199,7 @@ export default {
       this.currentZoom = zoom;
     },
     addPoint(event) {
-      this.showMarker = true;
+      this.showMarker = !this.showMarker;
       this.newPoint.location.coordinates[1] = event.latlng.lat;
       this.newPoint.location.coordinates[0] = event.latlng.lng;
       this.newPoint.lat = event.latlng.lat;
