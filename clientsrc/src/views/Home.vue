@@ -9,7 +9,7 @@
         <div v-if="!$auth.isAuthenticated" @click="login" class="btn btn-primary mb-4">Sign Up Now</div>
         <map-component
           ref="mainMap"
-          :center="{lat: 43.591, lng:-116.27948}"
+          :initialCenter="{lat: 43.591, lng:-116.27948}"
           :interactable="false"
           :ableToUpdate="false"
           :points="points"

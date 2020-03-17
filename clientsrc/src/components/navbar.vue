@@ -26,6 +26,13 @@
           <router-link :to="{ name: 'BigMap' }" class="nav-link">Map</router-link>
         </li>
         <li
+          v-if="$auth.isAuthenticated"
+          class="nav-item"
+          :class="{ active: $route.name == 'browsePoints' }"
+        >
+          <router-link :to="{ name: 'browsePoints' }" class="nav-link">Browse Points</router-link>
+        </li>
+        <li
           class="nav-item"
           v-if="$auth.isAuthenticated"
           :class="{ active: this.$route.path.startsWith('/profile') }"

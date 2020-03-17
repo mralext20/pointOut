@@ -3,13 +3,15 @@
     <div class="card-body">
       <h4 class="card-title">{{pointData.title}}</h4>
       <p class="card-text">{{pointData.description}}</p>
+      <p class="card-text">{{pointData.distance}}</p>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  props: ["pointData"]
+  props: ["pointData", "location"],
+  computed: {}
 };
 </script>
 

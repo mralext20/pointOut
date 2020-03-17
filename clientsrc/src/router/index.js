@@ -8,6 +8,8 @@ import Profile from "../views/Profile.vue";
 import Groups from "../views/Groups.vue";
 // @ts-ignore
 import BigMap from "../views/BigMap.vue";
+// @ts-ignore
+import browsePoints from "../views/BrowsePoints.vue";
 import { authGuard } from "@bcwdev/auth0-vue";
 
 
@@ -53,6 +55,12 @@ const routes = [
     path: "/map",
     name: "BigMap",
     component: BigMap,
+    beforeEnter: authGuard
+  },
+  {
+    path: "/points",
+    name: "browsePoints",
+    component: browsePoints,
     beforeEnter: authGuard
   }
 ];

@@ -12,7 +12,7 @@ let baseUrl = location.host.includes("localhost")
 
 let api = Axios.create({
   baseURL: baseUrl + "api",
-  timeout: 3000,
+  timeout: 30000,
   withCredentials: true
 });
 
@@ -85,6 +85,15 @@ export default new Vuex.Store({
       }
 
       )
+      commit('setPoints', points)
+    },
+    async getPointsWithinRadius({ commit }, data) {
+      let points = await api.get("points", {
+        params: {
+          type: "radius",
+          ...data
+        }
+      })
       commit('setPoints', points)
     },
     async getProfile({ commit }) {
