@@ -87,6 +87,17 @@
                   required
                 />
               </div>
+              <select class="form-control form-control-sm" v-model="newPoint.groupId">
+                <option value disabled selected hidden>Group</option>
+                <option
+                  v-for="groupId in groupsKeys"
+                  :key="groupId"
+                  class="dropdown-item"
+                  href="#"
+                  :value="groupId"
+                  @click.stop
+                >{{yourGroups[groupId].title}}</option>
+              </select>
               <div class="form-group my-1">
                 <div class="form-check">
                   <input
@@ -98,23 +109,8 @@
                 </div>
               </div>
             </div>
-            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-              <button type="submit" class="btn btn-primary btn-sm" @click.stop>+</button>
-              <div class="btn-group" role="group">
-                <button
-                  id="btnGroupDrop1"
-                  type="button"
-                  class="btn btn-primary dropdown-toggle btn-sm"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >Groups</button>
-                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                  <a class="dropdown-item" href="#">Dropdown link</a>
-                  <a class="dropdown-item" href="#">Dropdown link</a>
-                </div>
-              </div>
-            </div>
+
+            <button type="submit" class="btn btn-primary btn-sm" @click.stop>+</button>
           </form>
         </l-tooltip>
       </l-marker>
@@ -166,7 +162,8 @@ export default {
           coordinates: [0, 0]
         },
         lat: 0,
-        lng: 0
+        lng: 0,
+        groupId: ""
       },
       bounds: [],
       showMarker: false,
@@ -218,6 +215,7 @@ export default {
       ]);
     },
     createNewPoint() {
+      debugger;
       this.$store.dispatch("createNewPoint", this.newPoint);
       this.newPoint = {
         title: "",
@@ -228,7 +226,8 @@ export default {
           coordinates: [0, 0]
         },
         lat: 0,
-        lng: 0
+        lng: 0,
+        groupId: ""
       };
     },
     async deletePoint(pointId) {
@@ -244,6 +243,7 @@ export default {
   },
   mounted() {
     this.center = this.initialCenter;
+    this.$store.dispatch("getYourGroups");
   },
   computed: {
     newPointIcon() {
@@ -258,6 +258,12 @@ export default {
     },
     userEmail() {
       return this.$auth.userInfo.email;
+    },
+    yourGroups() {
+      return this.$store.state.yourGroups;
+    },
+    groupsKeys() {
+      return Object.keys(this.$store.state.yourGroups);
     }
   }
 };
