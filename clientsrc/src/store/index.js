@@ -85,6 +85,15 @@ export default new Vuex.Store({
       )
       commit('setPoints', points)
     },
+    async getPointsWithinRadius({ commit }, data) {
+      let points = await api.get("points", {
+        params: {
+          type: "radius",
+          ...data
+        }
+      })
+      commit('setPoints', points)
+    },
     async getProfile({ commit }) {
       try {
         let res = await api.get("profile");
