@@ -59,7 +59,7 @@ class PointService {
   }
 
   async findById(id) {
-    let data = await dbContext.Point.findById(id).populate("averageVote");
+    let data = await dbContext.Point.findById(id).populate("averageVote").populate("creator", "name picture");
     if (!data) {
       throw new BadRequest("Invalid Id");
     }

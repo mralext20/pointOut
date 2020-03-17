@@ -347,6 +347,9 @@ example response:
             "__v": 0,
             "id": "5e6a7840620f1945767918ce"
         },
+        "visits": 2,
+        "voteCount": 1,
+        "averageVote": 5,
         "id": "5e6a9d3fc111837bf43cb50d"
     },
     {
@@ -366,7 +369,9 @@ example response:
             "updatedAt": "2020-03-12T21:22:43.087Z",
             "__v": 0,
             "id": "5e6aa3c94f6fbe85cfc11d37"
-        },
+        }, "visits": 2,
+        "voteCount": 0,
+        "averageVote": null
         "id": "5e6aa3c94f6fbe85cfc11d38"
     }
 ]
@@ -411,13 +416,21 @@ example response:
 
 ```json
 {
+    "description": "a chain home improvement store",
     "public": true,
-    "_id": "5e6a7840620f1945767918ce",
-    "title": "secret group",
-    "description": "a secret!",
+    "_id": "5e695fe057d14a212fc694dd",
+    "title": "Lowes",
+    "location": {
+        "type": "Point",
+        "coordinates": [
+            -116.2820787,
+            43.59224606
+        ],
+        "_id": "5e695fe057d14a212fc694de"
+    },
     "creatorEmail": "...",
-    "createdAt": "2020-03-12T17:58:24.998Z",
-    "updatedAt": "2020-03-12T17:58:24.998Z",
+    "createdAt": "2020-03-11T22:02:08.879Z",
+    "updatedAt": "2020-03-11T22:02:08.879Z",
     "__v": 0,
     "creator": {
         "_id": "5e67f76e62207236c3ec2c26",
@@ -426,7 +439,10 @@ example response:
         "email": "...",
         "id": "5e67f76e62207236c3ec2c26"
     },
-    "id": "5e6a7840620f1945767918ce"
+    "visits": 0,
+    "voteCount": 0,
+    "averageVote": null,
+    "id": "5e695fe057d14a212fc694dd"
 }
 ```
 
@@ -463,6 +479,9 @@ example response:
             "email": "...",
             "id": "5e67f76e62207236c3ec2c26"
         },
+        "visits": 0,
+        "voteCount": 0,
+        "averageVote": null,
         "id": "5e6a5566fbb255174298400a"
     }
 ]
