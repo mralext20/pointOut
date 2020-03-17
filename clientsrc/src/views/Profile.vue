@@ -13,21 +13,21 @@
           :to="{ name: 'Profile groups' }"
           class="nav-link"
           :class="{active:$route.name == 'Profile groups'}"
-        >groups</router-link>
+        >Groups</router-link>
       </li>
       <li class="nav-item">
         <router-link
           :to="{ name: 'Profile visits' }"
           class="nav-link"
           :class="{active:$route.name == 'Profile visits'}"
-        >visits</router-link>
+        >Visits</router-link>
       </li>
       <li class="nav-item">
         <router-link
           :to="{ name: 'Profile points' }"
           class="nav-link"
           :class="{active:$route.name == 'Profile points'}"
-        >points</router-link>
+        >Points</router-link>
       </li>
     </ul>
     <div v-if="$route.name == 'Profile'">
@@ -46,10 +46,10 @@
           <div class="card card-body">
             <form class="form-group" @submit.prevent="updateProfile">
               Name:
-              <input type="text" v-model="storeProfile.name" />
-              picture:
-              <input v-model="storeProfile.picture" />
-              <button type="submit">update</button>
+              <input id="name" type="text" v-model="storeProfile.name" />
+              Picture:
+              <input id="picture" v-model="storeProfile.picture" />
+              <button type="submit">Update</button>
             </form>
           </div>
         </div>
@@ -58,8 +58,7 @@
     <div v-else-if="$route.name == 'Profile groups'">
       <groups :newGroups="false" :groupsData="groups" />
     </div>
-
-    <div v-else-if="$route.name == 'Profile visits'">visits</div>
+    <div v-else-if="$route.name == 'Profile visits'">Visits</div>
     <div class="row" v-else-if="$route.name == 'Profile points'">
       <map-component ref="pointsMap" :points="points" :interactable="true" :ableToUpdate="false" />
       <point v-for="point in points" :pointData="point" :key="point.id" />
