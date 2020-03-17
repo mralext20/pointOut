@@ -22,6 +22,7 @@ export default new Vuex.Store({
     points: [],
     publicGroups: [],
     yourGroups: {},
+    activeGroup: {}
   },
   mutations: {
     setProfile(state, profile) {
@@ -166,7 +167,14 @@ export default new Vuex.Store({
       } catch (error) {
         console.error(error)
       }
-
+    },
+    async getPointsByGroupId({ commit }, groupId) {
+      try {
+        let res = await api.get(`groups/${groupId}/points`)
+        commit("setPoints", res.data)
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 });

@@ -27,7 +27,7 @@
         </form>
       </div>
 
-      <div class="col-12 col-md-4 card mb-3" v-for="group in publicGroups" :key="group.id">
+      <div class="col-12 col-md-4 card mb-3" v-for="group in groupsData" :key="group.id">
         <div class="row">
           <div class="col-md-4 d-md-flex align-items-center">
             <img :src="group.imageUrl || require('../assets/default-group.png')" class="card-img" />
@@ -50,6 +50,9 @@
               <button v-if="yourGroups[group.id]" @click="leave(group)" class="btn btn-danger">leave</button>
               <button v-else class="btn btn-success" @click="join(group)">join</button>
             </div>
+            <router-link :to="{name:'BigMap'}">
+              <p @click="setPoints">Display group's points</p>
+            </router-link>
           </div>
           <!-- end first -->
           <div v-show="edit[group.id]" class="col-md-8">
@@ -101,7 +104,7 @@
 import Vue from "vue";
 export default {
   name: "Groups",
-  props: ["newGroups", "groupsData"],
+  props: ["newGroups", "groupsData", "profileCheck"],
   mounted() {
     this.$store.state.publicGroups.forEach(g => {
       if ((g.creatorEmail = this.$auth.userInfo.email)) {
@@ -160,6 +163,9 @@ export default {
       this.$store.dispatch("deleteGroup", {
         group
       });
+    },
+    setPoints(id) {
+      this.$store.dispatch("getPointsByGroupId", id);
     }
   },
   computed: {
