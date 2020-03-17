@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Public Groups</h1>
-    <group :newGroups="true" :groupsData="groups" />
+    <group :newGroups="true" :profileCheck="false" :groupsData="groups" />
   </div>
 </template>
 

@@ -44,7 +44,7 @@
                 <small class="text-muted">Created by {{group.creator.name}}</small>
               </p>
             </div>
-            <div v-if="group.creator.email == $auth.userInfo.email">
+            <div v-if="group.creatorEmail == $auth.userInfo.email">
               <button class="btn btn-warning" @click="editGroup(group)">edit</button>
               <button class="btn btn-danger" @click="deleteGroup(group)">Delete</button>
             </div>
@@ -52,6 +52,9 @@
               <button v-if="yourGroups[group.id]" @click="leave(group)" class="btn btn-danger">leave</button>
               <button v-else class="btn btn-success" @click="join(group)">join</button>
             </div>
+            <router-link :to="{name:'BigMap'}">
+              <p @click="setPoints">Display group's points</p>
+            </router-link>
           </div>
           <!-- end first -->
           <div v-show="edit[group.id]" class="col-md-8">
@@ -83,7 +86,7 @@
                 <small class="text-muted">Created by {{group.creator.name}}</small>
               </p>
             </div>
-            <div v-if="group.creator.email == $auth.userInfo.email">
+            <div v-if="group.creatorEmail == $auth.userInfo.email">
               <button class="btn btn-warning" @click="editGroup(group)">cancel</button>
               <button class="btn btn-danger" @click="deleteGroup(group)">Delete</button>
             </div>
@@ -103,7 +106,7 @@
 import Vue from "vue";
 export default {
   name: "Groups",
-  props: ["newGroups", "groupsData"],
+  props: ["newGroups", "groupsData", "profileCheck"],
   mounted() {
     this.$store.state.publicGroups.forEach(g => {
       if ((g.creatorEmail = this.$auth.userInfo.email)) {
@@ -133,7 +136,6 @@ export default {
       };
       await Vue.set(this.edit, group.id, !this.edit[group.id]);
       await Vue.set(this.editedGroup, group.id, data);
-      let title = "";
     },
     putGroup(id) {
       this.$store.dispatch("editGroup", this.editedGroup[id]);
@@ -163,11 +165,17 @@ export default {
       this.$store.dispatch("deleteGroup", {
         group
       });
+    },
+    setPoints(id) {
+      this.$store.dispatch("getPointsByGroupId", id);
     }
   },
   computed: {
     yourGroups() {
       return this.$store.state.yourGroups;
+    },
+    publicGroups() {
+      return this.$store.state.publicGroups;
     }
   }
 };

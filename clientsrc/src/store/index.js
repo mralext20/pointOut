@@ -22,7 +22,9 @@ export default new Vuex.Store({
     points: [],
     publicGroups: [],
     yourGroups: {},
+    activeGroup: {},
     yourPoints: [],
+
   },
   mutations: {
     setProfile(state, profile) {
@@ -47,7 +49,7 @@ export default new Vuex.Store({
     },
     editGroup(state, group) {
       let index = state.publicGroups.findIndex(g => g.id == group.id);
-      state.publicGroups[index] = group;
+      Vue.set(state.publicGroups, index, group);
       state.yourGroups[group.id] = group
     },
     joinGroup(state, group) {
@@ -166,10 +168,16 @@ export default new Vuex.Store({
     },
     async deletePoint({ commit }, pointId) {
       try {
-
         let res = await api.delete(`points/${pointId}`)
         commit("deletePoint", pointId)
-
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    async getPointsByGroupId({ commit }, groupId) {
+      try {
+        let res = await api.get(`groups/${groupId}/points`)
+        commit("setPoints", res.data)
       } catch (error) {
         console.error(error)
       }
