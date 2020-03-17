@@ -11,9 +11,9 @@
           ref="mainMap"
           :center="{lat: 43.591, lng:-116.27948}"
           :interactable="false"
+          :ableToUpdate="false"
           :points="points"
         />
-
       </div>
     </div>
   </div>

@@ -41,7 +41,7 @@
 
     <div v-else-if="$route.name == 'Profile visits'">visits</div>
     <div class="row" v-else-if="$route.name == 'Profile points'">
-      <map-component ref="pointsMap" :points="points" :interactable="true" />
+      <map-component ref="pointsMap" :points="points" :interactable="true" :ableToUpdate="false" />
       <point v-for="point in points" :pointData="point" :key="point.id" />
     </div>
   </div>

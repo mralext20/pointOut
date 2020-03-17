@@ -18,12 +18,17 @@
               <a class="dropdown-item" href="#">Dropdown link</a>
             </div>
           </div>
-          <button type="button" class="btn btn-primary">else</button>
+          <button
+            v-if="ableToUpdate && wantToUpdatePoints"
+            @click="$emit('update:points', $refs.map.mapObject.getBounds())"
+            type="button"
+            class="btn btn-danger"
+          >update Points</button>
         </div>
       </div>
     </div>
     <l-map
-      @update:bounds="$emit('update:bounds', $refs.map.mapObject.getBounds())"
+      @update:bounds="wantToUpdatePoints = true"
       @click="addPoint"
       v-if="showMap"
       ref="map"
@@ -122,7 +127,7 @@ import {
 
 export default {
   name: "map-component",
-  props: ["interactable", "points", "center"],
+  props: ["interactable", "points", "initialCenter", "ableToUpdate"],
   components: {
     LMap,
     LTileLayer,
@@ -133,6 +138,7 @@ export default {
   },
   data() {
     return {
+      wantToUpdatePoints: false,
       newPoint: {
         title: "",
         description: "",
@@ -164,7 +170,8 @@ export default {
       showMap: true,
       newPopup: {
         latlng: [43.615, -116.1523]
-      }
+      },
+      center: { lat: 0, lng: 0 }
     };
   },
   methods: {
@@ -217,7 +224,9 @@ export default {
       }
     }
   },
-  mounted() {},
+  mounted() {
+    this.center = this.initialCenter;
+  },
   computed: {
     newPointIcon() {
       return L.icon({
@@ -231,9 +240,6 @@ export default {
     },
     userEmail() {
       return this.$auth.userInfo.email;
-    },
-    myCenter() {
-      navigator.geolocation.getCurrentPosition;
     }
   }
 };
