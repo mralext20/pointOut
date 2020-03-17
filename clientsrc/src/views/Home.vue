@@ -56,6 +56,6 @@ export default {
 
 <style scoped>
 .home-map {
-  max-height: 62rem;
+  max-height: 60rem;
 }
 </style>
