@@ -32,7 +32,7 @@ class GroupService {
     if (!newGroup) {
       throw new BadRequest("Invalid ID or you do not own that group")
     }
-    await newGroup.populate("creator", "name picture email").execPopulate()
+    newGroup.populate("creator", "name picture").execPopulate()
     return newGroup;
   }
   async create(group, email) {
