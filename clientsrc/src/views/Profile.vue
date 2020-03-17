@@ -46,9 +46,9 @@
           <div class="card card-body">
             <form class="form-group" @submit.prevent="updateProfile">
               Name:
-              <input id="name" type="text" v-model="storeProfile.name" />
+              <input id="name" type="text" v-model="editedProfile.name" />
               Picture:
-              <input id="picture" v-model="storeProfile.picture" />
+              <input id="picture" v-model="editedProfile.picture" />
               <button type="submit">Update</button>
             </form>
           </div>
@@ -74,12 +74,11 @@ export default {
   name: "Profile",
   data() {
     return {
-      storeProfile: {
+      edit: {},
+      editedProfile: {
         name: this.$store.state.profile.name,
         picture: this.$store.state.profile.picture
-      },
-      edit: {},
-      editedProfile: {}
+      }
     };
   },
   async mounted() {
@@ -106,15 +105,8 @@ export default {
     MapComponent
   },
   methods: {
-    async updateProfile(editedProfile) {
-      debugger;
-      let data = {
-        name: this.profile.name,
-        picture: this.profile.picture
-      };
-      Vue.set(this.edit, !this.edit);
-      Vue.set(this.editedProfile, editedProfile);
-      this.$store.dispatch("updateProfile", editedProfile);
+    updateProfile() {
+      this.$store.dispatch("updateProfile", this.editedProfile);
     }
   }
 };

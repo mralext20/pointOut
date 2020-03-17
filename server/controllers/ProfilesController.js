@@ -14,7 +14,7 @@ export class ProfilesController extends BaseController {
       .get("/points", this.getPointsByOwner)
       .get("/groups", this.getMyGroups)
 
-      .put("/:id", this.edit);
+      .put("/", this.edit);
   }
   async getUserProfile(req, res, next) {
     try {
@@ -27,23 +27,24 @@ export class ProfilesController extends BaseController {
   async getPointsByOwner(req, res, next) {
     try {
       let data = await pointService.findByOwnerEmail(req.userInfo.email);
-      res.send(data)
+      res.send(data);
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
   async getMyGroups(req, res, next) {
     try {
-      let data = await groupService.findMyGroups(req.userInfo.email)
-      return res.send(data)
+      let data = await groupService.findMyGroups(req.userInfo.email);
+      return res.send(data);
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
   async edit(req, res, next) {
     try {
-      req.body.creatorId = req.user.sub;
-      res.send(req.body);
+      req.body.email = req.userInfo.email;
+      let data = await profilesService.updateProfile(req.userInfo, req.body);
+      res.send(data);
     } catch (error) {
       next(error);
     }

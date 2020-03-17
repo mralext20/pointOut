@@ -2,13 +2,11 @@ import Vue from "vue";
 import Vuex from "vuex";
 import Axios from "axios";
 import router from "../router";
-import NotificationService from "../NotificationService"
+import NotificationService from "../NotificationService";
 
 Vue.use(Vuex);
 
-let baseUrl = location.host.includes("localhost")
-  ? "http://localhost:3000/"
-  : "/";
+let baseUrl = location.host.includes("localhost") ? "http://localhost:3000/" : "/";
 
 let api = Axios.create({
   baseURL: baseUrl + "api",
@@ -25,49 +23,60 @@ export default new Vuex.Store({
     yourPoints: [],
   },
   mutations: {
+    // #region Profile
+
     setProfile(state, profile) {
       state.profile = profile;
     },
+    updateProfile(state, profile) {
+      state.profile.name = profile.name;
+      state.profile.picture = profile.picture;
+    },
+
+    // #endregion
+    // #region Points
+
     setPoints(state, points) {
-      state.points = points.data
+      state.points = points.data;
     },
     addPoint(state, point) {
-      state.points.push(point)
+      state.points.push(point);
     },
+    deletePoint(state, pointId) {
+      state.points = state.points.filter(p => p.id != pointId);
+      state.yourPoints = state.yourPoints.filter(p => p.id != pointId);
+    },
+    setYourPoints(state, points) {
+      state.yourPoints = points;
+    },
+
+    // #endregion
+    // #region Groups
+
     setGroups(state, groups) {
-      state.publicGroups = groups
+      state.publicGroups = groups;
     },
     createGroup(state, group) {
-      state.publicGroups.push(group)
+      state.publicGroups.push(group);
     },
     setYourGroups(state, groups) {
       groups.forEach(group => {
-        Vue.set(state.yourGroups, group.id, group)
+        Vue.set(state.yourGroups, group.id, group);
       });
     },
     editGroup(state, group) {
       let index = state.publicGroups.findIndex(g => g.id == group.id);
       state.publicGroups[index] = group;
-      state.yourGroups[group.id] = group
+      state.yourGroups[group.id] = group;
     },
-    updateProfile(state, profile) {
 
-      state.profile.name = profile.name;
-      state.profile.picture = profile.picture;
-    },
     joinGroup(state, group) {
-      Vue.set(state.yourGroups, group.id, group)
+      Vue.set(state.yourGroups, group.id, group);
     },
     LeaveGroup(state, group) {
-      Vue.delete(state.yourGroups, group.id)
-    },
-    deletePoint(state, pointId) {
-      state.points = state.points.filter(p => p.id != pointId)
-      state.yourPoints = state.yourPoints.filter(p => p.id != pointId)
-    },
-    setYourPoints(state, points) {
-      state.yourPoints = points;
+      Vue.delete(state.yourGroups, group.id);
     }
+    // #endregion
   },
   actions: {
     setBearer({ }, bearer) {
@@ -87,8 +96,8 @@ export default new Vuex.Store({
         }
       }
 
-      )
-      commit('setPoints', points)
+      );
+      commit('setPoints', points);
     },
     async getProfile({ commit }) {
       try {
@@ -100,20 +109,20 @@ export default new Vuex.Store({
     },
     async createNewPoint({ commit }, pointData) {
       try {
-        let res = await api.post("points", pointData)
-        commit("addPoint", res.data)
+        let res = await api.post("points", pointData);
+        commit("addPoint", res.data);
 
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
     async getPublicGroups({ commit, dispatch }) {
       try {
-        let res = await api.get("groups")
+        let res = await api.get("groups");
         commit("setGroups", res.data);
-        dispatch("getYourGroups")
+        dispatch("getYourGroups");
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
     async createGroup({ commit }, newGroup) {
@@ -123,77 +132,80 @@ export default new Vuex.Store({
           commit("createGroup", res.data);
           commit("joinGroup", res.data);
         } else {
-          commit("joinGroup", res.data)
+          commit("joinGroup", res.data);
           if (await NotificationService.confirm("Check out your new group here", 50000)) {
-            router.push({ name: "Profile groups" })
+            router.push({ name: "Profile groups" });
           }
         }
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
     async getYourGroups({ commit }) {
       try {
-        let res = await api.get("profile/groups")
-        let data = res.data.map(membership => membership.group)
-        commit("setYourGroups", data)
+        let res = await api.get("profile/groups");
+        let data = res.data.map(membership => membership.group);
+        commit("setYourGroups", data);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
     async joinGroup({ commit }, { group, memberEmail, myEmail }) {
       try {
-        let res = await api.post(`groups/${group.id}/members`, { memberEmail })
+        let res = await api.post(`groups/${group.id}/members`, { memberEmail });
         if (myEmail == memberEmail) {
-          commit("joinGroup", group)
+          commit("joinGroup", group);
         }
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
     async leaveGroup({ commit }, { group, memberEmail, myEmail }) {
       try {
-        let res = await api.delete(`groups/${group.id}/members/${memberEmail}`)
+        let res = await api.delete(`groups/${group.id}/members/${memberEmail}`);
         if (myEmail == memberEmail) {
-          commit("LeaveGroup", group)
+          commit("LeaveGroup", group);
         }
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
     async editGroup({ commit }, newGroup) {
       try {
-        let res = await api.put(`groups/${newGroup.id}`, newGroup)
-        commit("editGroup", res.data)
+        let res = await api.put(`groups/${newGroup.id}`, newGroup);
+        commit("editGroup", res.data);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
     async updateProfile({ commit, state }, newProfile) {
       try {
-        let res = await api.put(`profile/${state.profile.id}`, newProfile);
-
-        commit("updateProfile", res.data);
+        if (!newProfile.name) {
+          newProfile.name = state.profile.name;
+        }
+        if (!newProfile.picture) {
+          newProfile.picture = state.profile.picture;
+        }
+        let res = await api.put("profile", newProfile);
+        commit("updateProfile", newProfile);
       } catch (error) {
         console.error(error);
       }
     },
     async deletePoint({ commit }, pointId) {
       try {
-
-        let res = await api.delete(`points/${pointId}`)
-        commit("deletePoint", pointId)
-
+        let res = await api.delete(`points/${pointId}`);
+        commit("deletePoint", pointId);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
     async getYourPoints({ commit }) {
       try {
-        let res = await api.get("/profile/points")
-        commit("setYourPoints", res.data)
+        let res = await api.get("/profile/points");
+        commit("setYourPoints", res.data);
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     },
   }
