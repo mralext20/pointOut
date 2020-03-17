@@ -32,6 +32,7 @@ class PointService {
         }
       }
     })
+      .populate("group", "title")
     return data
   }
 
@@ -57,6 +58,7 @@ class PointService {
   }
   async create(object) {
     const document = await dbContext.Point.create(object)
+    await document.populate("group", "title").execPopulate()
     return document
   }
   async edit(id, creatorEmail, update) {

@@ -50,7 +50,10 @@
             <div @click="showParagraph = !showParagraph">
               <h4>{{point.title}}</h4>
               <transition name="fade">
-                <p v-show="showParagraph">{{point.description}}</p>
+                <p v-show="showParagraph">
+                  {{point.description}}
+                  <span v-if="point.group">Group: {{point.group.title}}</span>
+                </p>
               </transition>
               <button
                 v-if="point.creatorEmail == userEmail"
@@ -208,7 +211,6 @@ export default {
       );
     },
     actuallyCenter(location) {
-      console.log(location);
       this.$refs.map.mapObject.panTo([
         location.coords.latitude,
         location.coords.longitude

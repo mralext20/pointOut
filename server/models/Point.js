@@ -39,5 +39,12 @@ Point.virtual("creator", {
   justOne: true
 });
 
+Point.virtual("group", {
+  localField: "groupId",
+  ref: "Group",
+  foreignField: "_id",
+  justOne: true
+})
+
 
 export default Point;
