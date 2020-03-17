@@ -180,7 +180,7 @@ export default {
       this.currentZoom = zoom;
     },
     addPoint(event) {
-      this.showMarker = true;
+      this.showMarker = !this.showMarker;
       this.newPoint.location.coordinates[1] = event.latlng.lat;
       this.newPoint.location.coordinates[0] = event.latlng.lng;
       this.newPoint.lat = event.latlng.lat;
