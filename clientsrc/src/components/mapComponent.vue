@@ -45,6 +45,7 @@
           :key="point.id"
           :lat-lng="[point.location.coordinates[1], point.location.coordinates[0]]"
         >
+          <l-tooltip>{{ point.title }}</l-tooltip>
           <l-popup>
             <div @click="showParagraph = !showParagraph">
               <h4>{{point.title}}</h4>
