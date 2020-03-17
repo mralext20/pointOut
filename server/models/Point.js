@@ -39,6 +39,12 @@ Point.virtual("creator", {
   justOne: true
 });
 
+Point.virtual("group", {
+  localField: "groupId",
+  ref: "Group",
+  foreignField: "_id",
+  justOne: true
+})
 Point.virtual("visits", {
   localField: "_id",
   ref: "Visit",
@@ -58,11 +64,12 @@ Point.virtual("averageVote", {
 })
 
 Point.pre("find", function () {
-  this.populate("visits voteCount")
+  this.populate("visits voteCount").populate("group", "name")
 })
 
 Point.pre("findOne", function () {
-  this.populate("visits voteCount")
+  this.populate("visits voteCount").populate("group", "name")
 })
+
 
 export default Point;
