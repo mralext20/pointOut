@@ -2,7 +2,14 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-12 map-col d-flex justify-content-center">
-        <map-component ref="mainMap" :interactable="true" />
+        <map-component
+          :initialCenter="{lat: 43.591, lng:-116.27948}"
+          ref="mainMap"
+          @update:points="updatePoints"
+          :interactable="true"
+          :ableToUpdate="true"
+          :points="points"
+        />
       </div>
     </div>
   </div>
@@ -16,9 +23,26 @@ export default {
   components: {
     MapComponent
   },
+
+  mounted() {
+    this.$nextTick(() => {
+      this.updatePoints();
+    });
+  },
   methods: {
     centerOnUser() {
       this.$refs.mainMap.centerUpdate();
+    },
+    updatePoints() {
+      this.$store.dispatch(
+        "getPointsWithinRegion",
+        this.$refs.mainMap.$refs.map.mapObject.getBounds()
+      );
+    }
+  },
+  computed: {
+    points() {
+      return this.$store.state.points;
     }
   }
 };

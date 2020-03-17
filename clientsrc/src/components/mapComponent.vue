@@ -18,39 +18,48 @@
               <a class="dropdown-item" href="#">Dropdown link</a>
             </div>
           </div>
-          <button type="button" class="btn btn-primary">else</button>
+          <button
+            v-if="ableToUpdate && wantToUpdatePoints"
+            @click="$emit('update:points', $refs.map.mapObject.getBounds()); wantToUpdatePoints = false"
+            type="button"
+            class="btn btn-danger"
+          >update Points</button>
         </div>
       </div>
     </div>
     <l-map
+      @update:bounds="wantToUpdatePoints = true"
       @click="addPoint"
       v-if="showMap"
       ref="map"
+      :bounds.sync="bounds"
       :zoom="zoom"
       :center="center"
       :options="mapOptions"
       style="height: 80%"
     >
       <l-tile-layer :url="url" :attribution="attribution" />
-      <l-marker
-        v-for="(point) in points"
-        :key="point.id"
-        :lat-lng="[point.location.coordinates[1], point.location.coordinates[0]]"
-      >
-        <l-popup>
-          <div @click="showParagraph = !showParagraph">
-            <h4>{{point.title}}</h4>
-            <transition name="fade">
-              <p v-show="showParagraph">{{point.description}}</p>
-            </transition>
-            <button
-              v-if="point.creatorEmail == userEmail"
-              class="btn btn-info btn-sm"
-              @click="deletePoint(point.id)"
-            >DELETE</button>
-          </div>
-        </l-popup>
-      </l-marker>
+      <l-feature-group ref="points">
+        <l-marker
+          v-for="(point) in points"
+          :key="point.id"
+          :lat-lng="[point.location.coordinates[1], point.location.coordinates[0]]"
+        >
+          <l-popup>
+            <div @click="showParagraph = !showParagraph">
+              <h4>{{point.title}}</h4>
+              <transition name="fade">
+                <p v-show="showParagraph">{{point.description}}</p>
+              </transition>
+              <button
+                v-if="point.creatorEmail == userEmail"
+                class="btn btn-info btn-sm"
+                @click="deletePoint(point.id)"
+              >DELETE</button>
+            </div>
+          </l-popup>
+        </l-marker>
+      </l-feature-group>
       <l-marker
         :icon="newPointIcon"
         v-if="showMarker && $auth.isAuthenticated && interactable"
@@ -112,21 +121,24 @@ import {
   LMarker,
   LPopup,
   LTooltip,
-  LIcon
+  LIcon,
+  LFeatureGroup
 } from "vue2-leaflet";
 
 export default {
   name: "map-component",
-  props: ["interactable"],
+  props: ["interactable", "points", "initialCenter", "ableToUpdate"],
   components: {
     LMap,
     LTileLayer,
     LMarker,
     LPopup,
-    LTooltip
+    LTooltip,
+    LFeatureGroup
   },
   data() {
     return {
+      wantToUpdatePoints: false,
       newPoint: {
         title: "",
         description: "",
@@ -138,16 +150,13 @@ export default {
         lat: 0,
         lng: 0
       },
+      bounds: [],
       showMarker: false,
       zoom: 14,
-      center: latLng(43.591, -116.27948),
       url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
       attribution:
         '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-      withPopup: latLng(43.615, -116.2023),
-      withTooltip: latLng(43.615, -116.2023),
       currentZoom: 10,
-      currentCenter: latLng(43.615, -116.2023),
       showParagraph: false,
       map: LMap,
       mapOptions: {
@@ -161,7 +170,8 @@ export default {
       showMap: true,
       newPopup: {
         latlng: [43.615, -116.1523]
-      }
+      },
+      center: { lat: 0, lng: 0 }
     };
   },
   methods: {
@@ -203,7 +213,6 @@ export default {
         lng: 0
       };
     },
-
     async deletePoint(pointId) {
       if (
         await NotificationService.confirmAction(
@@ -216,12 +225,7 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() => {
-      let bounds = this.$refs.map.mapObject.getBounds();
-      this.$store.dispatch("getPointsWithinRegion", bounds);
-    });
-    console.log(this.map);
-    this.specialBounds = this.$refs.map.mapObject.getBounds();
+    this.center = this.initialCenter;
   },
   computed: {
     newPointIcon() {
@@ -234,14 +238,8 @@ export default {
         shadowSize: [41, 41]
       });
     },
-    points() {
-      return this.$store.state.points;
-    },
     userEmail() {
       return this.$auth.userInfo.email;
-    },
-    myCenter() {
-      navigator.geolocation.getCurrentPosition;
     }
   }
 };
