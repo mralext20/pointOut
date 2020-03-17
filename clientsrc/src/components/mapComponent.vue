@@ -3,7 +3,7 @@
     <div v-if="interactable" class="row">
       <div class="col-12 text-center bg-primary">
         <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-primary" @click="centerUpdate">Center on me</button>
+          <button type="button" class="btn btn-primary" @click="centerUpdate">Center On Me</button>
           <div class="btn-group btn-group-sm" role="group">
             <button
               id="btnGroupDrop1"
