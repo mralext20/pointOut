@@ -230,7 +230,7 @@ export default {
         },
         lat: 0,
         lng: 0,
-        groupId: ""
+        groupId: undefined
       };
     },
     async deletePoint(pointId) {
