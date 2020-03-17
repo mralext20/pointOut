@@ -36,8 +36,10 @@
           <div v-if="!edit[group.id]" class="col-md-8">
             <div class="card-body">
               <h5 class="card-title">{{group.title}}</h5>
-              <span v-if="group.public" class="badge badge-secondary">Public</span>
-              <span v-else class="badge badge-primary">Private</span>
+              <div v-if="$route.name != 'Groups'">
+                <span v-if="group.public" class="badge badge-secondary">Public</span>
+                <span v-else class="badge badge-primary">Private</span>
+              </div>
               <p class="card-text">{{group.description}}</p>
 
               <p class="card-text">

@@ -13,33 +13,52 @@
           :to="{ name: 'Profile groups' }"
           class="nav-link"
           :class="{active:$route.name == 'Profile groups'}"
-        >groups</router-link>
+        >Groups</router-link>
       </li>
       <li class="nav-item">
         <router-link
           :to="{ name: 'Profile visits' }"
           class="nav-link"
           :class="{active:$route.name == 'Profile visits'}"
-        >visits</router-link>
+        >Visits</router-link>
       </li>
       <li class="nav-item">
         <router-link
           :to="{ name: 'Profile points' }"
           class="nav-link"
           :class="{active:$route.name == 'Profile points'}"
-        >points</router-link>
+        >Points</router-link>
       </li>
     </ul>
     <div v-if="$route.name == 'Profile'">
-      <h1>Welcome, {{ profile.name }}</h1>
-      <img class="rounded" :src="profile.picture" alt />
-      <p>{{ profile.email }}</p>
+      <div class="jumbotron">
+        <img class="rounded mb-3" :src="profile.picture" alt />
+        <h3 class="display-6">Welcome, {{ profile.name }}</h3>
+        <p class="lead">{{ profile.email }}</p>
+        <hr class="my-4" />
+        <a
+          class="btn btn-primary btn-sm"
+          data-toggle="collapse"
+          href="#collapseEdit"
+          role="button"
+        >Edit Profile</a>
+        <div class="collapse mt-2" id="collapseEdit">
+          <div class="card card-body">
+            <form class="form-group" @submit.prevent="updateProfile">
+              Name:
+              <input id="name" type="text" v-model="editedProfile.name" />
+              Picture:
+              <input id="picture" v-model="editedProfile.picture" />
+              <button type="submit">Update</button>
+            </form>
+          </div>
+        </div>
+      </div>
     </div>
     <div v-else-if="$route.name == 'Profile groups'">
       <groups :newGroups="false" :groupsData="groups" />
     </div>
-
-    <div v-else-if="$route.name == 'Profile visits'">visits</div>
+    <div v-else-if="$route.name == 'Profile visits'">Visits</div>
     <div class="row" v-else-if="$route.name == 'Profile points'">
       <map-component
         @ready="fitBounds"
@@ -59,6 +78,15 @@ import Point from "../components/Point";
 import MapComponent from "../components/mapComponent";
 export default {
   name: "Profile",
+  data() {
+    return {
+      edit: {},
+      editedProfile: {
+        name: this.$store.state.profile.name,
+        picture: this.$store.state.profile.picture
+      }
+    };
+  },
   async mounted() {
     this.$store.dispatch("getYourGroups");
     await this.$store.dispatch("getYourPoints");
@@ -83,6 +111,10 @@ export default {
     MapComponent
   },
   methods: {
+
+    updateProfile() {
+      this.$store.dispatch("updateProfile", this.editedProfile);
+    },
     fitBounds() {
       this.$refs.pointsMap.$refs.map.mapObject.fitBounds(
         this.$refs.pointsMap.$refs.points.mapObject.getBounds()

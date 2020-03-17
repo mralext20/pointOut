@@ -19,7 +19,7 @@ export class PointsController extends BaseController {
       .use(auth0Provider.getAuthorizedUserInfo)
       .post("", this.create)
       .put("/:id", this.edit)
-      .delete("/:id", this.delete)
+      .delete("/:id", this.delete);
 
   }
   async getAll(req, res, next) {
@@ -36,6 +36,7 @@ export class PointsController extends BaseController {
             parseFloat(req.query.radius));
           break;
         default:
+
           rawData = await pointService.findAll()
           break;
       }
@@ -63,8 +64,8 @@ export class PointsController extends BaseController {
   async getVisitsByPointId(req, res, next) {
     try {
 
-      let data = await visitsService.getVisitsByPointId(req.params.id)
-      return res.send({ visits: data })
+      let data = await visitsService.getVisitsByPointId(req.params.id);
+      return res.send({ visits: data });
     }
     catch (error) {
       next(error);
@@ -73,7 +74,7 @@ export class PointsController extends BaseController {
 
   async getVoteAverageByPointId(req, res, next) {
     try {
-      let data = await votesService.getVoteAverageByPointId(req.params.id)
+      let data = await votesService.getVoteAverageByPointId(req.params.id);
       return res.send(data);
     } catch (error) {
       next(error);
@@ -81,38 +82,40 @@ export class PointsController extends BaseController {
   }
   async getById(req, res, next) {
     try {
-      let data = await pointService.findById(req.params.id)
+      let data = await pointService.findById(req.params.id);
+      return res.send(data);
 
+      let data = await pointService.findById(req.params.id);
       return res.send(data)
+
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
   async create(req, res, next) {
     try {
       // NOTE NEVER TRUST THE CLIENT TO ADD THE CREATOR ID
       req.body.creatorEmail = req.userInfo.email;
-      const created = await pointService.create(req.body)
-      res.send(created);
+      const created = await pointService.create(req.body);
     } catch (error) {
       next(error);
     }
   }
   async edit(req, res, next) {
     try {
-      const data = await pointService.edit(req.params.id, req.userInfo.email, req.body)
-      res.send(data)
+      const data = await pointService.edit(req.params.id, req.userInfo.email, req.body);
+      res.send(data);
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 
   async delete(req, res, next) {
     try {
-      await pointService.delete(req.params.id, req.userInfo.email)
-      res.send("Visit sucessfully deleted.")
+      await pointService.delete(req.params.id, req.userInfo.email);
+      res.send("Visit sucessfully deleted.");
     } catch (error) {
-      next(error)
+      next(error);
     }
   }
 }
