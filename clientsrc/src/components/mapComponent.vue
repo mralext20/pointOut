@@ -20,7 +20,7 @@
           </div>
           <button
             v-if="ableToUpdate && wantToUpdatePoints"
-            @click="$emit('update:points', $refs.map.mapObject.getBounds())"
+            @click="$emit('update:points', $refs.map.mapObject.getBounds()); wantToUpdatePoints = false"
             type="button"
             class="btn btn-danger"
           >update Points</button>
