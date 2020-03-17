@@ -64,11 +64,11 @@ Point.virtual("averageVote", {
 })
 
 Point.pre("find", function () {
-  this.populate("visits voteCount").populate("group", "name")
+  this.populate("visits voteCount").populate("group", "title")
 })
 
 Point.pre("findOne", function () {
-  this.populate("visits voteCount").populate("group", "name")
+  this.populate("visits voteCount").populate("group", "title")
 })
 
 

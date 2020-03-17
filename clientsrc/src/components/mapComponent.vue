@@ -93,7 +93,8 @@
                 />
               </div>
               <select class="form-control form-control-sm" v-model="newPoint.groupId">
-                <option value disabled selected hidden>Group</option>
+                <option selected hidden>Group</option>
+                <option class="dropdow-item" :value="undefined" @click.stop>No Group</option>
                 <option
                   v-for="groupId in groupsKeys"
                   :key="groupId"
@@ -167,7 +168,7 @@ export default {
         },
         lat: 0,
         lng: 0,
-        groupId: ""
+        groupId: undefined
       },
       bounds: [],
       showMarker: false,
