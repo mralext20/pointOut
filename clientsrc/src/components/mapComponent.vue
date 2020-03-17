@@ -92,18 +92,21 @@
                   required
                 />
               </div>
-              <select class="form-control form-control-sm" v-model="newPoint.groupId">
-                <option selected hidden>Group</option>
-                <option class="dropdow-item" :value="undefined" @click.stop>No Group</option>
-                <option
-                  v-for="groupId in groupsKeys"
-                  :key="groupId"
-                  class="dropdown-item"
-                  href="#"
-                  :value="groupId"
-                  @click.stop
-                >{{yourGroups[groupId].title}}</option>
-              </select>
+              <div class="form-group my-1">
+                <select class="form-control form-control-sm" v-model="newPoint.groupId">
+                  <option selected hidden>Group</option>
+                  <option class="dropdow-item" :value="undefined" @click.stop>No Group</option>
+                  <option
+                    v-for="groupId in groupsKeys"
+                    :key="groupId"
+                    class="dropdown-item"
+                    href="#"
+                    :value="groupId"
+                    @click.stop
+                  >{{yourGroups[groupId].title}}</option>
+                </select>
+              </div>
+
               <div class="form-group my-1">
                 <div class="form-check">
                   <input
