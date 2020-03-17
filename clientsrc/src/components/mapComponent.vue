@@ -37,6 +37,7 @@
       :center="center"
       :options="mapOptions"
       style="height: 80%"
+      class="leaflet-map"
     >
       <l-tile-layer :url="url" :attribution="attribution" />
       <l-feature-group ref="points">
@@ -66,8 +67,8 @@
         :lat-lng="[newPoint.lat, newPoint.lng]"
       >
         <l-tooltip :options="{ permanent: true, interactive: true }">
-          <div @click.stop>
-            <form @submit.prevent="createNewPoint">
+          <form @submit.prevent="createNewPoint">
+            <div @click.stop>
               <div class="form-group my-1">
                 <input
                   class="form-control form-control-sm"
@@ -83,6 +84,7 @@
                   type="text"
                   placeholder="Description..."
                   v-model="newPoint.description"
+                  required
                 />
               </div>
               <div class="form-group my-1">
@@ -95,9 +97,25 @@
                   <label class="form-check-label" for="gridCheck">Private Point</label>
                 </div>
               </div>
-              <button class="btn btn-sm btn-primary" type="submit">+</button>
-            </form>
-          </div>
+            </div>
+            <div class="btn-group" role="group" aria-label="Button group with nested dropdown">
+              <button type="submit" class="btn btn-primary btn-sm" @click.stop>+</button>
+              <div class="btn-group" role="group">
+                <button
+                  id="btnGroupDrop1"
+                  type="button"
+                  class="btn btn-primary dropdown-toggle btn-sm"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >Groups</button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                  <a class="dropdown-item" href="#">Dropdown link</a>
+                  <a class="dropdown-item" href="#">Dropdown link</a>
+                </div>
+              </div>
+            </div>
+          </form>
         </l-tooltip>
       </l-marker>
     </l-map>
@@ -285,5 +303,9 @@ export default {
 
 .map-component {
   height: 100%;
+}
+
+.leaflet-map {
+  cursor: pointer;
 }
 </style>
