@@ -31,9 +31,21 @@
       </li>
     </ul>
     <div v-if="$route.name == 'Profile'">
-      <h1>Welcome, {{ profile.name }}</h1>
-      <img class="rounded" :src="profile.picture" alt />
-      <p>{{ profile.email }}</p>
+      <div class="jumbotron">
+        <img class="rounded mb-3" :src="profile.picture" alt />
+        <h3 class="display-6">Welcome, {{ profile.name }}</h3>
+        <p class="lead">{{ profile.email }}</p>
+        <hr class="my-4" />
+        <a
+          class="btn btn-primary btn-lg"
+          data-toggle="collapse"
+          href="#collapseEdit"
+          role="button"
+        >Edit Profile</a>
+        <div class="collapse" id="collapseEdit">
+          <div class="card card-body">Nickname: Picture:</div>
+        </div>
+      </div>
     </div>
     <div v-else-if="$route.name == 'Profile groups'">
       <groups :newGroups="false" :groupsData="groups" />
