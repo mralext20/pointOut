@@ -58,7 +58,11 @@ Point.virtual("averageVote", {
 })
 
 Point.pre("find", function () {
-  this.populate("visits voteCount averageVote")
+  this.populate("visits voteCount")
+})
+
+Point.pre("findOne", function () {
+  this.populate("visits voteCount")
 })
 
 export default Point;
