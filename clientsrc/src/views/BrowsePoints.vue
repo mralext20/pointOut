@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <point v-for="point in points" :key="point.id" :pointData="point" />
+    <point v-for="point in points" :key="point.id" :location="location" :pointData="point" />
   </div>
 </template>
 

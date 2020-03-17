@@ -2,8 +2,9 @@ import express from "express";
 import BaseController from "../utils/BaseController";
 import { pointService } from "../services/PointsService";
 import { visitsService } from "../services/VisitsService";
-import { votesService } from "../services/VotesService"
+import { votesService } from "../services/VotesService";
 import auth0Provider from "@bcwdev/auth0provider";
+import distance from "../utils/distance";
 
 export class PointsController extends BaseController {
   constructor() {
@@ -45,9 +46,15 @@ export class PointsController extends BaseController {
           average += vote.vote
         })
         point.averageVote = average / point.voteCount
+        if (req.query.type == 'radius') {
+          point.distance = distance(req.query.latitude, req.query.longitude, point.location.coordinates[1], point.location.coordinates[0])
+        }
         return point
       })
 
+      if (req.query.type == 'radius') {
+        data.sort((a, b) => a.distance - b.distance)
+      }
       res.send(data)
     } catch (error) {
       next(error);
