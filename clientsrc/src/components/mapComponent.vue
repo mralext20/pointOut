@@ -45,6 +45,7 @@
           :key="point.id"
           :lat-lng="[point.location.coordinates[1], point.location.coordinates[0]]"
         >
+          <l-tooltip>{{ point.title }}</l-tooltip>
           <l-popup>
             <div @click="showParagraph = !showParagraph">
               <h4>{{point.title}}</h4>
@@ -179,7 +180,7 @@ export default {
       this.currentZoom = zoom;
     },
     addPoint(event) {
-      this.showMarker = true;
+      this.showMarker = !this.showMarker;
       this.newPoint.location.coordinates[1] = event.latlng.lat;
       this.newPoint.location.coordinates[0] = event.latlng.lng;
       this.newPoint.lat = event.latlng.lat;

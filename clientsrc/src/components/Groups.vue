@@ -36,6 +36,8 @@
           <div v-if="!edit[group.id]" class="col-md-8">
             <div class="card-body">
               <h5 class="card-title">{{group.title}}</h5>
+              <span v-if="group.public" class="badge badge-secondary">Public</span>
+              <span v-else class="badge badge-primary">Private</span>
               <p class="card-text">{{group.description}}</p>
 
               <p class="card-text">
@@ -54,8 +56,6 @@
           <!-- end first -->
           <div v-show="edit[group.id]" class="col-md-8">
             <div v-if="editedGroup[group.id]" class="card-body">
-              <!-- <input class="card-title" v-model="editedGroup[group.id].title" />
-              <input class="card-text" v-model="editedGroup[group.id].description" />-->
               <form @submit.prevent="putGroup(group.id)" class="form-group">
                 <input
                   class="form-inline"
