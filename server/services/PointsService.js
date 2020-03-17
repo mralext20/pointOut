@@ -6,12 +6,22 @@ class PointService {
     let data = await dbContext.Point.find(query).populate(
       "creator",
       "name picture"
-    );
+    ).populate("averageVote");
     return data;
   }
 
   async findByOwnerEmail(creatorEmail) {
-    return await dbContext.Point.find({ creatorEmail })
+    let rawData = await dbContext.Point.find({ creatorEmail }).populate("averageVote")
+    let data = rawData.map(point => {
+      point = point.toJSON()
+      let average = 0
+      point.averageVote.forEach(vote => {
+        average += vote.vote
+      })
+      point.averageVote = average / point.voteCount
+      return point
+    })
+    return data
   }
 
   async findWithinRegion(x1, y1, x2, y2) {
@@ -31,7 +41,7 @@ class PointService {
           $geometry: region
         }
       }
-    })
+    }).populate("averageVote")
     return data
   }
 
@@ -44,19 +54,26 @@ class PointService {
             distanceInMiles / 3963.2] // mines to radians
         }
       }
-    })
+    }).populate("averageVote")
     return data
   }
 
   async findById(id) {
-    let data = await dbContext.Point.findById(id);
+    let data = await dbContext.Point.findById(id).populate("averageVote").populate("creator", "name picture");
     if (!data) {
       throw new BadRequest("Invalid Id");
     }
+    data = data.toJSON()
+    let average = 0;
+    data.averageVote.forEach(vote => {
+      average += vote.vote
+    })
+    data.averageVote = average / data.voteCount
     return data;
   }
   async create(object) {
     const document = await dbContext.Point.create(object)
+    await document.populate("group", "title").execPopulate()
     return document
   }
   async edit(id, creatorEmail, update) {

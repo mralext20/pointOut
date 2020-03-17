@@ -23,21 +23,31 @@ export class PointsController extends BaseController {
   }
   async getAll(req, res, next) {
     try {
-      let data;
+      let rawData;
       switch (req.query.type) {
         case "region":
-          data = await pointService.findWithinRegion(req.query.x1, req.query.y1, req.query.x2, req.query.y2)
+          rawData = await pointService.findWithinRegion(req.query.x1, req.query.y1, req.query.x2, req.query.y2)
           break;
         case "radius":
-          data = await pointService.findWithinRadius(
+          rawData = await pointService.findWithinRadius(
             parseFloat(req.query.longitude),
             parseFloat(req.query.latitude),
             parseFloat(req.query.radius));
           break;
         default:
-          data = await pointService.findAll()
+          rawData = await pointService.findAll()
           break;
       }
+      let data = rawData.map(point => {
+        point = point.toJSON()
+        let average = 0
+        point.averageVote.forEach(vote => {
+          average += vote.vote
+        })
+        point.averageVote = average / point.voteCount
+        return point
+      })
+
       res.send(data)
     } catch (error) {
       next(error);
@@ -65,6 +75,7 @@ export class PointsController extends BaseController {
   async getById(req, res, next) {
     try {
       let data = await pointService.findById(req.params.id)
+
       return res.send(data)
     } catch (error) {
       next(error)

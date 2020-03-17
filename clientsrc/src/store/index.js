@@ -22,7 +22,9 @@ export default new Vuex.Store({
     points: [],
     publicGroups: [],
     yourGroups: {},
-    activeGroup: {}
+    activeGroup: {},
+    yourPoints: [],
+
   },
   mutations: {
     setProfile(state, profile) {
@@ -58,6 +60,10 @@ export default new Vuex.Store({
     },
     deletePoint(state, pointId) {
       state.points = state.points.filter(p => p.id != pointId)
+      state.yourPoints = state.yourPoints.filter(p => p.id != pointId)
+    },
+    setYourPoints(state, points) {
+      state.yourPoints = points;
     }
   },
   actions: {
@@ -175,6 +181,14 @@ export default new Vuex.Store({
       } catch (error) {
         console.error(error)
       }
-    }
+    },
+    async getYourPoints({ commit }) {
+      try {
+        let res = await api.get("/profile/points")
+        commit("setYourPoints", res.data)
+      } catch (error) {
+        console.error(error)
+      }
+    },
   }
 });
