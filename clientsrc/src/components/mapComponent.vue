@@ -3,7 +3,7 @@
     <div v-if="interactable" class="row">
       <div class="col-12 text-center bg-primary">
         <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-          <button type="button" class="btn btn-primary" @click="centerUpdate">Center on me</button>
+          <button type="button" class="btn btn-primary" @click="centerUpdate">Center On Me</button>
           <div class="btn-group btn-group-sm" role="group">
             <button
               id="btnGroupDrop1"
@@ -22,12 +22,13 @@
             v-if="ableToUpdate && wantToUpdatePoints"
             @click="$emit('update:points', $refs.map.mapObject.getBounds()); wantToUpdatePoints = false"
             type="button"
-            class="btn btn-danger"
-          >update Points</button>
+            class="btn btn-primary"
+          >Update Points</button>
         </div>
       </div>
     </div>
     <l-map
+      @ready="$emit('ready')"
       @update:bounds="wantToUpdatePoints = true"
       @click="addPoint"
       v-if="showMap"
@@ -37,6 +38,7 @@
       :center="center"
       :options="mapOptions"
       style="height: 80%"
+      class="leaflet-map"
     >
       <l-tile-layer :url="url" :attribution="attribution" />
       <l-feature-group ref="points">
@@ -50,7 +52,10 @@
             <div @click="showParagraph = !showParagraph">
               <h4>{{point.title}}</h4>
               <transition name="fade">
-                <p v-show="showParagraph">{{point.description}}</p>
+                <p v-show="showParagraph">
+                  {{point.description}}
+                  <span v-if="point.group">Group: {{point.group.title}}</span>
+                </p>
               </transition>
               <button
                 v-if="point.creatorEmail == userEmail"
@@ -67,8 +72,8 @@
         :lat-lng="[newPoint.lat, newPoint.lng]"
       >
         <l-tooltip :options="{ permanent: true, interactive: true }">
-          <div @click.stop>
-            <form @submit.prevent="createNewPoint">
+          <form @submit.prevent="createNewPoint">
+            <div @click.stop>
               <div class="form-group my-1">
                 <input
                   class="form-control form-control-sm"
@@ -84,8 +89,24 @@
                   type="text"
                   placeholder="Description..."
                   v-model="newPoint.description"
+                  required
                 />
               </div>
+              <div class="form-group my-1">
+                <select class="form-control form-control-sm" v-model="newPoint.groupId">
+                  <option selected hidden>Group</option>
+                  <option class="dropdow-item" :value="undefined" @click.stop>No Group</option>
+                  <option
+                    v-for="groupId in groupsKeys"
+                    :key="groupId"
+                    class="dropdown-item"
+                    href="#"
+                    :value="groupId"
+                    @click.stop
+                  >{{yourGroups[groupId].title}}</option>
+                </select>
+              </div>
+
               <div class="form-group my-1">
                 <div class="form-check">
                   <input
@@ -96,9 +117,9 @@
                   <label class="form-check-label" for="gridCheck">Private Point</label>
                 </div>
               </div>
-              <button class="btn btn-sm btn-primary" type="submit">+</button>
-            </form>
-          </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm" @click.stop>+</button>
+          </form>
         </l-tooltip>
       </l-marker>
     </l-map>
@@ -149,7 +170,8 @@ export default {
           coordinates: [0, 0]
         },
         lat: 0,
-        lng: 0
+        lng: 0,
+        groupId: undefined
       },
       bounds: [],
       showMarker: false,
@@ -194,7 +216,6 @@ export default {
       );
     },
     actuallyCenter(location) {
-      console.log(location);
       this.$refs.map.mapObject.panTo([
         location.coords.latitude,
         location.coords.longitude
@@ -211,7 +232,8 @@ export default {
           coordinates: [0, 0]
         },
         lat: 0,
-        lng: 0
+        lng: 0,
+        groupId: undefined
       };
     },
     async deletePoint(pointId) {
@@ -227,6 +249,7 @@ export default {
   },
   mounted() {
     this.center = this.initialCenter;
+    this.$store.dispatch("getYourGroups");
   },
   computed: {
     newPointIcon() {
@@ -241,6 +264,12 @@ export default {
     },
     userEmail() {
       return this.$auth.userInfo.email;
+    },
+    yourGroups() {
+      return this.$store.state.yourGroups;
+    },
+    groupsKeys() {
+      return Object.keys(this.$store.state.yourGroups);
     }
   }
 };
@@ -286,5 +315,9 @@ export default {
 
 .map-component {
   height: 100%;
+}
+
+.leaflet-map {
+  cursor: pointer;
 }
 </style>

@@ -4,6 +4,7 @@ import { pointService } from "../services/PointsService";
 import { visitsService } from "../services/VisitsService";
 import { votesService } from "../services/VotesService";
 import auth0Provider from "@bcwdev/auth0provider";
+import distance from "../utils/distance";
 
 export class PointsController extends BaseController {
   constructor() {
@@ -23,22 +24,39 @@ export class PointsController extends BaseController {
   }
   async getAll(req, res, next) {
     try {
-      let data;
+      let rawData;
       switch (req.query.type) {
         case "region":
-          data = await pointService.findWithinRegion(req.query.x1, req.query.y1, req.query.x2, req.query.y2);
+          rawData = await pointService.findWithinRegion(req.query.x1, req.query.y1, req.query.x2, req.query.y2)
           break;
         case "radius":
-          data = await pointService.findWithinRadius(
+          rawData = await pointService.findWithinRadius(
             parseFloat(req.query.longitude),
             parseFloat(req.query.latitude),
             parseFloat(req.query.radius));
           break;
         default:
-          data = await pointService.findAll();
+
+          rawData = await pointService.findAll()
           break;
       }
-      res.send(data);
+      let data = rawData.map(point => {
+        point = point.toJSON()
+        let average = 0
+        point.averageVote.forEach(vote => {
+          average += vote.vote
+        })
+        point.averageVote = average / point.voteCount
+        if (req.query.type == 'radius') {
+          point.distance = distance(req.query.latitude, req.query.longitude, point.location.coordinates[1], point.location.coordinates[0])
+        }
+        return point
+      })
+
+      if (req.query.type == 'radius') {
+        data.sort((a, b) => a.distance - b.distance)
+      }
+      res.send(data)
     } catch (error) {
       next(error);
     }
@@ -66,6 +84,10 @@ export class PointsController extends BaseController {
     try {
       let data = await pointService.findById(req.params.id);
       return res.send(data);
+
+      let data = await pointService.findById(req.params.id);
+      return res.send(data)
+
     } catch (error) {
       next(error);
     }

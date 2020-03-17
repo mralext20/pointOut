@@ -10,7 +10,7 @@ let baseUrl = location.host.includes("localhost") ? "http://localhost:3000/" : "
 
 let api = Axios.create({
   baseURL: baseUrl + "api",
-  timeout: 3000,
+  timeout: 30000,
   withCredentials: true
 });
 
@@ -20,7 +20,9 @@ export default new Vuex.Store({
     points: [],
     publicGroups: [],
     yourGroups: {},
+    activeGroup: {},
     yourPoints: [],
+
   },
   mutations: {
     // #region Profile
@@ -66,8 +68,8 @@ export default new Vuex.Store({
     },
     editGroup(state, group) {
       let index = state.publicGroups.findIndex(g => g.id == group.id);
-      state.publicGroups[index] = group;
-      state.yourGroups[group.id] = group;
+      Vue.set(state.publicGroups, index, group);
+      Vue.set(state.yourGroups, group.id, group);
     },
 
     joinGroup(state, group) {
@@ -98,6 +100,15 @@ export default new Vuex.Store({
 
       );
       commit('setPoints', points);
+    },
+    async getPointsWithinRadius({ commit }, data) {
+      let points = await api.get("points", {
+        params: {
+          type: "radius",
+          ...data
+        }
+      })
+      commit('setPoints', points)
     },
     async getProfile({ commit }) {
       try {
@@ -194,8 +205,16 @@ export default new Vuex.Store({
     },
     async deletePoint({ commit }, pointId) {
       try {
-        let res = await api.delete(`points/${pointId}`);
-        commit("deletePoint", pointId);
+        let res = await api.delete(`points/${pointId}`)
+        commit("deletePoint", pointId)
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    async getPointsByGroupId({ commit }, groupId) {
+      try {
+        let res = await api.get(`groups/${groupId}/points`)
+        commit("setPoints", res.data)
       } catch (error) {
         console.error(error);
       }
