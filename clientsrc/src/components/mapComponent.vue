@@ -219,7 +219,6 @@ export default {
       ]);
     },
     createNewPoint() {
-      debugger;
       this.$store.dispatch("createNewPoint", this.newPoint);
       this.newPoint = {
         title: "",
