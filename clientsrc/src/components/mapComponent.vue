@@ -28,6 +28,7 @@
       </div>
     </div>
     <l-map
+      @ready="$emit('ready')"
       @update:bounds="wantToUpdatePoints = true"
       @click="addPoint"
       v-if="showMap"
