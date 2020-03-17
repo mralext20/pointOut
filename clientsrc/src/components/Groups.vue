@@ -37,7 +37,7 @@
             <div class="card-body">
               <h5 class="card-title">{{group.title}}</h5>
               <span v-if="group.public" class="badge badge-secondary">Public</span>
-              <span v-if="!group.public" class="badge badge-primary">Private</span>
+              <span v-else class="badge badge-primary">Private</span>
               <p class="card-text">{{group.description}}</p>
 
               <p class="card-text">
