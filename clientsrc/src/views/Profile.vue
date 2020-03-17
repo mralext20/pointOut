@@ -37,13 +37,21 @@
         <p class="lead">{{ profile.email }}</p>
         <hr class="my-4" />
         <a
-          class="btn btn-primary btn-lg"
+          class="btn btn-primary btn-sm"
           data-toggle="collapse"
           href="#collapseEdit"
           role="button"
         >Edit Profile</a>
-        <div class="collapse" id="collapseEdit">
-          <div class="card card-body">Nickname: Picture:</div>
+        <div class="collapse mt-2" id="collapseEdit">
+          <div class="card card-body">
+            <form class="form-group" @submit.prevent="updateProfile">
+              Name:
+              <input type="text" v-model="storeProfile.name" />
+              picture:
+              <input v-model="storeProfile.picture" />
+              <button type="submit">update</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
@@ -65,6 +73,16 @@ import Point from "../components/Point";
 import MapComponent from "../components/mapComponent";
 export default {
   name: "Profile",
+  data() {
+    return {
+      storeProfile: {
+        name: this.$store.state.profile.name,
+        picture: this.$store.state.profile.picture
+      },
+      edit: {},
+      editedProfile: {}
+    };
+  },
   async mounted() {
     this.$store.dispatch("getYourGroups");
     await this.$store.dispatch("getYourPoints");
@@ -87,6 +105,18 @@ export default {
     Groups,
     Point,
     MapComponent
+  },
+  methods: {
+    async updateProfile(editedProfile) {
+      debugger;
+      let data = {
+        name: this.profile.name,
+        picture: this.profile.picture
+      };
+      Vue.set(this.edit, !this.edit);
+      Vue.set(this.editedProfile, editedProfile);
+      this.$store.dispatch("updateProfile", editedProfile);
+    }
   }
 };
 </script>

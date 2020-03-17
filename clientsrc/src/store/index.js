@@ -50,6 +50,11 @@ export default new Vuex.Store({
       state.publicGroups[index] = group;
       state.yourGroups[group.id] = group
     },
+    updateProfile(state, profile) {
+
+      state.profile.name = profile.name;
+      state.profile.picture = profile.picture;
+    },
     joinGroup(state, group) {
       Vue.set(state.yourGroups, group.id, group)
     },
@@ -162,6 +167,15 @@ export default new Vuex.Store({
         commit("editGroup", res.data)
       } catch (error) {
         console.error(error)
+      }
+    },
+    async updateProfile({ commit, state }, newProfile) {
+      try {
+        let res = await api.put(`profile/${state.profile.id}`, newProfile);
+
+        commit("updateProfile", res.data);
+      } catch (error) {
+        console.error(error);
       }
     },
     async deletePoint({ commit }, pointId) {
