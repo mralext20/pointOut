@@ -2,7 +2,7 @@
   <div>
     <h1>{{group.title}}</h1>
     <p>{{group.description}}</p>
-    <div v-if="group.creator.email == $auth.user.email">
+    <div v-if="group.creatorEmail == $auth.user.email">
       <h2>Invite Members</h2>
       <input v-model="newEmail" type="email" />
       <button @click="inviteUser" class="btn btn-primary">Invite</button>
@@ -10,7 +10,7 @@
     <h2>Group Members:</h2>
     <div class="d-flex flex-column" v-for="(member) in members" :key="member.id">
       <div>
-        <h4 v-if="group.creator.email == member.user.email">Owner</h4>
+        <h4 v-if="group.creatorEmail == member.user.email">Owner</h4>
       </div>
       <div class="d-flex">
         <img class="user-image" :src="member.user.picture" alt />
@@ -18,12 +18,12 @@
       </div>
       <button
         @click="kickUser(member.user.email)"
-        v-if="group.creator.email == $auth.user.email && member.user.email != $auth.user.email"
+        v-if="group.creatorEmail == $auth.user.email && member.user.email != $auth.user.email"
         class="btn btn-danger"
       >Kick</button>
       <button
         @click="kickUser(member.user.email)"
-        v-else-if="member.user.email == $auth.user.email && member.user.email != group.creator.email"
+        v-else-if="member.user.email == $auth.user.email && member.user.email != group.creatorEmail"
         class="btn btn-danger"
       >Leave</button>
     </div>
