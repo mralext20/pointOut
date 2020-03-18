@@ -61,6 +61,6 @@ export default {
   max-height: 90vh;
 }
 .sample-map {
-  max-height: 100vh;
+  height: 70vh;
 }
 </style>

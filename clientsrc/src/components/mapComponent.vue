@@ -63,7 +63,6 @@
       :zoom="zoom"
       :center="center"
       :options="mapOptions"
-      style="height: 80%"
       class="leaflet-map"
     >
       <l-tile-layer :url="url" :attribution="attribution" />
@@ -256,8 +255,8 @@ export default {
     checkWantToUpdatePoints() {
       if (this.loaded) {
         this.wantToUpdatePoints = true;
-      } 
-      this.loaded = true
+      }
+      this.loaded = true;
     },
     createNewPoint() {
       this.$store.dispatch("createNewPoint", this.newPoint);
@@ -318,9 +317,7 @@ export default {
       return Object.keys(this.$store.state.yourGroups);
     },
     filteredPoints() {
-      return this.$store.state.points.filter(
-        p => p.averageVote >= this.minStars
-      );
+      return this.points.filter(p => p.averageVote >= this.minStars);
     }
   }
 };
@@ -340,7 +337,7 @@ export default {
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 600px) {
   .map-area {
-    height: 100vh;
+    height: 100%;
     width: 100vw;
   }
   .filter-menu.dropdown-menu {
@@ -376,14 +373,14 @@ export default {
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (min-width: 600px) {
   .map-area {
-    height: 69rem;
+    height: 100%;
     width: 100vw;
   }
 }
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
   .map-area {
-    height: 69rem;
+    height: 100%;
     width: 100%;
   }
 }
@@ -393,10 +390,11 @@ export default {
 }
 
 .map-component {
-  height: 100%;
+  height: 99vh;
 }
 
 .leaflet-map {
   cursor: pointer;
+  height: 80vh;
 }
 </style>

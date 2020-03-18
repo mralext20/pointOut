@@ -71,13 +71,15 @@
       </div>
     </div>
     <div class="row" v-else-if="$route.name == 'Profile points'">
-      <map-component
-        @ready="fitBounds"
-        ref="pointsMap"
-        :points="points"
-        :interactable="true"
-        :ableToUpdate="false"
-      />
+      <div class="col-12 map pb-3">
+        <map-component
+          @ready="fitBounds"
+          ref="pointsMap"
+          :points="points"
+          :interactable="true"
+          :ableToUpdate="false"
+        />
+      </div>
       <point v-for="point in points" :pointData="point" :location="location" :key="point.id" />
     </div>
   </div>
@@ -152,5 +154,8 @@ export default {
 <style scoped>
 img {
   max-width: 100px;
+}
+.map {
+  height: 50vh;
 }
 </style>

@@ -1,18 +1,13 @@
 <template>
-  <div class="big-map container-fluid">
-    <div class="row">
-      <div class="col-12 map-col d-flex justify-content-center">
-        <map-component
-          :initialCenter="{lat: 43.591, lng:-116.27948}"
-          ref="mainMap"
-          @update:points="updatePoints"
-          :interactable="true"
-          :ableToUpdate="true"
-          :points="points"
-        />
-      </div>
-    </div>
-  </div>
+  <map-component
+    class="big-map"
+    :initialCenter="{lat: 43.591, lng:-116.27948}"
+    ref="mainMap"
+    @update:points="updatePoints"
+    :interactable="true"
+    :ableToUpdate="true"
+    :points="points"
+  />
 </template>
 
 <script>
@@ -57,6 +52,6 @@ export default {
 
 .big-map {
   overflow: hidden;
-  max-height: 91vh;
+  height: 91vh;
 }
 </style>
