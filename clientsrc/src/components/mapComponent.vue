@@ -326,9 +326,7 @@ export default {
       return Object.keys(this.$store.state.yourGroups);
     },
     filteredPoints() {
-      return this.$store.state.points.filter(
-        p => p.averageVote >= this.minStars
-      );
+      return this.points.filter(p => p.averageVote >= this.minStars);
     }
   }
 };

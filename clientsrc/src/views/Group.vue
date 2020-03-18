@@ -28,38 +28,55 @@
       >Leave</button>
     </div>
     <point-map
+      class="group-map"
+      ref="map"
+      @ready="fitBounds"
       :points="points"
       :interactable="true"
-      :initialCenter="location"
-      :ableToUpdate="true"
+      :ableToUpdate="false"
     />
+    <div class="row">
+      <point v-for="point in points" :key="point.id" :pointData="point" />
+    </div>
   </div>
 </template>
 
 <script>
 import pointMap from "../components/mapComponent";
+import Point from "../components/Point";
 import Swal from "sweetalert2";
 import NotificationService from "../NotificationService";
 export default {
   name: "groupView",
   props: [],
-  components: { pointMap },
+  components: { pointMap, Point },
   mounted() {
     this.$store.dispatch("setActiveGroup", this.$route.params.groupId);
     this.$store.dispatch("getPointsByGroupId", this.$route.params.groupId);
     this.$store.dispatch("getMembersByGroupId", this.$route.params.groupId);
   },
   methods: {
-    getCenter() {
-      navigator.geolocation.getCurrentPosition(this.findCenter, error =>
-        console.error(error)
+    async fitBounds() {
+      if (this.$store.state.yourPoints.length == 0) {
+        await this.$store.dispatch(
+          "getPointsByGroupId",
+          this.$route.params.groupId
+        );
+      }
+      this.$refs.map.$refs.map.mapObject.fitBounds(
+        this.$refs.map.$refs.points.mapObject.getBounds()
       );
+      this.getLocation();
     },
-    findCenter(location) {
-      this.$refs.map.mapObject.panTo([
-        location.coords.latitude,
-        location.coords.longitude
-      ]);
+    getLocation() {
+      navigator.geolocation.getCurrentPosition(
+        loc =>
+          (this.location = {
+            latitude: loc.coords.latitude,
+            longitude: loc.coords.longitude
+          }),
+        err => console.error(err)
+      );
     },
     async inviteUser() {
       let req = {
@@ -89,7 +106,7 @@ export default {
       return this.$store.state.activeGroup;
     },
     points() {
-      return this.$store.state.points;
+      return this.$store.state.points.filter(p => p.groupId == this.group.id);
     },
     members() {
       return this.$store.state.members;
@@ -97,7 +114,10 @@ export default {
   },
   data() {
     return {
-      location: [43.9688653, -116.8089987],
+      location: {
+        latitude: 0,
+        longitude: 0
+      },
       newEmail: ""
     };
   }
@@ -108,5 +128,9 @@ export default {
 .user-image {
   max-width: 5rem;
   max-height: 5rem;
+}
+
+.group-map {
+  max-height: 40vh;
 }
 </style>
