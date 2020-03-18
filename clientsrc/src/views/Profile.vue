@@ -67,7 +67,7 @@
         :interactable="true"
         :ableToUpdate="false"
       />
-      <point v-for="point in points" :pointData="point" :key="point.id" />
+      <point v-for="point in points" :pointData="point" :location="location" :key="point.id" />
     </div>
   </div>
 </template>
@@ -80,7 +80,7 @@ export default {
   name: "Profile",
   data() {
     return {
-      edit: {},
+      location: { latitude: undefined, longitude: undefined },
       editedProfile: {
         name: this.$store.state.profile.name,
         picture: this.$store.state.profile.picture
@@ -90,6 +90,9 @@ export default {
   async mounted() {
     this.$store.dispatch("getYourGroups");
     await this.$store.dispatch("getYourPoints");
+    this.$refs.pointsMap.$refs.map.mapObject.fitBounds(
+      this.$refs.pointsMap.$refs.points.mapObject.getBounds()
+    );
   },
   computed: {
     profile() {
@@ -108,13 +111,23 @@ export default {
     MapComponent
   },
   methods: {
-
     updateProfile() {
       this.$store.dispatch("updateProfile", this.editedProfile);
     },
     fitBounds() {
       this.$refs.pointsMap.$refs.map.mapObject.fitBounds(
         this.$refs.pointsMap.$refs.points.mapObject.getBounds()
+      );
+      this.getLocation();
+    },
+    getLocation() {
+      navigator.geolocation.getCurrentPosition(
+        loc =>
+          (this.location = {
+            latitude: loc.coords.latitude,
+            longitude: loc.coords.longitude
+          }),
+        err => console.error(err)
       );
     }
   }
