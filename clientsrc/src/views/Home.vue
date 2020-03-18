@@ -56,7 +56,7 @@ export default {
 
 <style scoped>
 .home {
-  overflow: hidden !important;
+  overflow: hidden;
   max-height: 90vh;
 }
 </style>
