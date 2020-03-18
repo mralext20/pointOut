@@ -64,8 +64,8 @@ export default new Vuex.Store({
     visitPoint(state, point) {
       Vue.set(state.yourVisits, point.pointId, point)
     },
-    deleteVisit(state, point) {
-      Vue.delete(state.yourVisits, point.id)
+    deleteVisit(state, pointId) {
+      Vue.delete(state.yourVisits, pointId)
     },
 
     // //#endregion
@@ -257,6 +257,14 @@ export default new Vuex.Store({
         commit("visitPoint", { ...res.data, point })
       } catch (error) {
         console.error(error)
+      }
+    },
+    async deleteVisit({ commit }, point) {
+      try {
+        await api.delete(`visits/${point.id}`)
+        commit("deleteVisit", point.id)
+      } catch (error) {
+
       }
     }
   }
