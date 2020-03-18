@@ -85,6 +85,12 @@
                 @click.stop="visit(point)"
               >Visit</button>
               <button v-else class="btn btn-info btn-sm" @click.stop="unvisit(point)">unvisit</button>
+              <button
+                v-if="!yourFavorites[point.id]"
+                class="btn btn-info btn-sm"
+                @click.stop="favorite(point)"
+              >Favorite</button>
+              <button v-else class="btn btn-info btn-sm" @click.stop="unfavorite(point)">unfavorite</button>
             </div>
           </l-popup>
         </l-marker>
@@ -282,6 +288,12 @@ export default {
     },
     unvisit(point) {
       this.$store.dispatch("deleteVisit", point);
+    },
+    favorite(point) {
+      this.$store.dispatch("favoritePoint", point);
+    },
+    unfavorite(point) {
+      this.$store.dispatch("unFavoritePoint", point);
     }
   },
   mounted() {
@@ -300,6 +312,9 @@ export default {
     },
     yourVisits() {
       return this.$store.state.yourVisits;
+    },
+    yourFavorites() {
+      return this.$store.state.yourFavorites;
     },
     userEmail() {
       return this.$auth.userInfo.email;

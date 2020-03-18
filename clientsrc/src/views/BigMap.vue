@@ -27,6 +27,7 @@ export default {
   mounted() {
     this.$store.dispatch("getYourGroups");
     this.$store.dispatch("getYourVisits");
+    this.$store.dispatch("getYourFavorites");
     this.$nextTick(() => {
       this.updatePoints();
     });

@@ -51,6 +51,12 @@ Point.virtual("visits", {
   foreignField: "pointId",
   count: true
 })
+Point.virtual("favorites", {
+  localField: "_id",
+  ref: "Favorite",
+  foreignField: "pointId",
+  count: true
+})
 Point.virtual("voteCount", {
   localField: "_id",
   ref: "Vote",
@@ -64,7 +70,7 @@ Point.virtual("averageVote", {
 })
 
 Point.pre("find", function () {
-  this.populate("visits voteCount").populate("group", "title").populate("creator", "name picture")
+  this.populate("visits voteCount").populate("group", "title").populate("creator", "name picture").populate("favorites")
 })
 
 Point.pre("findOne", function () {

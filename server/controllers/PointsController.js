@@ -2,6 +2,7 @@ import express from "express";
 import BaseController from "../utils/BaseController";
 import { pointService } from "../services/PointsService";
 import { visitsService } from "../services/VisitsService";
+import { favoritesService } from "../services/FavoritesService";
 import { votesService } from "../services/VotesService";
 import auth0Provider from "@bcwdev/auth0provider";
 import distance from "../utils/distance";
@@ -12,6 +13,7 @@ export class PointsController extends BaseController {
     this.router
       .get("", this.getAll)
       .get("/:id/visits", this.getVisitsByPointId)
+      .get("/:id/favorites", this.getFavoritesByPointId)
       .get("/:id/votes", this.getVoteAverageByPointId)
       .get("/:id", this.getById)
 
@@ -71,7 +73,14 @@ export class PointsController extends BaseController {
       next(error);
     }
   }
-
+  async getFavoritesByPointId(req, res, next) {
+    try {
+      let data = await favoritesService.getFavoritesByPointId(req.params.id)
+      return res.send({ favorites: data })
+    } catch (error) {
+      next(error);
+    }
+  }
   async getVoteAverageByPointId(req, res, next) {
     try {
       let data = await votesService.getVoteAverageByPointId(req.params.id);

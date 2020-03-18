@@ -6,7 +6,7 @@
 
 returns all points.
 
-#### Example Responce
+#### Example Response
 
 ```json
 [
@@ -85,7 +85,7 @@ uses query params to request points within a region.
 
 returns a point by ID.
 
-example responce:
+example response:
 
 ```json
 {
@@ -113,7 +113,7 @@ example responce:
 
 returns a object containing the count of times that point has been visited.
 
-example responce:
+example response:
 
 ```json
 {
@@ -125,7 +125,7 @@ example responce:
 
 returns a object containing the average Votes and count of votes.
 
-example responce:
+example response:
 
 ```json
 {
@@ -172,7 +172,7 @@ creates a new point. requires bearrer token auth.
 }
 ```
 
-#### Responce
+#### Response
 
 a single object from the get all representing the newly created object.
 
@@ -191,7 +191,7 @@ deleted a point. requires that you own the point.
 requires Auth.
 returns where you have visited.
 
-example responce:
+example response:
 
 ```json
 [
@@ -228,7 +228,7 @@ create a visit.
 }
 ```
 
-#### Example Responce
+#### Example Response
 
 ```json
 {
@@ -247,6 +247,60 @@ create a visit.
 the id of the point that you want to unvisit.
 requires auth.
 
+## /favorites
+
+### [GET] /
+
+requires Auth.
+returns the points you've favorited.
+
+example response:
+
+```json
+[
+    {
+        "_id": "5e729890e5a68925e4e02727",
+        "pointId": "5e685f33449526bac1eb0dc4",
+        "creatorEmail": "...",
+        "createdAt": "2020-03-18T21:54:24.668Z",
+        "updatedAt": "2020-03-18T21:54:24.668Z",
+        "__v": 0,
+        "id": "5e729890e5a68925e4e02727"
+    }
+]
+```
+
+### [POST] /
+
+create a favorite.
+
+#### Example Request Body
+
+```json
+{
+    "pointId": "5e685f33449526bac1eb0dc4"
+}
+```
+
+#### Example Response
+
+```json
+{
+    "_id": "5e729890e5a68925e4e02727",
+    "pointId": "5e685f33449526bac1eb0dc4",
+    "creatorEmail": "...",
+    "createdAt": "2020-03-18T21:54:24.668Z",
+    "updatedAt": "2020-03-18T21:54:24.668Z",
+    "__v": 0,
+    "id": "5e729890e5a68925e4e02727"
+}
+```
+
+### [DELETE] /:id
+
+the id of the point that you want to unfavorite.
+requires auth.
+
 ## /votes
 
 ### [GET] /
@@ -254,7 +308,7 @@ requires auth.
 requires Auth.
 returns where you have voted.
 
-example responce:
+example response:
 
 ```json
 [
@@ -296,7 +350,7 @@ example request:
 }
 ```
 
-example responce:
+example response:
 
 ```json
 {
