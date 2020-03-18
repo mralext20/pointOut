@@ -13,9 +13,35 @@
               aria-haspopup="true"
               aria-expanded="false"
             >Filter</button>
-            <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-              <a class="dropdown-item" href="#">Dropdown link</a>
-              <a class="dropdown-item" href="#">Dropdown link</a>
+            <div class="dropdown-menu dropright filter-menu">
+              <button
+                class="dropdown-item"
+                id="btnGroupDrop2"
+                type="button"
+                data-toggle="dropdown"
+              >By Rating</button>
+              <div class="dropdown-menu filter-options">
+                <select
+                  class="form-control"
+                  id="exampleFormControlSelect1"
+                  @click.stop
+                  v-model="minStars"
+                >
+                  <option disabled hidden>Min Stars</option>
+                  <option value="0">Show all</option>
+                  <option>5</option>
+                  <option>4</option>
+                  <option>3</option>
+                  <option>2</option>
+                  <option>1</option>
+                </select>
+              </div>
+              <button
+                class="dropdown-item"
+                id="btnGroupDrop"
+                type="button"
+                data-toggle="dropdown"
+              >By Group</button>
             </div>
           </div>
           <button
@@ -43,20 +69,18 @@
       <l-tile-layer :url="url" :attribution="attribution" />
       <l-feature-group ref="points">
         <l-marker
-          v-for="(point) in points"
+          v-for="(point) in filteredPoints"
           :key="point.id"
           :lat-lng="[point.location.coordinates[1], point.location.coordinates[0]]"
         >
           <l-tooltip>{{ point.title }}</l-tooltip>
           <l-popup>
-            <div @click="showParagraph = !showParagraph">
+            <div>
               <h4>{{point.title}}</h4>
-              <transition name="fade">
-                <p v-show="showParagraph">
-                  {{point.description}}
-                  <span v-if="point.group">Group: {{point.group.title}}</span>
-                </p>
-              </transition>
+              <p>{{point.description}}</p>
+              <p>
+                <span v-if="point.group">Group: {{point.group.title}}</span>
+              </p>
               <button
                 v-if="point.creatorEmail == userEmail"
                 class="btn btn-danger btn-sm"
@@ -168,6 +192,7 @@ export default {
     return {
       loaded: false,
       wantToUpdatePoints: false,
+      minStars: 0,
       newPoint: {
         title: "",
         description: "",
@@ -288,6 +313,14 @@ export default {
     },
     yourGroups() {
       return this.$store.state.yourGroups;
+    },
+    groupsKeys() {
+      return Object.keys(this.$store.state.yourGroups);
+    },
+    filteredPoints() {
+      return this.$store.state.points.filter(
+        p => p.averageVote >= this.minStars
+      );
     }
   }
 };
@@ -309,6 +342,34 @@ export default {
   .map-area {
     height: 100vh;
     width: 100vw;
+  }
+  .filter-menu.dropdown-menu {
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    transform: translate(-10vw, -10vh) !important;
+    transition: 0.2s ease all;
+  }
+  .filter-menu.dropdown-menu.show {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-10vw, 4.5vh) !important;
+    transition: 0.2s ease all;
+  }
+  .filter-options.dropdown-menu {
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    transform: translate(-10vw, -10vh) !important;
+    transition: 0.2s ease all;
+  }
+  .filter-options.dropdown-menu.show {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-5vw, 8vh) !important;
+    transition: 0.2s ease all;
   }
 }
 
