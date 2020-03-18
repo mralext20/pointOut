@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="big-map container-fluid">
     <div class="row">
       <div class="col-12 map-col d-flex justify-content-center">
         <map-component
@@ -51,5 +51,10 @@ export default {
 <style>
 .map-col {
   padding: 0px;
+}
+
+.big-map {
+  overflow: hidden;
+  max-height: 91vh;
 }
 </style>
