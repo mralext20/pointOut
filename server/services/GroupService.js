@@ -67,7 +67,7 @@ class GroupService {
         throw new BadRequest("Invalid ID or you aren't part of that group")
       }
     }
-    let members = await dbContext.GroupMembers.find({ groupId: groupId })
+    let members = await dbContext.GroupMembers.find({ groupId: groupId }).populate("user", "name picture")
     return members;
   }
   async removeMember(groupId, TargetEmail, UserEmail) {

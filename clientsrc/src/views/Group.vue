@@ -1,9 +1,17 @@
 <template>
   <div>
-    <h1>Group Details</h1>
     <h1>{{group.title}}</h1>
     <p>{{group.description}}</p>
-    <h4>The group Id is {{$route.params.groupId}}</h4>
+    <h2>Group Members:</h2>
+    <div class="d-flex flex-column" v-for="(member) in members" :key="member.id">
+      <div>
+        <h4 v-if="group.creator.email == member.user.email">Owner</h4>
+      </div>
+      <div class="d-flex">
+        <img class="user-image" :src="member.user.picture" alt />
+        <p>{{member.user.name}}</p>
+      </div>
+    </div>
     <point-map
       :points="points"
       :interactable="true"
@@ -23,7 +31,6 @@ export default {
     this.$store.dispatch("setActiveGroup", this.$route.params.groupId);
     this.$store.dispatch("getPointsByGroupId", this.$route.params.groupId);
     this.$store.dispatch("getMembersByGroupId", this.$route.params.groupId);
-    console.log(this.members);
   },
   methods: {
     getCenter() {
@@ -46,6 +53,7 @@ export default {
       return this.$store.state.points;
     },
     members() {
+      console.log(this.$store.state.members);
       return this.$store.state.members;
     }
   },
@@ -59,8 +67,8 @@ export default {
 </script>
 
 <style>
-map {
-  height: 100px;
-  width: 100px;
+.user-image {
+  max-width: 5rem;
+  max-height: 5rem;
 }
 </style>

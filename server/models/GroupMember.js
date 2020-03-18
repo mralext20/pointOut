@@ -17,6 +17,13 @@ GroupMember.virtual("group", {
   justOne: true
 })
 
+GroupMember.virtual("user", {
+  localField: "memberEmail",
+  ref: "Profile",
+  foreignField: "email",
+  justOne: true
+})
+
 GroupMember.index({ memberEmail: 1, groupId: 1 }, { unique: true })
 
 // https://stackoverflow.com/a/49420511/3236881 unique many columms
