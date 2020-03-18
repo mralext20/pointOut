@@ -58,8 +58,16 @@
     <div v-else-if="$route.name == 'Profile groups'">
       <groups :newGroups="false" :groupsData="groups" />
     </div>
-    <div v-else-if="$route.name == 'Profile visits'">
-      <div v-for="visit in visits" :key="visit.id">{{visit}}</div>
+    <div class="row" v-else-if="$route.name == 'Profile visits'">
+      <div class="col-md-4 col-12" v-for="visit in visits" :key="visit.id">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{visit.point.title}}</h4>
+            <p class="card-text">First Visited on {{new Date(visit.createdAt).toLocaleDateString()}}</p>
+            <p class="card-text text-muted">{{visit.point.description}}</p>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="row" v-else-if="$route.name == 'Profile points'">
       <map-component
