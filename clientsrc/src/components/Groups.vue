@@ -53,10 +53,10 @@
             <div v-else>
               <button
                 v-if="yourGroups[group.id]"
-                @click="leave(group)"
+                @click="leaveGroup(group)"
                 class="btn btn-danger btn-sm"
               >Leave</button>
-              <button v-else class="btn btn-sm btn-success" @click="join(group)">Join</button>
+              <button v-else class="btn btn-sm btn-success" @click="joinGroup(group)">Join</button>
             </div>
             <router-link :to="{name:'BigMap'}">
               <p @click="setPoints">Display Group's Points</p>
@@ -93,12 +93,16 @@
               </p>
             </div>
             <div v-if="group.creatorEmail == $auth.userInfo.email">
-              <button class="btn btn-warning" @click="editGroup(group)">cancel</button>
-              <button class="btn btn-danger" @click="deleteGroup(group)">Delete</button>
+              <button class="btn btn-sm btn-primary" @click="editGroup(group)">Cancel</button>
+              <button class="btn btn-sm btn-secondary" @click="deleteGroup(group)">Delete</button>
             </div>
             <div v-else>
-              <button v-if="yourGroups[group.id]" @click="leave(group)" class="btn btn-danger">leave</button>
-              <button v-else class="btn btn-success" @click="join(group)">join</button>
+              <button
+                v-if="yourGroups[group.id]"
+                @click="leaveGroup(group)"
+                class="btn btn-sm btn-danger"
+              >Leave</button>
+              <button v-else class="btn btn-sm btn-success" @click="joinGroup(group)">Join</button>
             </div>
           </div>
         </div>
@@ -155,13 +159,13 @@ export default {
         public: true
       };
     },
-    join(group) {
+    joinGroup(group) {
       this.$store.dispatch("joinGroup", {
         group,
         memberEmail: this.$auth.userInfo.email
       });
     },
-    leave(group) {
+    leaveGroup(group) {
       this.$store.dispatch("leaveGroup", {
         group,
         memberEmail: this.$auth.userInfo.email
