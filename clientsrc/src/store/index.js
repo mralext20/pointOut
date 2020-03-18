@@ -83,6 +83,12 @@ export default new Vuex.Store({
     },
     setMembers(state, members) {
       state.members = members;
+    },
+    addMember(state, member) {
+      state.members.push(member)
+    },
+    removeMember(state, email) {
+      state.members = state.members.filter(m => m.memberEmail != email)
     }
     // #endregion
   },
@@ -186,9 +192,25 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
+    async addMember({ commit }, req) {
+      try {
+        let res = await api.post(`groups/${req.groupId}/members`, { memberEmail: req.email });
+        commit("addMember", res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async kickMember({ commit }, req) {
+      try {
+        await api.delete(`groups/${req.groupId}/members/${req.email}`);
+        commit("removeMember", req.email);
+      } catch (error) {
+        console.error(error);
+      }
+    },
     async getMembersByGroupId({ commit }, groupId) {
       let res = await api.get(`groups/${groupId}/members`);
-      commit("setMembers", res.data)
+      commit("setMembers", res.data);
     },
     async editGroup({ commit }, newGroup) {
       try {

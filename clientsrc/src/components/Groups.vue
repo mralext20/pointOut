@@ -54,7 +54,14 @@
               <button v-if="yourGroups[group.id]" @click="leave(group)" class="btn btn-danger">leave</button>
               <button v-else class="btn btn-success" @click="join(group)">join</button>
             </div>
-            <p @click="setActiveGroup(group.id)">Display group's points</p>
+            <router-link
+              :to="{ name: 'Group', params:{groupId:group.id} }"
+              class="nav-link"
+              :class="{active:$route.name == 'Group'}"
+              :groupId="group.id"
+            >
+              <p @click="setActiveGroup(group.id)">Display group's points</p>
+            </router-link>
           </div>
           <!-- end first -->
           <div v-show="edit[group.id]" class="col-md-8">
@@ -168,7 +175,6 @@ export default {
     },
     setActiveGroup(groupId) {
       this.$store.dispatch("setActiveGroup", groupId);
-      this.$router.push(`group/${groupId}`);
     }
   },
   computed: {
