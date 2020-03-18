@@ -74,7 +74,6 @@ export default new Vuex.Store({
       Vue.set(state.publicGroups, index, group);
       Vue.set(state.yourGroups, group.id, group);
     },
-
     joinGroup(state, group) {
       Vue.set(state.yourGroups, group.id, group);
     },
@@ -178,6 +177,7 @@ export default new Vuex.Store({
       try {
         let res = await api.delete(`groups/${group.id}`)
         commit("deleteGroup", group)
+        commit("leaveGroup", group)
       } catch (error) {
         console.error(error)
       }
