@@ -56,7 +56,7 @@
                 @click="leave(group)"
                 class="btn btn-danger btn-sm"
               >Leave</button>
-              <button v-else class="btn btn-success" @click="join(group)">Join</button>
+              <button v-else class="btn btn-sm btn-success" @click="join(group)">Join</button>
             </div>
             <router-link :to="{name:'BigMap'}">
               <p @click="setPoints">Display Group's Points</p>
