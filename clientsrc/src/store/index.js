@@ -35,7 +35,9 @@ export default new Vuex.Store({
       state.profile.name = profile.name;
       state.profile.picture = profile.picture;
     },
-
+    setYourVisits(state, visits) {
+      state.yourVisits = visits
+    },
     // #endregion
     // #region Points
 
