@@ -22,7 +22,7 @@ export default new Vuex.Store({
     yourGroups: {},
     activeGroup: {},
     yourPoints: [],
-    yourVisits: [],
+    yourVisits: {},
 
   },
   mutations: {
@@ -36,7 +36,11 @@ export default new Vuex.Store({
       state.profile.picture = profile.picture;
     },
     setYourVisits(state, visits) {
-      state.yourVisits = visits
+      let data = {}
+      visits.forEach(v => {
+        data[v.pointId] = v
+      })
+      state.yourVisits = data
     },
     // #endregion
     // #region Points

@@ -59,9 +59,15 @@
               </transition>
               <button
                 v-if="point.creatorEmail == userEmail"
-                class="btn btn-info btn-sm"
+                class="btn btn-danger btn-sm"
                 @click="deletePoint(point.id)"
-              >DELETE</button>
+              >Delete</button>
+              <button
+                v-if="!yourVisits[point.id]"
+                class="btn btn-info btn-sm"
+                @click="visit(point.id)"
+              >Visit</button>
+              <button v-else class="btn btn-info btn-sm" @click="unvisit(point.id)">unvisit</button>
             </div>
           </l-popup>
         </l-marker>
@@ -261,6 +267,9 @@ export default {
         tooltipAnchor: [16, -28],
         shadowSize: [41, 41]
       });
+    },
+    yourVisits() {
+      return this.$store.state.yourVisits;
     },
     userEmail() {
       return this.$auth.userInfo.email;
