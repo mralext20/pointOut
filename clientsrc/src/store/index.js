@@ -61,6 +61,9 @@ export default new Vuex.Store({
     createGroup(state, group) {
       state.publicGroups.push(group);
     },
+    deleteGroup(state, group) {
+      state.publicGroups = state.publicGroups.filter(g => g.id != group.id)
+    },
     setYourGroups(state, groups) {
       groups.forEach(group => {
         Vue.set(state.yourGroups, group.id, group);
@@ -75,7 +78,7 @@ export default new Vuex.Store({
     joinGroup(state, group) {
       Vue.set(state.yourGroups, group.id, group);
     },
-    LeaveGroup(state, group) {
+    leaveGroup(state, group) {
       Vue.delete(state.yourGroups, group.id);
     }
     // #endregion
@@ -171,11 +174,19 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
+    async deleteGroup({ commit }, { group }) {
+      try {
+        let res = await api.delete(`groups/${group.id}`)
+        commit("deleteGroup", group)
+      } catch (error) {
+        console.error(error)
+      }
+    },
     async leaveGroup({ commit }, { group, memberEmail, myEmail }) {
       try {
         let res = await api.delete(`groups/${group.id}/members/${memberEmail}`);
         if (myEmail == memberEmail) {
-          commit("LeaveGroup", group);
+          commit("leaveGroup", group);
         }
       } catch (error) {
         console.error(error);
