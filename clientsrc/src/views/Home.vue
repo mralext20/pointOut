@@ -8,6 +8,7 @@
         >This app will change your life! Have you ever lost your secret tree fort? Have you ever lost your house?</p>
         <div v-if="!$auth.isAuthenticated" @click="login" class="btn btn-primary mb-4">Sign Up Now</div>
         <map-component
+          class="sample-map"
           ref="mainMap"
           :initialCenter="{lat: 43.591, lng:-116.27948}"
           :interactable="false"
@@ -58,5 +59,8 @@ export default {
 .home {
   overflow: hidden;
   max-height: 90vh;
+}
+.sample-map {
+  max-height: 100vh;
 }
 </style>

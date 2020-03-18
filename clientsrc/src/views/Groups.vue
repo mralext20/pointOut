@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="col-12 text-center">
+    <div class="col-12 text-center pt-1">
       <h1>Public Groups</h1>
     </div>
     <group :newGroups="true" :profileCheck="false" :groupsData="groups" />
