@@ -58,7 +58,9 @@
     <div v-else-if="$route.name == 'Profile groups'">
       <groups :newGroups="false" :groupsData="groups" />
     </div>
-    <div v-else-if="$route.name == 'Profile visits'">Visits</div>
+    <div v-else-if="$route.name == 'Profile visits'">
+      <div v-for="visit in visits" :key="visit.id">{{visit}}</div>
+    </div>
     <div class="row" v-else-if="$route.name == 'Profile points'">
       <map-component
         @ready="fitBounds"
@@ -89,10 +91,8 @@ export default {
   },
   async mounted() {
     this.$store.dispatch("getYourGroups");
-    await this.$store.dispatch("getYourPoints");
-    this.$refs.pointsMap.$refs.map.mapObject.fitBounds(
-      this.$refs.pointsMap.$refs.points.mapObject.getBounds()
-    );
+    this.$store.dispatch("getYourPoints");
+    this.$store.dispatch("getYourVisits");
   },
   computed: {
     profile() {
@@ -103,6 +103,9 @@ export default {
     },
     points() {
       return this.$store.state.yourPoints;
+    },
+    visits() {
+      return this.$store.state.yourVisits;
     }
   },
   components: {

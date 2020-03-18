@@ -22,6 +22,7 @@ export default new Vuex.Store({
     yourGroups: {},
     activeGroup: {},
     yourPoints: [],
+    yourVisits: [],
 
   },
   mutations: {
@@ -227,5 +228,13 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
+    async getYourVisits({ commit }) {
+      try {
+        let res = await api.get("profile/visits");
+        commit("setYourVisits", res.data)
+      } catch (error) {
+        console.error(error);
+      }
+    }
   }
 });
