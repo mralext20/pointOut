@@ -247,9 +247,6 @@ create a visit.
 the id of the point that you want to unvisit.
 requires auth.
 
-//NOTE this is the top
-###################
-
 ## /favorites
 
 ### [GET] /
@@ -303,9 +300,6 @@ create a favorite.
 
 the id of the point that you want to unfavorite.
 requires auth.
-
-//NOTE this is the bottom
-#################
 
 ## /votes
 
