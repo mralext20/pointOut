@@ -35,13 +35,6 @@ export default new Vuex.Store({
       state.profile.name = profile.name;
       state.profile.picture = profile.picture;
     },
-    setYourVisits(state, visits) {
-      let data = {}
-      visits.forEach(v => {
-        data[v.pointId] = v
-      })
-      state.yourVisits = data
-    },
     // #endregion
     // #region Points
 
@@ -60,6 +53,22 @@ export default new Vuex.Store({
     },
 
     // #endregion
+    // #region visits
+    setYourVisits(state, visits) {
+      let data = {}
+      visits.forEach(v => {
+        data[v.pointId] = v
+      })
+      state.yourVisits = data
+    },
+    visitPoint(state, point) {
+      Vue.set(state.yourVisits, point.pointId, point)
+    },
+    deleteVisit(state, point) {
+      Vue.delete(state.yourVisits, point.id)
+    },
+
+    // //#endregion
     // #region Groups
 
     setGroups(state, groups) {
@@ -240,6 +249,14 @@ export default new Vuex.Store({
         commit("setYourVisits", res.data)
       } catch (error) {
         console.error(error);
+      }
+    },
+    async visitPoint({ commit }, point) {
+      try {
+        let res = await api.post("visits", { pointId: point.id })
+        commit("visitPoint", { ...res.data, point })
+      } catch (error) {
+        console.error(error)
       }
     }
   }

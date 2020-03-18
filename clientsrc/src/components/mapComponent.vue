@@ -65,9 +65,9 @@
               <button
                 v-if="!yourVisits[point.id]"
                 class="btn btn-info btn-sm"
-                @click="visit(point.id)"
+                @click.stop="visit(point)"
               >Visit</button>
-              <button v-else class="btn btn-info btn-sm" @click="unvisit(point.id)">unvisit</button>
+              <button v-else class="btn btn-info btn-sm" @click.stop="unvisit(point)">unvisit</button>
             </div>
           </l-popup>
         </l-marker>
@@ -251,6 +251,12 @@ export default {
         this.$store.dispatch("deletePoint", pointId);
         NotificationService.toast("The point was successfully deleted.");
       }
+    },
+    visit(point) {
+      this.$store.dispatch("visitPoint", point);
+    },
+    unvisit(point) {
+      this.$store.dispatch("deleteVisit", point);
     }
   },
   mounted() {
