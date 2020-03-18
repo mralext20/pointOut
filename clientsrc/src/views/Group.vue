@@ -57,7 +57,7 @@ export default {
   },
   methods: {
     async fitBounds() {
-      if (this.$store.state.yourPoints.length == 0) {
+      if (this.$store.state.points.length == 0) {
         await this.$store.dispatch(
           "getPointsByGroupId",
           this.$route.params.groupId
