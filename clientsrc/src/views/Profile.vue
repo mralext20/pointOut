@@ -65,6 +65,7 @@
             <h4 class="card-title">{{visit.point.title}}</h4>
             <p class="card-text">First Visited on {{new Date(visit.createdAt).toLocaleDateString()}}</p>
             <p class="card-text text-muted">{{visit.point.description}}</p>
+            <button class="btn btn-info" @click="unvisit(visit.point)">unvisit</button>
           </div>
         </div>
       </div>
@@ -130,6 +131,9 @@ export default {
         this.$refs.pointsMap.$refs.points.mapObject.getBounds()
       );
       this.getLocation();
+    },
+    unvisit(point) {
+      this.$store.dispatch("deleteVisit", point);
     },
     getLocation() {
       navigator.geolocation.getCurrentPosition(

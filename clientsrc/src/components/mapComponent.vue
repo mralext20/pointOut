@@ -29,7 +29,7 @@
     </div>
     <l-map
       @ready="$emit('ready')"
-      @update:bounds="wantToUpdatePoints = true"
+      @update:bounds="checkWantToUpdatePoints"
       @click="addPoint"
       v-if="showMap"
       ref="map"
@@ -166,6 +166,7 @@ export default {
   },
   data() {
     return {
+      loaded: false,
       wantToUpdatePoints: false,
       newPoint: {
         title: "",
@@ -226,6 +227,12 @@ export default {
         location.coords.latitude,
         location.coords.longitude
       ]);
+    },
+    checkWantToUpdatePoints() {
+      if (this.loaded) {
+        this.wantToUpdatePoints = true;
+      } 
+      this.loaded = true
     },
     createNewPoint() {
       this.$store.dispatch("createNewPoint", this.newPoint);
