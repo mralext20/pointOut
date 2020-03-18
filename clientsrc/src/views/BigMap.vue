@@ -25,6 +25,8 @@ export default {
   },
 
   mounted() {
+    this.$store.dispatch("getYourGroups");
+    this.$store.dispatch("getYourVisits");
     this.$nextTick(() => {
       this.updatePoints();
     });

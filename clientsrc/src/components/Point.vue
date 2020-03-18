@@ -3,7 +3,11 @@
     <div class="card-body">
       <h4 class="card-title">{{pointData.title}}</h4>
       <p class="card-text">{{pointData.description}}</p>
-      <p v-if="distance" class="card-text">{{distance}}</p>
+      <p v-if="distance" class="text-muted">{{distance.toFixed(2)}} Miles Away</p>
+      <p
+        v-if="!$route.name.startsWith('Profile')"
+        class="text-muted"
+      >created By {{pointData.creator.name}}</p>
     </div>
   </div>
 </template>
@@ -17,7 +21,7 @@ export default {
       if (this.pointData.distance) {
         return this.pointData.distance;
       }
-      if (!this.location) {
+      if (!this.location || !this.location.latitude) {
         return undefined;
       }
       let lat1 = this.location.latitude;

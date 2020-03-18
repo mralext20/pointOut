@@ -2,6 +2,7 @@ import express from "express";
 import BaseController from "../utils/BaseController";
 import auth0Provider from "@bcwdev/auth0provider";
 import { profilesService } from "../services/ProfilesService";
+import { visitsService } from "../services/VisitsService"
 import { pointService } from "../services/PointsService";
 import { groupService } from "../services/GroupService";
 
@@ -13,7 +14,7 @@ export class ProfilesController extends BaseController {
       .get("", this.getUserProfile)
       .get("/points", this.getPointsByOwner)
       .get("/groups", this.getMyGroups)
-
+      .get("/visits", this.getMyVisits)
       .put("/", this.edit);
   }
   async getUserProfile(req, res, next) {
@@ -35,6 +36,14 @@ export class ProfilesController extends BaseController {
   async getMyGroups(req, res, next) {
     try {
       let data = await groupService.findMyGroups(req.userInfo.email);
+      return res.send(data);
+    } catch (error) {
+      next(error);
+    }
+  }
+  async getMyVisits(req, res, next) {
+    try {
+      let data = await visitsService.findByUserEmail(req.userInfo.email);
       return res.send(data);
     } catch (error) {
       next(error);
