@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid" v-if="yourGroups">
     <div class="row">
-      <div class="col-12">
+      <div class="col-12 text-center mb-1">
         <button v-if="newGroups" class="btn btn-primary" @click="showForm =! showForm">Create Group</button>
       </div>
       <div v-if="showForm" class="col-12">
