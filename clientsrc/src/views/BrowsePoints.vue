@@ -7,7 +7,7 @@
 <script>
 import Point from "../components/Point";
 export default {
-  name: "browse Points",
+  name: "browsePoints",
   data() {
     return {
       location: { latitude: undefined, longitude: undefined }
