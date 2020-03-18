@@ -49,6 +49,7 @@ export default {
       await this.$auth.loginWithPopup();
       this.$store.dispatch("setBearer", this.$auth.bearer);
       this.$store.dispatch("getProfile");
+      this.$router.push({ path: "Profile" });
       NotificationService.toast("Logged In");
     }
   }
