@@ -84,10 +84,6 @@ export class PointsController extends BaseController {
     try {
       let data = await pointService.findById(req.params.id);
       return res.send(data);
-
-      let data = await pointService.findById(req.params.id);
-      return res.send(data)
-
     } catch (error) {
       next(error);
     }
