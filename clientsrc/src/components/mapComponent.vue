@@ -29,19 +29,13 @@
                 >
                   <option disabled hidden>Min Stars</option>
                   <option value="0">Show all</option>
-                  <option>5</option>
-                  <option>4</option>
-                  <option>3</option>
-                  <option>2</option>
-                  <option>1</option>
+                  <option value="5">5 Stars</option>
+                  <option value="4">4 Stars</option>
+                  <option value="3">3 Stars</option>
+                  <option value="2">2 Stars</option>
+                  <option value="1">1 Stars</option>
                 </select>
               </div>
-              <button
-                class="dropdown-item"
-                id="btnGroupDrop"
-                type="button"
-                data-toggle="dropdown"
-              >By Group</button>
             </div>
           </div>
           <button
@@ -63,7 +57,6 @@
       :zoom="zoom"
       :center="center"
       :options="mapOptions"
-      style="height: 80%"
       class="leaflet-map"
     >
       <l-tile-layer :url="url" :attribution="attribution" />
@@ -256,8 +249,8 @@ export default {
     checkWantToUpdatePoints() {
       if (this.loaded) {
         this.wantToUpdatePoints = true;
-      } 
-      this.loaded = true
+      }
+      this.loaded = true;
     },
     createNewPoint() {
       this.$store.dispatch("createNewPoint", this.newPoint);
