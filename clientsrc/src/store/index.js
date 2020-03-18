@@ -24,6 +24,7 @@ export default new Vuex.Store({
     yourPoints: [],
     members: [],
     yourVisits: {},
+    yourFavorites: {}
   },
   mutations: {
     // #region Profile
@@ -66,6 +67,12 @@ export default new Vuex.Store({
     },
     deleteVisit(state, pointId) {
       Vue.delete(state.yourVisits, pointId)
+    },
+    favoritePoint(state, point) {
+      Vue.set(state.yourFavorites, point.pointId, point)
+    },
+    unFavoritePoint(state, pointId) {
+      Vue.delete(state.yourFavorites, pointId)
     },
 
     // //#endregion

@@ -256,8 +256,8 @@ export default {
     checkWantToUpdatePoints() {
       if (this.loaded) {
         this.wantToUpdatePoints = true;
-      } 
-      this.loaded = true
+      }
+      this.loaded = true;
     },
     createNewPoint() {
       this.$store.dispatch("createNewPoint", this.newPoint);
