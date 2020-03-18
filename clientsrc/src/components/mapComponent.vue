@@ -14,7 +14,12 @@
               aria-expanded="false"
             >Filter</button>
             <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-              <a class="dropdown-item" href="#">Dropdown link</a>
+              <a class="dropdown-item" @click.stop="minStars = 0">All points</a>
+              <a class="dropdown-item" @click.stop="minStars = 5">5 Stars and Above</a>
+              <a class="dropdown-item" @click.stop="minStars = 4">4 Stars and Above</a>
+              <a class="dropdown-item" @click.stop="minStars = 3">3 Stars and Above</a>
+              <a class="dropdown-item" @click.stop="minStars = 2">2 Stars and Above</a>
+              <a class="dropdown-item" @click.stop="minStars = 1">1 Stars and Above</a>
               <a class="dropdown-item" href="#">Dropdown link</a>
             </div>
           </div>
@@ -43,7 +48,7 @@
       <l-tile-layer :url="url" :attribution="attribution" />
       <l-feature-group ref="points">
         <l-marker
-          v-for="(point) in points"
+          v-for="(point) in filteredPoints"
           :key="point.id"
           :lat-lng="[point.location.coordinates[1], point.location.coordinates[0]]"
         >
@@ -161,6 +166,7 @@ export default {
   data() {
     return {
       wantToUpdatePoints: false,
+      minStars: 0,
       newPoint: {
         title: "",
         description: "",
@@ -270,6 +276,11 @@ export default {
     },
     groupsKeys() {
       return Object.keys(this.$store.state.yourGroups);
+    },
+    filteredPoints() {
+      return this.$store.state.points.filter(
+        p => p.averageVote >= this.minStars
+      );
     }
   }
 };
