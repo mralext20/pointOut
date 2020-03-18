@@ -90,9 +90,6 @@ export default {
   async mounted() {
     this.$store.dispatch("getYourGroups");
     await this.$store.dispatch("getYourPoints");
-    this.$refs.pointsMap.$refs.map.mapObject.fitBounds(
-      this.$refs.pointsMap.$refs.points.mapObject.getBounds()
-    );
   },
   computed: {
     profile() {
