@@ -58,4 +58,9 @@ export default {
 .home-map {
   max-height: 60rem;
 }
+
+.home {
+  overflow: hidden !important;
+  max-height: 90vh;
+}
 </style>
