@@ -103,13 +103,13 @@
                   <option selected hidden>Group</option>
                   <option class="dropdow-item" :value="undefined" @click.stop>No Group</option>
                   <option
-                    v-for="groupId in groupsKeys"
-                    :key="groupId"
+                    v-for="group in yourGroups"
+                    :key="group.id"
                     class="dropdown-item"
                     href="#"
-                    :value="groupId"
+                    :value="group.id"
                     @click.stop
-                  >{{yourGroups[groupId].title}}</option>
+                  >{{group.title}}</option>
                 </select>
               </div>
 
@@ -255,7 +255,6 @@ export default {
   },
   mounted() {
     this.center = this.initialCenter;
-    this.$store.dispatch("getYourGroups");
   },
   computed: {
     newPointIcon() {
@@ -276,9 +275,6 @@ export default {
     },
     yourGroups() {
       return this.$store.state.yourGroups;
-    },
-    groupsKeys() {
-      return Object.keys(this.$store.state.yourGroups);
     }
   }
 };
