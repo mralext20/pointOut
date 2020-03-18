@@ -54,7 +54,7 @@
               <button
                 v-if="yourGroups[group.id]"
                 @click="leaveGroup(group)"
-                class="btn btn-danger btn-sm"
+                class="btn btn-secondary btn-sm"
               >Leave</button>
               <button v-else class="btn btn-sm btn-success" @click="joinGroup(group)">Join</button>
             </div>
