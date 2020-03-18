@@ -22,7 +22,8 @@ export default new Vuex.Store({
     yourGroups: {},
     activeGroup: {},
     yourPoints: [],
-    members: []
+    members: [],
+    yourVisits: {},
   },
   mutations: {
     // #region Profile
@@ -34,7 +35,6 @@ export default new Vuex.Store({
       state.profile.name = profile.name;
       state.profile.picture = profile.picture;
     },
-
     // #endregion
     // #region Points
 
@@ -53,6 +53,22 @@ export default new Vuex.Store({
     },
 
     // #endregion
+    // #region visits
+    setYourVisits(state, visits) {
+      let data = {}
+      visits.forEach(v => {
+        data[v.pointId] = v
+      })
+      state.yourVisits = data
+    },
+    visitPoint(state, point) {
+      Vue.set(state.yourVisits, point.pointId, point)
+    },
+    deleteVisit(state, pointId) {
+      Vue.delete(state.yourVisits, pointId)
+    },
+
+    // //#endregion
     // #region Groups
 
     setGroups(state, groups) {
@@ -64,6 +80,9 @@ export default new Vuex.Store({
     createGroup(state, group) {
       state.publicGroups.push(group);
     },
+    deleteGroup(state, group) {
+      state.publicGroups = state.publicGroups.filter(g => g.id != group.id)
+    },
     setYourGroups(state, groups) {
       groups.forEach(group => {
         Vue.set(state.yourGroups, group.id, group);
@@ -74,11 +93,10 @@ export default new Vuex.Store({
       Vue.set(state.publicGroups, index, group);
       Vue.set(state.yourGroups, group.id, group);
     },
-
     joinGroup(state, group) {
       Vue.set(state.yourGroups, group.id, group);
     },
-    LeaveGroup(state, group) {
+    leaveGroup(state, group) {
       Vue.delete(state.yourGroups, group.id);
     },
     setMembers(state, members) {
@@ -182,11 +200,20 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
+    async deleteGroup({ commit }, { group }) {
+      try {
+        let res = await api.delete(`groups/${group.id}`)
+        commit("deleteGroup", group)
+        commit("leaveGroup", group)
+      } catch (error) {
+        console.error(error)
+      }
+    },
     async leaveGroup({ commit }, { group, memberEmail, myEmail }) {
       try {
         let res = await api.delete(`groups/${group.id}/members/${memberEmail}`);
         if (myEmail == memberEmail) {
-          commit("LeaveGroup", group);
+          commit("leaveGroup", group);
         }
       } catch (error) {
         console.error(error);
@@ -262,5 +289,29 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
+    async getYourVisits({ commit }) {
+      try {
+        let res = await api.get("profile/visits");
+        commit("setYourVisits", res.data)
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async visitPoint({ commit }, point) {
+      try {
+        let res = await api.post("visits", { pointId: point.id })
+        commit("visitPoint", { ...res.data, point })
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    async deleteVisit({ commit }, point) {
+      try {
+        await api.delete(`visits/${point.id}`)
+        commit("deleteVisit", point.id)
+      } catch (error) {
+
+      }
+    }
   }
 });

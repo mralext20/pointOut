@@ -1,6 +1,8 @@
 <template>
   <div>
-    <h1>Public Groups</h1>
+    <div class="col-12 text-center pt-1">
+      <h1>Public Groups</h1>
+    </div>
     <group :newGroups="true" :profileCheck="false" :groupsData="groups" />
   </div>
 </template>

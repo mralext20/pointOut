@@ -1,7 +1,7 @@
 <template>
   <div class="container-fluid" v-if="yourGroups">
     <div class="row">
-      <div class="col-12">
+      <div class="col-12 text-center mb-2">
         <button v-if="newGroups" class="btn btn-primary" @click="showForm =! showForm">Create Group</button>
       </div>
       <div v-if="showForm" class="col-12">
@@ -14,7 +14,7 @@
             placeholder="description"
             required
           />
-          <label class="form-check-label" for="public-private-checkbox">public Group</label>
+          <label class="form-check-label" for="public-private-checkbox">Public Group</label>
           <input
             class="form-inline"
             type="checkbox"
@@ -23,7 +23,7 @@
             v-model="newGroup.public"
             required
           />
-          <button class="btn btn-primary">submit</button>
+          <button class="btn btn-primary">Submit</button>
         </form>
       </div>
 
@@ -47,12 +47,16 @@
               </p>
             </div>
             <div v-if="group.creatorEmail == $auth.userInfo.email">
-              <button class="btn btn-warning" @click="editGroup(group)">edit</button>
-              <button class="btn btn-danger" @click="deleteGroup(group)">Delete</button>
+              <button class="btn btn-sm btn-primary mr-2" @click="editGroup(group)">Edit</button>
+              <button class="btn btn-sm btn-secondary" @click="deleteGroup(group)">Delete</button>
             </div>
             <div v-else>
-              <button v-if="yourGroups[group.id]" @click="leave(group)" class="btn btn-danger">leave</button>
-              <button v-else class="btn btn-success" @click="join(group)">join</button>
+              <button
+                v-if="yourGroups[group.id]"
+                @click="leaveGroup(group)"
+                class="btn btn-secondary btn-sm"
+              >Leave</button>
+              <button v-else class="btn btn-sm btn-success" @click="joinGroup(group)">Join</button>
             </div>
             <router-link
               :to="{ name: 'Group', params:{groupId:group.id} }"
@@ -94,12 +98,16 @@
               </p>
             </div>
             <div v-if="group.creatorEmail == $auth.userInfo.email">
-              <button class="btn btn-warning" @click="editGroup(group)">cancel</button>
-              <button class="btn btn-danger" @click="deleteGroup(group)">Delete</button>
+              <button class="btn btn-sm btn-primary" @click="editGroup(group)">Cancel</button>
+              <button class="btn btn-sm btn-secondary" @click="deleteGroup(group)">Delete</button>
             </div>
             <div v-else>
-              <button v-if="yourGroups[group.id]" @click="leave(group)" class="btn btn-danger">leave</button>
-              <button v-else class="btn btn-success" @click="join(group)">join</button>
+              <button
+                v-if="yourGroups[group.id]"
+                @click="leaveGroup(group)"
+                class="btn btn-sm btn-danger"
+              >Leave</button>
+              <button v-else class="btn btn-sm btn-success" @click="joinGroup(group)">Join</button>
             </div>
           </div>
         </div>
@@ -156,15 +164,17 @@ export default {
         public: true
       };
     },
-    join(group) {
+    joinGroup(group) {
       this.$store.dispatch("joinGroup", {
         group,
+        myEmail: this.$auth.userInfo.email,
         memberEmail: this.$auth.userInfo.email
       });
     },
-    leave(group) {
+    leaveGroup(group) {
       this.$store.dispatch("leaveGroup", {
         group,
+        myEmail: this.$auth.userInfo.email,
         memberEmail: this.$auth.userInfo.email
       });
     },
@@ -188,5 +198,11 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+@import "../assets/_variables.scss";
+
+.btn-secondary:hover {
+  background-color: $danger;
+  color: white;
+}
 </style>

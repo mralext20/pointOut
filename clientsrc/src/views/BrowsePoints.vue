@@ -1,6 +1,8 @@
 <template>
-  <div class="row">
-    <point v-for="point in points" :key="point.id" :location="location" :pointData="point" />
+  <div class="container-fluid">
+    <div class="row browse-points">
+      <point v-for="point in points" :key="point.id" :location="location" :pointData="point" />
+    </div>
   </div>
 </template>
 

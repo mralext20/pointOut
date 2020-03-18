@@ -58,7 +58,18 @@
     <div v-else-if="$route.name == 'Profile groups'">
       <groups :newGroups="false" :groupsData="groups" />
     </div>
-    <div v-else-if="$route.name == 'Profile visits'">Visits</div>
+    <div class="row" v-else-if="$route.name == 'Profile visits'">
+      <div class="col-md-4 col-12" v-for="visit in visits" :key="visit.id">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">{{visit.point.title}}</h4>
+            <p class="card-text">First Visited on {{new Date(visit.createdAt).toLocaleDateString()}}</p>
+            <p class="card-text text-muted">{{visit.point.description}}</p>
+            <button class="btn btn-info" @click="unvisit(visit.point)">unvisit</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="row" v-else-if="$route.name == 'Profile points'">
       <map-component
         @ready="fitBounds"
@@ -67,7 +78,7 @@
         :interactable="true"
         :ableToUpdate="false"
       />
-      <point v-for="point in points" :pointData="point" :key="point.id" />
+      <point v-for="point in points" :pointData="point" :location="location" :key="point.id" />
     </div>
   </div>
 </template>
@@ -80,7 +91,7 @@ export default {
   name: "Profile",
   data() {
     return {
-      edit: {},
+      location: { latitude: undefined, longitude: undefined },
       editedProfile: {
         name: this.$store.state.profile.name,
         picture: this.$store.state.profile.picture
@@ -89,7 +100,8 @@ export default {
   },
   async mounted() {
     this.$store.dispatch("getYourGroups");
-    await this.$store.dispatch("getYourPoints");
+    this.$store.dispatch("getYourPoints");
+    this.$store.dispatch("getYourVisits");
   },
   computed: {
     profile() {
@@ -100,6 +112,9 @@ export default {
     },
     points() {
       return this.$store.state.yourPoints;
+    },
+    visits() {
+      return this.$store.state.yourVisits;
     }
   },
   components: {
@@ -108,13 +123,26 @@ export default {
     MapComponent
   },
   methods: {
-
     updateProfile() {
       this.$store.dispatch("updateProfile", this.editedProfile);
     },
     fitBounds() {
       this.$refs.pointsMap.$refs.map.mapObject.fitBounds(
         this.$refs.pointsMap.$refs.points.mapObject.getBounds()
+      );
+      this.getLocation();
+    },
+    unvisit(point) {
+      this.$store.dispatch("deleteVisit", point);
+    },
+    getLocation() {
+      navigator.geolocation.getCurrentPosition(
+        loc =>
+          (this.location = {
+            latitude: loc.coords.latitude,
+            longitude: loc.coords.longitude
+          }),
+        err => console.error(err)
       );
     }
   }

@@ -8,7 +8,7 @@ class VisitsService {
     return data.length
   }
   async findByUserEmail(creatorEmail) {
-    const data = await dbContext.Visit.find({ creatorEmail })
+    const data = await dbContext.Visit.find({ creatorEmail }).populate("point")
     return data
   }
 
@@ -24,7 +24,7 @@ class VisitsService {
     }
   }
 
-  
+
 }
 
 export const visitsService = new VisitsService();
