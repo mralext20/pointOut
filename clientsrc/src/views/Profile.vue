@@ -126,7 +126,10 @@ export default {
     updateProfile() {
       this.$store.dispatch("updateProfile", this.editedProfile);
     },
-    fitBounds() {
+    async fitBounds() {
+      if (this.$store.state.yourPoints.length == 0) {
+        await this.$store.dispatch("getYourPoints");
+      }
       this.$refs.pointsMap.$refs.map.mapObject.fitBounds(
         this.$refs.pointsMap.$refs.points.mapObject.getBounds()
       );
