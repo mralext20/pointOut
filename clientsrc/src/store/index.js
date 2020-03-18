@@ -68,6 +68,13 @@ export default new Vuex.Store({
     deleteVisit(state, pointId) {
       Vue.delete(state.yourVisits, pointId)
     },
+    setYourFavorites(state, favorites) {
+      let data = {}
+      favorites.forEach(v => {
+        data[v.pointId] = v
+      })
+      state.yourFavorites = data
+    },
     favoritePoint(state, point) {
       Vue.set(state.yourFavorites, point.pointId, point)
     },
@@ -316,6 +323,30 @@ export default new Vuex.Store({
       try {
         await api.delete(`visits/${point.id}`)
         commit("deleteVisit", point.id)
+      } catch (error) {
+
+      }
+    },
+    async getYourFavorites({ commit }) {
+      try {
+        let res = await api.get("profile/favorites");
+        commit("setYourFavorites", res.data)
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async favoritePoint({ commit }, point) {
+      try {
+        let res = await api.post("favorites", { pointId: point.id })
+        commit("favoritePoint", { ...res.data, point })
+      } catch (error) {
+        console.error(error)
+      }
+    },
+    async unFavoritePoint({ commit }, point) {
+      try {
+        await api.delete(`favorites/${point.id}`)
+        commit("unFavoritePoint", point.id)
       } catch (error) {
 
       }
