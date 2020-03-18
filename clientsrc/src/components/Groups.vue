@@ -162,12 +162,14 @@ export default {
     joinGroup(group) {
       this.$store.dispatch("joinGroup", {
         group,
+        myEmail: this.$auth.userInfo.email,
         memberEmail: this.$auth.userInfo.email
       });
     },
     leaveGroup(group) {
       this.$store.dispatch("leaveGroup", {
         group,
+        myEmail: this.$auth.userInfo.email,
         memberEmail: this.$auth.userInfo.email
       });
     },

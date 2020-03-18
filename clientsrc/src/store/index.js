@@ -78,7 +78,7 @@ export default new Vuex.Store({
       Vue.set(state.yourGroups, group.id, group);
     },
     leaveGroup(state, group) {
-      Vue.delete(state.yourGroups, group.id);
+      Vue.delete(state.yourGroups, group.id)
     }
     // #endregion
   },
