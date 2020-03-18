@@ -10,6 +10,9 @@ import Groups from "../views/Groups.vue";
 import BigMap from "../views/BigMap.vue";
 // @ts-ignore
 import browsePoints from "../views/BrowsePoints.vue";
+// @ts-ignore
+import groupView from "../views/Group.vue";
+
 import { authGuard } from "@bcwdev/auth0-vue";
 
 
@@ -49,6 +52,12 @@ const routes = [
     path: "/groups",
     name: "Groups",
     component: Groups,
+    beforeEnter: authGuard
+  },
+  {
+    path: "/group/:groupId",
+    name: "Group",
+    component: groupView,
     beforeEnter: authGuard
   },
   {

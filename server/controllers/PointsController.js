@@ -93,6 +93,7 @@ export class PointsController extends BaseController {
       // NOTE NEVER TRUST THE CLIENT TO ADD THE CREATOR ID
       req.body.creatorEmail = req.userInfo.email;
       const created = await pointService.create(req.body);
+      res.send(created);
     } catch (error) {
       next(error);
     }

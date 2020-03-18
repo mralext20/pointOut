@@ -22,8 +22,8 @@ export default new Vuex.Store({
     yourGroups: {},
     activeGroup: {},
     yourPoints: [],
+    members: [],
     yourVisits: {},
-
   },
   mutations: {
     // #region Profile
@@ -74,6 +74,9 @@ export default new Vuex.Store({
     setGroups(state, groups) {
       state.publicGroups = groups;
     },
+    setActiveGroup(state, group) {
+      state.activeGroup = group;
+    },
     createGroup(state, group) {
       state.publicGroups.push(group);
     },
@@ -94,7 +97,16 @@ export default new Vuex.Store({
       Vue.set(state.yourGroups, group.id, group);
     },
     leaveGroup(state, group) {
-      Vue.delete(state.yourGroups, group.id)
+      Vue.delete(state.yourGroups, group.id);
+    },
+    setMembers(state, members) {
+      state.members = members;
+    },
+    addMember(state, member) {
+      state.members.push(member)
+    },
+    removeMember(state, email) {
+      state.members = state.members.filter(m => m.memberEmail != email)
     }
     // #endregion
   },
@@ -140,7 +152,6 @@ export default new Vuex.Store({
       try {
         let res = await api.post("points", pointData);
         commit("addPoint", res.data);
-
       } catch (error) {
         console.error(error);
       }
@@ -208,6 +219,26 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
+    async addMember({ commit }, req) {
+      try {
+        let res = await api.post(`groups/${req.groupId}/members`, { memberEmail: req.email });
+        commit("addMember", res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async kickMember({ commit }, req) {
+      try {
+        await api.delete(`groups/${req.groupId}/members/${req.email}`);
+        commit("removeMember", req.email);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    async getMembersByGroupId({ commit }, groupId) {
+      let res = await api.get(`groups/${groupId}/members`);
+      commit("setMembers", res.data);
+    },
     async editGroup({ commit }, newGroup) {
       try {
         let res = await api.put(`groups/${newGroup.id}`, newGroup);
@@ -215,6 +246,10 @@ export default new Vuex.Store({
       } catch (error) {
         console.error(error);
       }
+    },
+    async setActiveGroup({ commit }, groupId) {
+      let res = await api.get(`groups/${groupId}`);
+      commit("setActiveGroup", res.data);
     },
     async updateProfile({ commit, state }, newProfile) {
       try {
@@ -241,7 +276,7 @@ export default new Vuex.Store({
     async getPointsByGroupId({ commit }, groupId) {
       try {
         let res = await api.get(`groups/${groupId}/points`)
-        commit("setPoints", res.data)
+        commit("setPoints", res)
       } catch (error) {
         console.error(error);
       }

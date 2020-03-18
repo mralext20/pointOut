@@ -58,8 +58,13 @@
               >Leave</button>
               <button v-else class="btn btn-sm btn-success" @click="joinGroup(group)">Join</button>
             </div>
-            <router-link :to="{name:'BigMap'}">
-              <p @click="setPoints">Display Group's Points</p>
+            <router-link
+              :to="{ name: 'Group', params:{groupId:group.id} }"
+              class="nav-link"
+              :class="{active:$route.name == 'Group'}"
+              :groupId="group.id"
+            >
+              <p @click="setActiveGroup(group.id)">Display group's points</p>
             </router-link>
           </div>
           <!-- end first -->
@@ -178,8 +183,8 @@ export default {
         group
       });
     },
-    setPoints(id) {
-      this.$store.dispatch("getPointsByGroupId", id);
+    setActiveGroup(groupId) {
+      this.$store.dispatch("setActiveGroup", groupId);
     }
   },
   computed: {

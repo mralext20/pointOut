@@ -70,7 +70,9 @@ export class GroupsController extends BaseController {
   async addMember(req, res, next) {
     try {
       // NOTE NEVER TRUST THE CLIENT TO ADD THE CREATOR ID
-      let data = await groupService.addMember(req.params.id, req.body.memberEmail, req.userInfo.email);
+      let data = await (await groupService.addMember(req.params.id, req.body.memberEmail, req.userInfo.email))
+        .populate("user", "name picture")
+      await data.execPopulate()
       res.send(data);
     } catch (error) {
       next(error);
