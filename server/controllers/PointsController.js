@@ -102,7 +102,16 @@ export class PointsController extends BaseController {
       // NOTE NEVER TRUST THE CLIENT TO ADD THE CREATOR ID
       req.body.creatorEmail = req.userInfo.email;
       const created = await pointService.create(req.body);
-      res.send(created);
+      await created.populate("creator", "name picture").populate("group", "title").execPopulate();
+      // NOTE add extra feilds to created object
+      let data = {
+        ...created.toJSON(),
+        favorites: 0,
+        visits: 0,
+        voteCount: 0,
+        averageVote: null
+      };
+      res.send(data);
     } catch (error) {
       next(error);
     }
