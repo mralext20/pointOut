@@ -1,6 +1,6 @@
 <template>
   <map-component
-    class="big-map"
+    class="big-map container-fluid"
     :initialCenter="{lat: 43.591, lng:-116.27948}"
     ref="mainMap"
     @update:points="updatePoints"

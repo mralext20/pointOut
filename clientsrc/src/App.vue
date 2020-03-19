@@ -4,12 +4,6 @@
     <transition name="fade">
       <router-view />
     </transition>
-    <footer
-      class="row bg-dark bottom fixed-bottom d-flex flex-row text-light justify-content-center"
-    >
-      <h6>&copy;</h6>
-      <h6>Point Out Inc.</h6>
-    </footer>
   </div>
 </template>
 
