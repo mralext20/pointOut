@@ -23,6 +23,7 @@ const Point = new Schema(
     creatorEmail: { type: String, required: true },
     image: { type: String },
     groupId: { type: ObjectId, ref: "group" },
+    reported: { type: Boolean, default: false, required: true },
     public: { type: Boolean, default: true, required: true },
     location: {
       type: pointSchema,
@@ -70,12 +71,14 @@ Point.virtual("averageVote", {
 })
 
 Point.pre("find", function () {
+
+  this.where({ reported: false })
   this.populate("visits voteCount").populate("group", "title").populate("creator", "name picture").populate("favorites")
 })
 
 Point.pre("findOne", function () {
+  this.where({ reported: false })
   this.populate("visits voteCount").populate("group", "title").populate("creator", "name picture")
 })
-
 
 export default Point;
