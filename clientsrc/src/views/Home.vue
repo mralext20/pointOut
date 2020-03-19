@@ -60,7 +60,9 @@ export default {
   overflow: hidden;
   max-height: 90vh;
 }
+
 .sample-map {
-  height: 70vh;
+  height: 50vh;
+  width: 95vw;
 }
 </style>

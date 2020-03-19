@@ -51,7 +51,7 @@ export default {
 }
 
 .big-map {
-  overflow: hidden;
-  height: 91vh;
+  height: 85vh;
+  widows: 100vw;
 }
 </style>
