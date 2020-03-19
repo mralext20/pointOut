@@ -343,55 +343,33 @@ export default {
   opacity: 0;
 }
 
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (max-width: 600px) {
-  .map-area {
-    height: 100vh;
-    width: 100vw;
-  }
-  .filter-menu.dropdown-menu {
-    display: block;
-    visibility: hidden;
-    opacity: 0;
-    transform: translate(-10vw, -10vh) !important;
-    transition: 0.2s ease all;
-  }
-  .filter-menu.dropdown-menu.show {
-    display: block;
-    visibility: visible;
-    opacity: 1;
-    transform: translate(-10vw, 4.5vh) !important;
-    transition: 0.2s ease all;
-  }
-  .filter-options.dropdown-menu {
-    display: block;
-    visibility: hidden;
-    opacity: 0;
-    transform: translate(-10vw, -10vh) !important;
-    transition: 0.2s ease all;
-  }
-  .filter-options.dropdown-menu.show {
-    display: block;
-    visibility: visible;
-    opacity: 1;
-    transform: translate(-5vw, 8vh) !important;
-    transition: 0.2s ease all;
-  }
+.filter-menu.dropdown-menu {
+  display: block;
+  visibility: hidden;
+  opacity: 0;
+  transform: translate(-10vw, -10vh) !important;
+  transition: 0.2s ease all;
 }
-
-/* Extra small devices (phones, 600px and down) */
-@media only screen and (min-width: 600px) {
-  .map-area {
-    height: 69rem;
-    width: 100vw;
-  }
+.filter-menu.dropdown-menu.show {
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  transform: translate(-10vw, 4.5vh) !important;
+  transition: 0.2s ease all;
 }
-/* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (min-width: 992px) {
-  .map-area {
-    height: 69rem;
-    width: 100%;
-  }
+.filter-options.dropdown-menu {
+  display: block;
+  visibility: hidden;
+  opacity: 0;
+  transform: translate(-10vw, -10vh) !important;
+  transition: 0.2s ease all;
+}
+.filter-options.dropdown-menu.show {
+  display: block;
+  visibility: visible;
+  opacity: 1;
+  transform: translate(-5vw, 8vh) !important;
+  transition: 0.2s ease all;
 }
 
 .form-group {
@@ -399,10 +377,11 @@ export default {
 }
 
 .map-component {
-  height: 100%;
+  height: 99vh;
 }
 
 .leaflet-map {
   cursor: pointer;
+  height: 100%;
 }
 </style>

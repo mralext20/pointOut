@@ -13,21 +13,21 @@
           :to="{ name: 'Profile groups' }"
           class="nav-link"
           :class="{active:$route.name == 'Profile groups'}"
-        >Groups</router-link>
+        >My Groups</router-link>
       </li>
       <li class="nav-item">
         <router-link
           :to="{ name: 'Profile visits' }"
           class="nav-link"
           :class="{active:$route.name == 'Profile visits'}"
-        >Visits</router-link>
+        >My Visits</router-link>
       </li>
       <li class="nav-item">
         <router-link
           :to="{ name: 'Profile points' }"
           class="nav-link"
           :class="{active:$route.name == 'Profile points'}"
-        >Points</router-link>
+        >My Points</router-link>
       </li>
     </ul>
     <div v-if="$route.name == 'Profile'">
@@ -65,19 +65,22 @@
             <h4 class="card-title">{{visit.point.title}}</h4>
             <p class="card-text">First Visited on {{new Date(visit.createdAt).toLocaleDateString()}}</p>
             <p class="card-text text-muted">{{visit.point.description}}</p>
-            <button class="btn btn-info" @click="unvisit(visit.point)">unvisit</button>
+            <button class="btn btn-info" @click="unvisit(visit.point)">Unvisit</button>
           </div>
         </div>
       </div>
     </div>
     <div class="row" v-else-if="$route.name == 'Profile points'">
-      <map-component
-        @ready="fitBounds"
-        ref="pointsMap"
-        :points="points"
-        :interactable="true"
-        :ableToUpdate="false"
-      />
+      <div class="col-12 map pb-3">
+        <map-component
+          class="profile-map"
+          @ready="fitBounds"
+          ref="pointsMap"
+          :points="points"
+          :interactable="true"
+          :ableToUpdate="false"
+        />
+      </div>
       <point v-for="point in points" :pointData="point" :location="location" :key="point.id" />
     </div>
   </div>
@@ -155,5 +158,9 @@ export default {
 <style scoped>
 img {
   max-width: 100px;
+}
+.profile-map {
+  height: 50vh;
+  margin-bottom: 1rem;
 }
 </style>
