@@ -379,15 +379,12 @@ export default {
   transform: translate(-5vw, 8vh) !important;
   transition: 0.2s ease all;
 }
-
 .form-group {
   width: 7rem;
 }
-
 .map-component {
   height: 99vh;
 }
-
 .leaflet-map {
   cursor: pointer;
   height: 100%;

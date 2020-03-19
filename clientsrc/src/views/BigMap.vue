@@ -53,12 +53,7 @@ export default {
 </script>
 
 <style>
-.map-col {
-  padding: 0px;
-}
-
 .big-map {
-  height: 85vh;
-  widows: 100vw;
+  height: 83vh;
 }
 </style>
