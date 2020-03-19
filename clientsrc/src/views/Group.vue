@@ -28,7 +28,7 @@
       >Leave</button>
     </div>
     <point-map
-      class="group-map"
+      class="group-map pb-4"
       ref="map"
       @ready="fitBounds"
       :points="points"
@@ -131,6 +131,6 @@ export default {
 }
 
 .group-map {
-  max-height: 40vh;
+  height: 40vh;
 }
 </style>
