@@ -170,6 +170,15 @@ export default new Vuex.Store({
         console.error(error);
       }
     },
+    reportPoint({ commit }, pointId) {
+      try {
+        api.post(`points/${pointId}/report`);
+        commit("deletePoint", pointId);
+      }
+      catch (error) {
+        console.error(error)
+      }
+    },
     async getPublicGroups({ commit, dispatch }) {
       try {
         let res = await api.get("groups");

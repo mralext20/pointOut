@@ -91,6 +91,11 @@
                 @click.stop="favorite(point)"
               >Favorite</button>
               <button v-else class="btn btn-info btn-sm" @click.stop="unfavorite(point)">unfavorite</button>
+              <button
+                v-if="!point.reported"
+                class="btn btn-info btn-sm"
+                @click.stop="report(point.id)"
+              >Report</button>
             </div>
           </l-popup>
         </l-marker>
@@ -294,6 +299,9 @@ export default {
     },
     unfavorite(point) {
       this.$store.dispatch("unFavoritePoint", point);
+    },
+    report(pointId) {
+      this.$store.dispatch("reportPoint", pointId);
     }
   },
   mounted() {

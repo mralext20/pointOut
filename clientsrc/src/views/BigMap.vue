@@ -1,14 +1,18 @@
 <template>
   <div class="container-fluid">
-    <map-component
-      class="big-map"
-      :initialCenter="{lat: 43.591, lng:-116.27948}"
-      ref="mainMap"
-      @update:points="updatePoints"
-      :interactable="true"
-      :ableToUpdate="true"
-      :points="points"
-    />
+    <div class="row">
+      <div class="col">
+        <map-component
+          class="big-map"
+          :initialCenter="{lat: 43.591, lng:-116.27948}"
+          ref="mainMap"
+          @update:points="updatePoints"
+          :interactable="true"
+          :ableToUpdate="true"
+          :points="points"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
