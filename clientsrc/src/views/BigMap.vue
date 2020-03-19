@@ -1,13 +1,15 @@
 <template>
-  <map-component
-    class="big-map container-fluid"
-    :initialCenter="{lat: 43.591, lng:-116.27948}"
-    ref="mainMap"
-    @update:points="updatePoints"
-    :interactable="true"
-    :ableToUpdate="true"
-    :points="points"
-  />
+  <div class="container-fluid">
+    <map-component
+      class="big-map"
+      :initialCenter="{lat: 43.591, lng:-116.27948}"
+      ref="mainMap"
+      @update:points="updatePoints"
+      :interactable="true"
+      :ableToUpdate="true"
+      :points="points"
+    />
+  </div>
 </template>
 
 <script>
@@ -47,12 +49,7 @@ export default {
 </script>
 
 <style>
-.map-col {
-  padding: 0px;
-}
-
 .big-map {
-  height: 85vh;
-  widows: 100vw;
+  height: 83vh;
 }
 </style>
