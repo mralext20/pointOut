@@ -6,6 +6,7 @@ import { favoritesService } from "../services/FavoritesService";
 import { votesService } from "../services/VotesService";
 import auth0Provider from "@bcwdev/auth0provider";
 import distance from "../utils/distance";
+import Axios from "axios";
 
 export class PointsController extends BaseController {
   constructor() {
@@ -20,6 +21,7 @@ export class PointsController extends BaseController {
       // NOTE: Beyond this point all routes require Authorization tokens (the user must be logged in)
       .use(auth0Provider.getAuthorizedUserInfo)
       .post("", this.create)
+      .post("/:id/report", this.reportPoint)
       .put("/:id", this.edit)
       .delete("/:id", this.delete);
 
@@ -114,6 +116,30 @@ export class PointsController extends BaseController {
       res.send(data);
     } catch (error) {
       next(error);
+    }
+  }
+
+  async reportPoint(req, res, next) {
+    let point
+    try {
+      point = await pointService.reportPoint(req.params.id)
+      res.send("Reported.")
+
+    } catch (error) {
+      next(error)
+    }
+    try {
+      await Axios.post(process.env.REPORT_WEBHOOK, {
+        embeds: [
+          {
+            title: `${point.title} got reported!`,
+            description: `${req.userInfo.name} reported the point with id ${point.id}`,
+            tilestamp: new Date()
+          }
+        ]
+      })
+    } catch (err) {
+      console.error(err)
     }
   }
   async edit(req, res, next) {

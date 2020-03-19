@@ -76,6 +76,11 @@ class PointService {
     await document.populate("group", "title").execPopulate()
     return document
   }
+  async reportPoint(id) {
+    let point = await dbContext.Point.findById(id);
+    point.reported = true;
+    return point
+  }
   async edit(id, creatorEmail, update) {
     const data = await dbContext.Point.findOneAndUpdate(
       { _id: id, creatorEmail },
