@@ -74,28 +74,38 @@
               <p>
                 <span v-if="point.group">Group: {{point.group.title}}</span>
               </p>
-              <button
-                v-if="point.creatorEmail == userEmail"
-                class="btn btn-danger btn-sm"
-                @click="deletePoint(point.id)"
-              >Delete</button>
-              <button
-                v-if="!yourVisits[point.id]"
-                class="btn btn-info btn-sm"
-                @click.stop="visit(point)"
-              >Visit</button>
-              <button v-else class="btn btn-info btn-sm" @click.stop="unvisit(point)">unvisit</button>
-              <button
-                v-if="!yourFavorites[point.id]"
-                class="btn btn-info btn-sm"
-                @click.stop="favorite(point)"
-              >Favorite</button>
-              <button v-else class="btn btn-info btn-sm" @click.stop="unfavorite(point)">unfavorite</button>
-              <button
-                v-if="!point.reported"
-                class="btn btn-info btn-sm"
-                @click.stop="report(point.id)"
-              >Report</button>
+              <div v-if="interactable">
+                <button
+                  v-if="point.creatorEmail == userEmail"
+                  class="btn btn-danger btn-sm"
+                  @click="deletePoint(point.id)"
+                >Delete</button>
+                <button
+                  v-if="!yourVisits[point.id]"
+                  class="btn btn-info btn-sm"
+                  @click.stop="visit(point)"
+                >Visit</button>
+                <button
+                  v-else-if="yourVisits[point.id]"
+                  class="btn btn-info btn-sm"
+                  @click.stop="unvisit(point)"
+                >Un-visit</button>
+                <button
+                  v-if="!yourFavorites[point.id]"
+                  class="btn btn-info btn-sm"
+                  @click.stop="favorite(point)"
+                >Favorite</button>
+                <button
+                  v-else
+                  class="btn btn-info btn-sm"
+                  @click.stop="unfavorite(point)"
+                >unfavorite</button>
+                <button
+                  v-if="!point.reported"
+                  class="btn btn-info btn-sm"
+                  @click.stop="report(point.id)"
+                >Report</button>
+              </div>
             </div>
           </l-popup>
         </l-marker>
