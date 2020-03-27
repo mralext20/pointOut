@@ -1,5 +1,6 @@
 import { dbContext } from "../db/DbContext";
 import { BadRequest } from "../utils/Errors";
+import uploadToGCSFrombase64 from "../utils/uploadToGCS";
 
 class PointService {
   async findAll(query = { public: true }) {
@@ -72,6 +73,10 @@ class PointService {
     return data;
   }
   async create(object) {
+    if (object.image) {
+      object.image = await uploadToGCSFrombase64(object.imageData, object.imagePath, object.imageMime)
+    }
+
     const document = await dbContext.Point.create(object)
     await document.populate("group", "title").execPopulate()
     return document
