@@ -21,6 +21,7 @@
     "dotenv": "^8.1.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
+    "firebase-admin": "^8.10.0",
     "helmet": "^3.21.2",
     "leaflet": "^1.6.0",
     "mongoose": "^5.8.0",

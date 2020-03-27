@@ -1,5 +1,6 @@
 import { dbContext } from "../db/DbContext";
 import { BadRequest } from "../utils/Errors";
+import uploadToGCSFrombase64 from "../utils/uploadToGCS";
 
 class PointService {
   async findAll(query = { public: true }) {
@@ -72,6 +73,10 @@ class PointService {
     return data;
   }
   async create(object) {
+    if (object.imageData) {
+      object.image = await uploadToGCSFrombase64(object.imageData)
+    }
+
     const document = await dbContext.Point.create(object)
     await document.populate("group", "title").execPopulate()
     return document
@@ -98,6 +103,10 @@ class PointService {
     if (!oldDoc) {
       throw new BadRequest("you DO not OWN that POINT or it does not exist.")
     }
+    await dbContext.Visit.remove({ pointId: id })
+    await dbContext.Vote.remove({ pointId: id })
+    await dbContext.Favorite.remove({ pointId: id })
+
   }
 }
 

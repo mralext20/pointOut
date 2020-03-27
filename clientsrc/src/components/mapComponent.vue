@@ -193,6 +193,7 @@
                     />Private Point
                   </label>
                 </div>
+                <file-upload :file.sync="newPoint.file" />
               </div>
             </div>
             <button type="submit" class="btn btn-primary btn-sm" @click.stop>+</button>
@@ -207,6 +208,7 @@
 import { getUserData } from "@bcwdev/auth0-vue";
 import { latLng, Icon } from "leaflet";
 import NotificationService from "../NotificationService";
+import FileUpload from "../components/FileUpload.vue";
 delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({
   iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
@@ -233,7 +235,8 @@ export default {
     LMarker,
     LPopup,
     LTooltip,
-    LFeatureGroup
+    LFeatureGroup,
+    FileUpload
   },
   data() {
     return {
@@ -241,6 +244,7 @@ export default {
       wantToUpdatePoints: false,
       minStars: 0,
       newPoint: {
+        file: undefined,
         title: "",
         description: "",
         public: true,
@@ -318,7 +322,8 @@ export default {
         },
         lat: 0,
         lng: 0,
-        groupId: undefined
+        groupId: undefined,
+        file: undefined
       };
     },
     async deletePoint(pointId) {
