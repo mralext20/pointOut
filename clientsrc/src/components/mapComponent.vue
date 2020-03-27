@@ -158,7 +158,6 @@
                   <label for="check-private" class="form-check-label">
                     <input
                       id="check-private"
-                      name="check-private"
                       class="form-check-input"
                       type="checkbox"
                       @click.stop="newPoint.public = !newPoint.public"
