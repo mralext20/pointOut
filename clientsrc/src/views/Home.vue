@@ -63,7 +63,14 @@ export default {
 }
 
 .sample-map {
-  height: 50vh;
+  height: 60vh;
   width: 95vw;
+}
+
+@media only screen and (min-width: 600px) {
+  .sample-map {
+    height: 85vh;
+    width: 100vw;
+  }
 }
 </style>

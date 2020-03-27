@@ -19,18 +19,10 @@
         <li class="nav-item" :class="{ active: $route.name == 'Home' }">
           <router-link :to="{ name: 'Home' }" class="nav-link navbar-brand">PointOut</router-link>
         </li>
-        <li
-          v-if="$auth.isAuthenticated"
-          class="nav-item"
-          :class="{ active: $route.name == 'Groups' }"
-        >
+        <li class="nav-item" :class="{ active: $route.name == 'Groups' }">
           <router-link :to="{ name: 'Groups' }" class="nav-link">Groups</router-link>
         </li>
-        <li
-          v-if="$auth.isAuthenticated"
-          class="nav-item"
-          :class="{ active: $route.name == 'BigMap' }"
-        >
+        <li class="nav-item" :class="{ active: $route.name == 'BigMap' }">
           <router-link :to="{ name: 'BigMap' }" class="nav-link">Map</router-link>
         </li>
         <li
@@ -67,7 +59,6 @@ export default {
       await this.$auth.loginWithPopup();
       this.$store.dispatch("setBearer", this.$auth.bearer);
       this.$store.dispatch("getProfile");
-      this.$router.push({ path: "Profile" });
       NotificationService.toast("Logged In");
     },
     async logout() {

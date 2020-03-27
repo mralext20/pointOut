@@ -103,28 +103,38 @@
                   {{point.group.title}}
                 </span>
               </p>
-              <button
-                v-if="point.creatorEmail == userEmail"
-                class="btn btn-danger btn-sm"
-                @click="deletePoint(point.id)"
-              >Delete</button>
-              <button
-                v-if="!yourVisits[point.id]"
-                class="btn btn-info btn-sm"
-                @click.stop="visit(point)"
-              >Visit</button>
-              <button v-else class="btn btn-info btn-sm" @click.stop="unvisit(point)">unvisit</button>
-              <button
-                v-if="!yourFavorites[point.id]"
-                class="btn btn-info btn-sm"
-                @click.stop="favorite(point)"
-              >Favorite</button>
-              <button v-else class="btn btn-info btn-sm" @click.stop="unfavorite(point)">unfavorite</button>
-              <button
-                v-if="!point.reported"
-                class="btn btn-info btn-sm"
-                @click.stop="report(point.id)"
-              >Report</button>
+              <div v-if="interactable">
+                <button
+                  v-if="point.creatorEmail == userEmail"
+                  class="btn btn-danger btn-sm"
+                  @click="deletePoint(point.id)"
+                >Delete</button>
+                <button
+                  v-if="!yourVisits[point.id]"
+                  class="btn btn-info btn-sm"
+                  @click.stop="visit(point)"
+                >Visit</button>
+                <button
+                  v-else-if="yourVisits[point.id]"
+                  class="btn btn-info btn-sm"
+                  @click.stop="unvisit(point)"
+                >Un-visit</button>
+                <button
+                  v-if="!yourFavorites[point.id]"
+                  class="btn btn-info btn-sm"
+                  @click.stop="favorite(point)"
+                >Favorite</button>
+                <button
+                  v-else
+                  class="btn btn-info btn-sm"
+                  @click.stop="unfavorite(point)"
+                >unfavorite</button>
+                <button
+                  v-if="!point.reported"
+                  class="btn btn-info btn-sm"
+                  @click.stop="report(point.id)"
+                >Report</button>
+              </div>
             </div>
           </l-popup>
         </l-marker>
@@ -135,10 +145,11 @@
         :lat-lng="[newPoint.lat, newPoint.lng]"
       >
         <l-tooltip :options="{ permanent: true, interactive: true }">
-          <form @submit.prevent="createNewPoint">
-            <div @click.stop>
+          <form @click.stop @submit.prevent="createNewPoint">
+            <div>
               <div class="form-group my-1">
                 <input
+                  @click.stop
                   class="form-control form-control-sm"
                   type="text"
                   placeholder="Title..."
@@ -148,6 +159,7 @@
               </div>
               <div class="form-group m-0">
                 <input
+                  @click.stop
                   class="form-control form-control-sm"
                   type="text"
                   placeholder="Description..."
@@ -155,8 +167,8 @@
                   required
                 />
               </div>
-              <div class="form-group my-1">
-                <select class="form-control form-control-sm" v-model="newPoint.groupId">
+              <div class="form-group mt-1 mb-2">
+                <select @click.stop class="form-control form-control-sm" v-model="newPoint.groupId">
                   <option selected hidden>Group</option>
                   <option class="dropdow-item" :value="undefined" @click.stop>No Group</option>
                   <option
@@ -172,12 +184,14 @@
 
               <div class="form-group my-1">
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    @click="newPoint.public = !newPoint.public"
-                  />
-                  <label class="form-check-label" for="gridCheck">Private Point</label>
+                  <label for="check-private" class="form-check-label">
+                    <input
+                      id="check-private"
+                      class="form-check-input"
+                      type="checkbox"
+                      @click.stop="newPoint.public = !newPoint.public"
+                    />Private Point
+                  </label>
                 </div>
               </div>
             </div>
