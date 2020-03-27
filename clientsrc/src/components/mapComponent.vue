@@ -150,6 +150,7 @@
                   />
                   <label class="form-check-label" for="gridCheck">Private Point</label>
                 </div>
+                <file-upload />
               </div>
             </div>
             <button type="submit" class="btn btn-primary btn-sm" @click.stop>+</button>
@@ -164,6 +165,7 @@
 import { getUserData } from "@bcwdev/auth0-vue";
 import { latLng, Icon } from "leaflet";
 import NotificationService from "../NotificationService";
+import FileUpload from "../components/FileUpload.vue";
 delete Icon.Default.prototype._getIconUrl;
 Icon.Default.mergeOptions({
   iconRetinaUrl: require("leaflet/dist/images/marker-icon-2x.png"),
@@ -190,7 +192,8 @@ export default {
     LMarker,
     LPopup,
     LTooltip,
-    LFeatureGroup
+    LFeatureGroup,
+    FileUpload
   },
   data() {
     return {
