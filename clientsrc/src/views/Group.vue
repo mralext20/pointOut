@@ -1,40 +1,61 @@
 <template>
-  <div>
-    <h1>{{group.title}}</h1>
-    <p>{{group.description}}</p>
-    <div v-if="group.creatorEmail == $auth.user.email">
-      <h2>Invite Members</h2>
-      <input v-model="newEmail" type="email" />
-      <button @click="inviteUser" class="btn btn-primary">Invite</button>
-    </div>
-    <h2>Group Members:</h2>
-    <div class="d-flex flex-column" v-for="(member) in members" :key="member.id">
-      <div>
-        <h4 v-if="group.creatorEmail == member.user.email">Owner</h4>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="d-flex text-center flex-column align-items-center justify-content-center col-12">
+        <h1>{{group.title}}</h1>
+        <p>{{group.description}}</p>
+        <div v-if="group.creatorEmail == $auth.user.email">
+          <h2>Invite Members</h2>
+          <input v-model="newEmail" type="email" />
+          <button @click="inviteUser" class="btn btn-primary">Invite</button>
+        </div>
       </div>
-      <div class="d-flex">
-        <img class="user-image" :src="member.user.picture" alt />
-        <p>{{member.user.name}}</p>
+      <div class="order-last col-md-3 col-12">
+        <h4 class="text-muted">Group Members</h4>
+        <div class="row">
+          <div
+            class="d-flex flex-column user-tag col-6 col-md-12"
+            v-for="(member) in members"
+            :key="member.id"
+          >
+            <div class="d-flex">
+              <img class="user-image rounded-pill" :src="member.user.picture" alt />
+              <div class="d-flex flex-column">
+                <p
+                  class="badge badge-primary align-self-start"
+                  v-if="group.creatorEmail == member.user.email"
+                >Owner</p>
+                <div
+                  class="d-flex flex-column align-items-center justify-content-center text-center"
+                >
+                  <p>{{member.user.name}}</p>
+                  <button
+                    @click="kickUser(member.user.email)"
+                    v-if="group.creatorEmail == $auth.user.email && member.user.email != $auth.user.email"
+                    class="badge badge-secondary"
+                  >Kick</button>
+                  <button
+                    @click="kickUser(member.user.email)"
+                    v-else-if="member.user.email == $auth.user.email && member.user.email != group.creatorEmail"
+                    class="badge badge-secondary leave-badge"
+                  >Leave</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <button
-        @click="kickUser(member.user.email)"
-        v-if="group.creatorEmail == $auth.user.email && member.user.email != $auth.user.email"
-        class="btn btn-danger"
-      >Kick</button>
-      <button
-        @click="kickUser(member.user.email)"
-        v-else-if="member.user.email == $auth.user.email && member.user.email != group.creatorEmail"
-        class="btn btn-danger"
-      >Leave</button>
+      <div class="order-3 col-md-9 col-12">
+        <point-map
+          class="group-map pb-4"
+          ref="map"
+          @ready="fitBounds"
+          :points="points"
+          :interactable="true"
+          :ableToUpdate="false"
+        />
+      </div>
     </div>
-    <point-map
-      class="group-map pb-4"
-      ref="map"
-      @ready="fitBounds"
-      :points="points"
-      :interactable="true"
-      :ableToUpdate="false"
-    />
     <div class="row">
       <point v-for="point in points" :key="point.id" :pointData="point" />
     </div>
@@ -126,11 +147,25 @@ export default {
 
 <style>
 .user-image {
-  max-width: 5rem;
-  max-height: 5rem;
+  max-width: 3rem;
+  max-height: 3rem;
 }
 
 .group-map {
   height: 40vh;
+}
+.user-tag {
+  margin-bottom: 0.5rem;
+}
+.user-tag p {
+  margin-bottom: 0rem;
+}
+.leave-badge {
+  border: 0rem;
+  box-shadow: 0rem 0.15rem 0.15rem 0rem rgba(0, 0, 0, 0.2);
+}
+.leave-badge:hover {
+  box-shadow: 0 0.15rem 0.15rem 0 rgba(0, 0, 0, 0.2),
+    0 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.19);
 }
 </style>

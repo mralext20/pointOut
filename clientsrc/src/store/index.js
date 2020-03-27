@@ -52,6 +52,10 @@ export default new Vuex.Store({
     setYourPoints(state, points) {
       state.yourPoints = points;
     },
+    editPoint(state, point) {
+      let index = state.points.findIndex(p => p.id == point.id);
+      state.points[index] = point;
+    },
 
     // #endregion
     // #region visits
@@ -176,6 +180,14 @@ export default new Vuex.Store({
         commit("deletePoint", pointId);
       }
       catch (error) {
+        console.error(error)
+      }
+    },
+    async changePointGroup({ commit }, req) {
+      try {
+        let res = await api.put(`points/${req.pointId}`, { groupId: req.groupId });
+        commit("editPoint", res.data)
+      } catch (error) {
         console.error(error)
       }
     },

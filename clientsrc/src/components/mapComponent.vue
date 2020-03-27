@@ -72,7 +72,36 @@
               <h4>{{point.title}}</h4>
               <p>{{point.description}}</p>
               <p>
-                <span v-if="point.group">Group: {{point.group.title}}</span>
+                <span v-if="point.group">
+                  Group:
+                  <span v-if="point.creatorEmail == $auth.userInfo.email">
+                    <select class="form-control form-control-sm" v-model="newPoint.groupId">
+                      <option
+                        class="dropdown-item"
+                        @click.stop
+                        v-if="!point.groupId"
+                        selected
+                        :value="undefined"
+                      >Group</option>
+                      <option
+                        class="dropdown-item"
+                        @click.stop
+                        :value="undefined"
+                        v-else
+                      >{{yourGroups[point.groupId].title}}</option>
+                      <option class="dropdown-item" :value="undefined" @click.stop>No Group</option>
+                      <option
+                        @click="changeGroup(point.id)"
+                        v-for="group in yourGroups"
+                        :key="group.id"
+                        class="dropdown-item"
+                        href="#"
+                        :value="group.id"
+                      >{{group.title}}</option>
+                    </select>
+                  </span>
+                  {{point.group.title}}
+                </span>
               </p>
               <button
                 v-if="point.creatorEmail == userEmail"
@@ -287,6 +316,14 @@ export default {
         this.$store.dispatch("deletePoint", pointId);
         NotificationService.toast("The point was successfully deleted.");
       }
+    },
+    async changeGroup(pointId) {
+      let req = {
+        pointId,
+        groupId: this.newPoint.groupId
+      };
+      await this.$store.dispatch("changePointGroup", req);
+      this.newPoint.groupId = "";
     },
     visit(point) {
       this.$store.dispatch("visitPoint", point);
