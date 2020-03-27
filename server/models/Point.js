@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 const ObjectId = Schema.Types.ObjectId
 
-
 const pointSchema = new mongoose.Schema({
   type: {
     type: String,

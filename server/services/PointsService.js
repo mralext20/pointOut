@@ -103,6 +103,10 @@ class PointService {
     if (!oldDoc) {
       throw new BadRequest("you DO not OWN that POINT or it does not exist.")
     }
+    await dbContext.Visit.remove({ pointId: id })
+    await dbContext.Vote.remove({ pointId: id })
+    await dbContext.Favorite.remove({ pointId: id })
+
   }
 }
 
