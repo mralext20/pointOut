@@ -155,12 +155,15 @@
 
               <div class="form-group my-1">
                 <div class="form-check">
-                  <input
-                    class="form-check-input"
-                    type="checkbox"
-                    @click.stop="newPoint.public = !newPoint.public"
-                  />
-                  <label class="form-check-label" for="gridCheck">Private Point</label>
+                  <label for="check-private" class="form-check-label">
+                    <input
+                      id="check-private"
+                      name="check-private"
+                      class="form-check-input"
+                      type="checkbox"
+                      @click.stop="newPoint.public = !newPoint.public"
+                    />Private Point
+                  </label>
                 </div>
               </div>
             </div>
