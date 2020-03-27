@@ -150,7 +150,7 @@
                   />
                   <label class="form-check-label" for="gridCheck">Private Point</label>
                 </div>
-                <file-upload />
+                <file-upload :file.sync="newPoint.file" />
               </div>
             </div>
             <button type="submit" class="btn btn-primary btn-sm" @click.stop>+</button>
@@ -201,6 +201,7 @@ export default {
       wantToUpdatePoints: false,
       minStars: 0,
       newPoint: {
+        file: undefined,
         title: "",
         description: "",
         public: true,
