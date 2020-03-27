@@ -145,7 +145,7 @@
         :lat-lng="[newPoint.lat, newPoint.lng]"
       >
         <l-tooltip :options="{ permanent: true, interactive: true }">
-          <form @click.stop @submit.prevent="createNewPoint">
+          <form @submit.prevent="createNewPoint">
             <div>
               <div class="form-group my-1">
                 <input
@@ -184,13 +184,12 @@
 
               <div class="form-group my-1">
                 <div class="form-check">
-                  <label for="check-private" class="form-check-label">
-                    <input
-                      id="check-private"
-                      class="form-check-input"
-                      type="checkbox"
-                      @click.stop="newPoint.public = !newPoint.public"
-                    />Private Point
+                  <label
+                    @click.stop="newPoint.public = !newPoint.public"
+                    for="check-private"
+                    class="form-check-label"
+                  >
+                    <input id="check-private" class="form-check-input" type="checkbox" />Private Point
                   </label>
                 </div>
               </div>
