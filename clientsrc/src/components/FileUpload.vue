@@ -16,8 +16,7 @@ export default {
   methods: {
     onSelect() {
       let file = this.$refs.file.files[0];
-      this.file = file;
-      this.$emit("update:file", file)file);
+      this.$emit("update:file", file);
     }
   }
 };

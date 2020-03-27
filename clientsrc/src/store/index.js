@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import Axios from "axios";
 import router from "../router";
 import NotificationService from "../NotificationService";
+import { toBase64 } from "../utils"
 
 Vue.use(Vuex);
 
@@ -164,6 +165,9 @@ export default new Vuex.Store({
     },
     async createNewPoint({ commit }, pointData) {
       try {
+        if (pointData.file) {
+          pointData.imageData = await toBase64(pointData.file);
+        }
         let res = await api.post("points", pointData);
         commit("addPoint", res.data);
       } catch (error) {

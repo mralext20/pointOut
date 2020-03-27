@@ -73,8 +73,8 @@ class PointService {
     return data;
   }
   async create(object) {
-    if (object.image) {
-      object.image = await uploadToGCSFrombase64(object.imageData, object.imagePath, object.imageMime)
+    if (object.imageData) {
+      object.image = await uploadToGCSFrombase64(object.imageData)
     }
 
     const document = await dbContext.Point.create(object)

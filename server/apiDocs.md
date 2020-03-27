@@ -153,9 +153,7 @@ creates a new point. requires bearrer token auth.
     "public" : true,
     "groupId": "abc123",
     // optional
-    "imageData" : "base64 encoded string of image data",
-    "imagePath": "image.png",
-    "imageMime": "image/png",
+    "imageData" : "data:image/png;base64,b64 encoded string of image data",
     // OR
     "image": "https://link.to/image.png"
 }
