@@ -116,10 +116,11 @@
         :lat-lng="[newPoint.lat, newPoint.lng]"
       >
         <l-tooltip :options="{ permanent: true, interactive: true }">
-          <form @submit.prevent="createNewPoint">
-            <div @click.stop>
+          <form @click.stop @submit.prevent="createNewPoint">
+            <div>
               <div class="form-group my-1">
                 <input
+                  @click.stop
                   class="form-control form-control-sm"
                   type="text"
                   placeholder="Title..."
@@ -129,6 +130,7 @@
               </div>
               <div class="form-group m-0">
                 <input
+                  @click.stop
                   class="form-control form-control-sm"
                   type="text"
                   placeholder="Description..."
@@ -136,8 +138,8 @@
                   required
                 />
               </div>
-              <div class="form-group my-1">
-                <select class="form-control form-control-sm" v-model="newPoint.groupId">
+              <div class="form-group mt-1 mb-2">
+                <select @click.stop class="form-control form-control-sm" v-model="newPoint.groupId">
                   <option selected hidden>Group</option>
                   <option class="dropdow-item" :value="undefined" @click.stop>No Group</option>
                   <option
@@ -156,7 +158,7 @@
                   <input
                     class="form-check-input"
                     type="checkbox"
-                    @click="newPoint.public = !newPoint.public"
+                    @click.stop="newPoint.public = !newPoint.public"
                   />
                   <label class="form-check-label" for="gridCheck">Private Point</label>
                 </div>
