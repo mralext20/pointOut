@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid mt-1">
     <div class="row browse-points">
       <point v-for="point in points" :key="point.id" :location="location" :pointData="point" />
     </div>

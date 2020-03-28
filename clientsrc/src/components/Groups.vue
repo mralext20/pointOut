@@ -27,30 +27,42 @@
         </form>
       </div>
 
-      <div class="col-12 col-md-4 card mb-3" v-for="group in groupsData" :key="group.id">
+      <div class="col-12 col-md-4 card" v-for="group in groupsData" :key="group.id">
         <div class="row">
           <div class="col-md-4 d-md-flex align-items-center">
             <img :src="group.imageUrl || require('../assets/default-group.png')" class="card-img" />
           </div>
           <!-- start first -->
-          <div v-if="!edit[group.id]" class="col-md-8">
+          <div class="col-md-8" v-if="!edit[group.id]">
             <div class="card-body">
-              <h5 class="card-title">{{group.title}}</h5>
+              <h5 class="card-title text-center">{{group.title}}</h5>
               <div v-if="$route.name != 'Groups'">
                 <span v-if="group.public" class="badge badge-secondary">Public</span>
                 <span v-else class="badge badge-primary">Private</span>
               </div>
-              <p class="card-text">{{group.description}}</p>
-
-              <p class="card-text">
+              <p class="card-text text-center">{{group.description}}</p>
+              <div>
+                <router-link
+                  :to="{ name: 'Group', params:{groupId:group.id} }"
+                  class="nav-link"
+                  :class="{active:$route.name == 'Group'}"
+                  :groupId="group.id"
+                >
+                  <div
+                    class="btn btn-sm btn-primary"
+                    @click="setActiveGroup(group.id)"
+                  >Display group's points</div>
+                </router-link>
+              </div>
+              <p class="card-text text-center">
                 <small class="text-muted">Created by {{group.creator.name}}</small>
               </p>
             </div>
-            <div v-if="group.creatorEmail == $auth.userInfo.email">
+            <div class="text-center mb-2" v-if="group.creatorEmail == $auth.userInfo.email">
               <button class="btn btn-sm btn-primary mr-2" @click="editGroup(group)">Edit</button>
               <button class="btn btn-sm btn-secondary" @click="deleteGroup(group)">Delete</button>
             </div>
-            <div v-else>
+            <div v-else class="mb-2">
               <button
                 v-if="yourGroups[group.id]"
                 @click="leaveGroup(group)"
@@ -58,14 +70,6 @@
               >Leave</button>
               <button v-else class="btn btn-sm btn-success" @click="joinGroup(group)">Join</button>
             </div>
-            <router-link
-              :to="{ name: 'Group', params:{groupId:group.id} }"
-              class="nav-link"
-              :class="{active:$route.name == 'Group'}"
-              :groupId="group.id"
-            >
-              <p @click="setActiveGroup(group.id)">Display group's points</p>
-            </router-link>
           </div>
           <!-- end first -->
           <div v-show="edit[group.id]" class="col-md-8">
@@ -97,11 +101,11 @@
                 <small class="text-muted">Created by {{group.creator.name}}</small>
               </p>
             </div>
-            <div v-if="group.creatorEmail == $auth.userInfo.email">
+            <div class="mb-2" v-if="group.creatorEmail == $auth.userInfo.email">
               <button class="btn btn-sm btn-primary" @click="editGroup(group)">Cancel</button>
               <button class="btn btn-sm btn-secondary" @click="deleteGroup(group)">Delete</button>
             </div>
-            <div v-else>
+            <div class="mb-2" v-else>
               <button
                 v-if="yourGroups[group.id]"
                 @click="leaveGroup(group)"
@@ -204,5 +208,10 @@ export default {
 .btn-secondary:hover {
   background-color: $danger;
   color: white;
+}
+.card-img {
+  width: 70%;
+  margin-top: 0.5rem;
+  text-align: center;
 }
 </style>

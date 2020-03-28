@@ -58,14 +58,14 @@
     <div v-else-if="$route.name == 'Profile groups'">
       <groups :newGroups="false" :groupsData="groups" />
     </div>
-    <div class="row" v-else-if="$route.name == 'Profile visits'">
-      <div class="col-md-4 col-12" v-for="visit in visits" :key="visit.id">
+    <div class="row mt-1 w-100 ml-1" v-else-if="$route.name == 'Profile visits'">
+      <div class="col-md-4 col-12 pt-1" v-for="visit in visits" :key="visit.id">
         <div class="card">
           <div class="card-body">
             <h4 class="card-title">{{visit.point.title}}</h4>
             <p class="card-text">First Visited on {{new Date(visit.createdAt).toLocaleDateString()}}</p>
             <p class="card-text text-muted">{{visit.point.description}}</p>
-            <button class="btn btn-info" @click="unvisit(visit.point)">Unvisit</button>
+            <button class="btn btn-info btn-sm" @click="unvisit(visit.point)">Unvisit</button>
           </div>
         </div>
       </div>

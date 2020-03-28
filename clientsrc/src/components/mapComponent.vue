@@ -111,10 +111,16 @@
               </p>
               <div v-if="interactable" class="text-center">
                 <div
-                  title="Click to Delete Point"
-                  v-if="point.creatorEmail == userEmail"
-                  class="far fa-trash-alt fa-lg"
-                  @click="deletePoint(point.id)"
+                  title="Click to Favorite Point"
+                  v-if="!yourFavorites[point.id]"
+                  class="far fa-heart fa-lg"
+                  @click.stop="favorite(point)"
+                ></div>
+                <div
+                  v-else
+                  title="Click to Unfavorite Point"
+                  class="fas fa-heart fa-lg"
+                  @click.stop="unfavorite(point)"
                 ></div>
                 <div
                   title="Click to Visit Point"
@@ -129,16 +135,10 @@
                   @click.stop="unvisit(point)"
                 ></div>
                 <div
-                  title="Click to Favorite Point"
-                  v-if="!yourFavorites[point.id]"
-                  class="far fa-heart fa-lg ml-2"
-                  @click.stop="favorite(point)"
-                ></div>
-                <div
-                  v-else
-                  title="Click to Unfavorite Point"
-                  class="fas fa-heart fa-lg ml-2"
-                  @click.stop="unfavorite(point)"
+                  title="Click to Delete Point"
+                  v-if="point.creatorEmail == userEmail"
+                  class="far fa-trash-alt fa-lg ml-2"
+                  @click="deletePoint(point.id)"
                 ></div>
                 <div
                   title="Click to Flag Point"
@@ -467,6 +467,6 @@ export default {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 85%;
+  width: 100%;
 }
 </style>

@@ -8,6 +8,7 @@ share points around the world.
 -	Visit your favorite points
 -	Favorite or Report any Point
 -	Rate and Filter Points
+- Upload a photo of your favorite point.
 
                                 STACK UTILIZED:
 

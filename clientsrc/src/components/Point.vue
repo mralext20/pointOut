@@ -3,7 +3,12 @@
     <div class="card-body">
       <h4 class="card-title">{{pointData.title}}</h4>
       <p class="card-text">{{pointData.description}}</p>
-      <img v-if="pointData.image" :src="pointData.image" :alt="`Image of {pointData.title}`" />
+      <img
+        class="imgSize"
+        v-if="pointData.image"
+        :src="pointData.image"
+        :alt="`Image of {pointData.title}`"
+      />
       <p v-if="distance" class="text-muted">{{distance.toFixed(2)}} Miles Away</p>
       <p
         v-if="!$route.name.startsWith('Profile')"
@@ -53,4 +58,7 @@ export default {
 </script>
 
 <style>
+.imgSize {
+  width: 100%;
+}
 </style>
