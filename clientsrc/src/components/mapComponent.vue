@@ -337,6 +337,7 @@ export default {
         groupId: undefined,
         file: undefined
       };
+      NotificationService.toast("Point Created!");
     },
     async deletePoint(pointId) {
       if (
@@ -358,18 +359,23 @@ export default {
     },
     visit(point) {
       this.$store.dispatch("visitPoint", point);
+      NotificationService.toast("Point Visited!");
     },
     unvisit(point) {
       this.$store.dispatch("deleteVisit", point);
+      NotificationService.toast("Point Unvisited");
     },
     favorite(point) {
       this.$store.dispatch("favoritePoint", point);
+      NotificationService.toast("Point Favorited!");
     },
     unfavorite(point) {
       this.$store.dispatch("unFavoritePoint", point);
+      NotificationService.toast("Point Unfavorited");
     },
     report(pointId) {
       this.$store.dispatch("reportPoint", pointId);
+      NotificationService.toast("Point Reported. Thank you!");
     }
   },
   mounted() {
