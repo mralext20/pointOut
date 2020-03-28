@@ -103,37 +103,43 @@
                   {{point.group.title}}
                 </span>
               </p>
-              <div v-if="interactable">
-                <button
+              <div v-if="interactable" class="text-center">
+                <div
+                  title="Click to Delete Point"
                   v-if="point.creatorEmail == userEmail"
-                  class="btn btn-danger btn-sm"
+                  class="far fa-trash-alt fa-lg"
                   @click="deletePoint(point.id)"
-                >Delete</button>
-                <button
+                ></div>
+                <div
+                  title="Click to Visit Point"
                   v-if="!yourVisits[point.id]"
-                  class="btn btn-info btn-sm"
+                  class="far fa-eye fa-lg ml-2"
                   @click.stop="visit(point)"
-                >Visit</button>
-                <button
+                ></div>
+                <div
+                  title="Click to Unvisit Point"
                   v-else-if="yourVisits[point.id]"
-                  class="btn btn-info btn-sm"
+                  class="fas fa-eye fa-lg ml-2"
                   @click.stop="unvisit(point)"
-                >Un-visit</button>
-                <button
+                ></div>
+                <div
+                  title="Click to Favorite Point"
                   v-if="!yourFavorites[point.id]"
-                  class="btn btn-info btn-sm"
+                  class="far fa-heart fa-lg ml-2"
                   @click.stop="favorite(point)"
-                >Favorite</button>
-                <button
+                ></div>
+                <div
                   v-else
-                  class="btn btn-info btn-sm"
+                  title="Click to Unfavorite Point"
+                  class="fas fa-heart fa-lg ml-2"
                   @click.stop="unfavorite(point)"
-                >unfavorite</button>
-                <button
+                ></div>
+                <div
+                  title="Click to Flag Point"
                   v-if="!point.reported"
-                  class="btn btn-info btn-sm"
+                  class="far fa-flag fa-lg ml-2"
                   @click.stop="report(point.id)"
-                >Report</button>
+                ></div>
               </div>
             </div>
           </l-popup>
