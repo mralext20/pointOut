@@ -69,6 +69,12 @@
           <l-tooltip>{{ point.title }}</l-tooltip>
           <l-popup>
             <div>
+              <img
+                class="img"
+                v-if="point.image"
+                :src="point.image"
+                :alt="`Image of {point.title}`"
+              />
               <h4>{{point.title}}</h4>
               <p>{{point.description}}</p>
               <p>
@@ -450,5 +456,11 @@ export default {
 .leaflet-map {
   cursor: pointer;
   height: 100%;
+}
+.img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 85%;
 }
 </style>

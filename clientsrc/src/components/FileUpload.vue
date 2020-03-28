@@ -1,7 +1,9 @@
 <template>
   <div class="upload">
     <div class="fields">
-      <label>Upload File</label>
+      <label class="mt-2 mb-0">
+        <h6>Upload Picture</h6>
+      </label>
       <br />
       <input class="form-control-file" type="file" ref="file" @change="onSelect" />
     </div>
