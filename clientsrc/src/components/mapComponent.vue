@@ -69,6 +69,12 @@
           <l-tooltip>{{ point.title }}</l-tooltip>
           <l-popup>
             <div>
+              <img
+                class="img"
+                v-if="point.image"
+                :src="point.image"
+                :alt="`Image of {point.title}`"
+              />
               <h4>{{point.title}}</h4>
               <p>{{point.description}}</p>
               <p>
@@ -105,10 +111,16 @@
               </p>
               <div v-if="interactable" class="text-center">
                 <div
-                  title="Click to Delete Point"
-                  v-if="point.creatorEmail == userEmail"
-                  class="far fa-trash-alt fa-lg"
-                  @click="deletePoint(point.id)"
+                  title="Click to Favorite Point"
+                  v-if="!yourFavorites[point.id]"
+                  class="far fa-heart fa-lg"
+                  @click.stop="favorite(point)"
+                ></div>
+                <div
+                  v-else
+                  title="Click to Unfavorite Point"
+                  class="fas fa-heart fa-lg"
+                  @click.stop="unfavorite(point)"
                 ></div>
                 <div
                   title="Click to Visit Point"
@@ -123,16 +135,10 @@
                   @click.stop="unvisit(point)"
                 ></div>
                 <div
-                  title="Click to Favorite Point"
-                  v-if="!yourFavorites[point.id]"
-                  class="far fa-heart fa-lg ml-2"
-                  @click.stop="favorite(point)"
-                ></div>
-                <div
-                  v-else
-                  title="Click to Unfavorite Point"
-                  class="fas fa-heart fa-lg ml-2"
-                  @click.stop="unfavorite(point)"
+                  title="Click to Delete Point"
+                  v-if="point.creatorEmail == userEmail"
+                  class="far fa-trash-alt fa-lg ml-2"
+                  @click="deletePoint(point.id)"
                 ></div>
                 <div
                   title="Click to Flag Point"
@@ -331,6 +337,7 @@ export default {
         groupId: undefined,
         file: undefined
       };
+      NotificationService.toast("Point Created!");
     },
     async deletePoint(pointId) {
       if (
@@ -352,18 +359,23 @@ export default {
     },
     visit(point) {
       this.$store.dispatch("visitPoint", point);
+      NotificationService.toast("Point Visited!");
     },
     unvisit(point) {
       this.$store.dispatch("deleteVisit", point);
+      NotificationService.toast("Point Unvisited");
     },
     favorite(point) {
       this.$store.dispatch("favoritePoint", point);
+      NotificationService.toast("Point Favorited!");
     },
     unfavorite(point) {
       this.$store.dispatch("unFavoritePoint", point);
+      NotificationService.toast("Point Unfavorited");
     },
     report(pointId) {
       this.$store.dispatch("reportPoint", pointId);
+      NotificationService.toast("Point Reported. Thank you!");
     }
   },
   mounted() {
@@ -450,5 +462,11 @@ export default {
 .leaflet-map {
   cursor: pointer;
   height: 100%;
+}
+.img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 </style>

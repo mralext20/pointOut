@@ -5,8 +5,12 @@
         <h4 class="pt-3">Welcome to Point Out!</h4>
         <p
           class="landing-pTag text-center"
-        >This app will change your life! Have you ever lost your secret tree fort? Have you ever lost your house?</p>
-        <div v-if="!$auth.isAuthenticated" @click="login" class="btn btn-primary mb-4">Sign Up Now</div>
+        >PointOut is a fun and engaging map-based platform that allows you to create and share points around the world. Browse public points or create private points that only you and those you choose can engage with. Public groups enable you to enjoy what others around you are sharing. Create a private group to keep all your points organized.</p>
+        <div
+          v-if="!$auth.isAuthenticated"
+          @click="login"
+          class="btn btn-primary mb-4"
+        >Sign Up Now To Get Started!</div>
         <map-component
           class="sample-map"
           ref="mainMap"
@@ -49,7 +53,7 @@ export default {
       await this.$auth.loginWithPopup();
       this.$store.dispatch("setBearer", this.$auth.bearer);
       this.$store.dispatch("getProfile");
-      this.$router.push({ path: "Profile" });
+      this.$router.push({ path: "map" });
       NotificationService.toast("Logged In");
     }
   }
