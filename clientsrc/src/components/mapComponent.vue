@@ -424,35 +424,6 @@ export default {
 .fade-leave-to {
   opacity: 0;
 }
-
-.filter-menu.dropdown-menu {
-  display: block;
-  visibility: hidden;
-  opacity: 0;
-  transform: translate(-10vw, -10vh) !important;
-  transition: 0.2s ease all;
-}
-.filter-menu.dropdown-menu.show {
-  display: block;
-  visibility: visible;
-  opacity: 1;
-  transform: translate(-10vw, 4.5vh) !important;
-  transition: 0.2s ease all;
-}
-.filter-options.dropdown-menu {
-  display: block;
-  visibility: hidden;
-  opacity: 0;
-  transform: translate(-10vw, -10vh) !important;
-  transition: 0.2s ease all;
-}
-.filter-options.dropdown-menu.show {
-  display: block;
-  visibility: visible;
-  opacity: 1;
-  transform: translate(-5vw, 8vh) !important;
-  transition: 0.2s ease all;
-}
 .form-group {
   width: 7rem;
 }
